@@ -37,21 +37,17 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .score button{padding:4px 10px;font-size:.85rem}
 .note{font-size:.85rem;color:var(--mute);margin-top:18px}
 .ans{display:none;margin-top:8px;padding:10px 12px;border-left:4px solid var(--accent);background:var(--hi);border-radius:6px;font-size:.95rem}.ans.show{display:block}
-.auth input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;flex:1 1 150px}.arow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 </style>
 </head>
 <body>
 <div class="wrap">
 <h1>Ôn Khoa học tự nhiên 6–9</h1>
 <p class="sub">Tổng quan chương trình, công thức cần nhớ, luyện tập và cấu trúc đề kiểm tra. Miễn phí, không cần đăng ký.</p>
-<div class="card auth" id="auth" style="display:none"></div>
 <div class="pills" id="pills" role="tablist" aria-label="Chọn lớp"></div>
 <div class="tabs" id="tabs"></div>
 <div id="main"></div>
 <p class="note">Nội dung bám khung chương trình GDPT 2018 và tên chủ đề của sách Kết nối tri thức với cuộc sống, mang tính tham khảo. Phân phối chương trình và đề thi thực tế tùy sách giáo khoa và nhà trường, hãy đối chiếu với đề cương của giáo viên.</p>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="config.js"></script>
 <script>
 const D={
 6:{
@@ -160,7 +156,7 @@ const tabs=[['ov','Tổng quan'],['kn','Khái niệm'],['fm','Công thức'],['q
 const $=id=>document.getElementById(id);
 function pills(){$('pills').innerHTML=[6,7,8,9].map(n=>`<button class="${n==g?'on':''}" onclick="setG(${n})" aria-pressed="${n==g}">Lớp ${n}</button>`).join('');
 $('tabs').innerHTML=tabs.map(([k,l])=>`<button class="${k==t?'on':''}" onclick="setT('${k}')">${l}</button>`).join('')}
-function setG(n){g=n;es=0;score=0;done=0;render()}
+function setG(n){g=n;CH=0;es=0;score=0;done=0;render()}
 function setT(k){t=k;es=0;render()}
 const BANK6=[
 {s:'Mở đầu',n:'Mở đầu: giới thiệu KHTN, an toàn, đo lường',q:[
@@ -214,31 +210,71 @@ const BANK6=[
 ['Trái Đất ở vị trí thứ mấy tính từ Mặt Trời?',['Thứ 3','Thứ 2','Thứ 4','Thứ 5'],'Thứ tự: Thủy, Kim, Trái Đất, Hỏa...'],
 ['Hệ Mặt Trời gồm những gì?',['Mặt Trời và các thiên thể chuyển động quanh nó','Chỉ Mặt Trời','Chỉ Trái Đất và Mặt Trăng','Chỉ các ngôi sao'],'Gồm Mặt Trời, hành tinh, vệ tinh, tiểu hành tinh...']]}
 ];
-BANK6.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)}));
+const BANK7=[
+{s:'Nguyên tử',n:'Nguyên tử: cấu tạo và các hạt',q:[
+['Hạt nhân nguyên tử gồm những hạt nào?',['Proton và neutron','Proton và electron','Neutron và electron','Chỉ electron'],'Hạt nhân chứa proton (dương) và neutron (không mang điện).'],
+['Electron nằm ở đâu trong nguyên tử?',['Lớp vỏ nguyên tử','Hạt nhân','Trong neutron','Ngoài nguyên tử'],'Electron chuyển động xung quanh hạt nhân, tạo thành lớp vỏ.'],
+['Nguyên tử oxygen có 8 proton thì có bao nhiêu electron?',['8','16','0','4'],'Số electron bằng số proton.'],
+['Hạt nào có khối lượng rất nhỏ so với các hạt còn lại?',['Electron','Proton','Neutron','Hạt nhân'],'Khối lượng electron nhỏ hơn proton khoảng 1800 lần.']]},
+{s:'NTHH, bảng tuần hoàn',n:'Nguyên tố hóa học và sơ lược bảng tuần hoàn',q:[
+['Chu kì trong bảng tuần hoàn là gì?',['Hàng ngang các nguyên tố','Cột dọc các nguyên tố','Đường chéo','Một ô duy nhất'],'Các nguyên tố trong cùng một chu kì có cùng số lớp electron.'],
+['Các nguyên tố trong cùng một nhóm có đặc điểm gì?',['Tính chất hóa học tương tự nhau','Cùng số proton','Cùng khối lượng','Cùng màu sắc'],'Nhóm là cột dọc, các nguyên tố có tính chất gần giống nhau.'],
+['Kí hiệu hóa học của carbon là gì?',['C','Ca','Co','Cu'],'Carbon có kí hiệu C.'],
+['Nguyên tố có kí hiệu Fe là nguyên tố nào?',['Sắt (iron)','Fluorine','Francium','Phosphorus'],'Fe là sắt.']]},
+{s:'Phân tử, liên kết',n:'Phân tử, đơn chất, hợp chất, liên kết hóa học',q:[
+['Phân tử là gì?',['Hạt đại diện cho chất, gồm hai hay nhiều nguyên tử liên kết với nhau','Một nguyên tử riêng lẻ','Một electron','Một hạt nhân'],'Phân tử giữ được tính chất hóa học của chất.'],
+['Chất nào sau đây là đơn chất?',['O₂','H₂O','CO₂','NaCl'],'Đơn chất chỉ do một nguyên tố hóa học tạo nên.'],
+['Liên kết cộng hóa trị được hình thành bằng cách nào?',['Dùng chung electron','Nhường và nhận electron','Dùng chung proton','Dùng chung neutron'],'Thường gặp giữa các nguyên tử phi kim.'],
+['Phân tử nước H₂O gồm những nguyên tử nào?',['2 nguyên tử H và 1 nguyên tử O','1 nguyên tử H và 2 nguyên tử O','2 nguyên tử H và 2 nguyên tử O','1 nguyên tử H và 1 nguyên tử O'],'Chỉ số dưới kí hiệu cho biết số nguyên tử.']]},
+{s:'Hóa trị, công thức',n:'Hóa trị và công thức hóa học',q:[
+['Hóa trị của Na trong NaCl là bao nhiêu (Cl hóa trị I)?',['I','II','III','0'],'1 nguyên tử Na liên kết với 1 nguyên tử Cl nên Na hóa trị I.'],
+['Công thức hóa học của hợp chất gồm Mg (II) và O (II) là gì?',['MgO','Mg₂O','MgO₂','Mg₂O₂'],'x × II = y × II nên x : y = 1 : 1.'],
+['Khí carbon dioxide gồm 1 nguyên tử C và 2 nguyên tử O. Công thức là gì?',['CO₂','CO','C₂O','C₂O₂'],'Chỉ số 2 viết sau kí hiệu O.'],
+['Phân tử khối của H₂SO₄ là bao nhiêu (H = 1, S = 32, O = 16)?',['98','49','64','82'],'2 × 1 + 32 + 4 × 16 = 98.']]},
+{s:'Tốc độ',n:'Tốc độ chuyển động',q:[
+['Công thức tính tốc độ là gì?',['v = s / t','v = s × t','v = t / s','v = s + t'],'Tốc độ bằng quãng đường chia thời gian.'],
+['Xe đi 120 km trong 2 giờ. Tốc độ là bao nhiêu?',['60 km/h','240 km/h','122 km/h','118 km/h'],'120 / 2 = 60 km/h.'],
+['Đổi 36 km/h sang m/s.',['10 m/s','36 m/s','129,6 m/s','3,6 m/s'],'36 ÷ 3,6 = 10 m/s.'],
+['Đồ thị quãng đường–thời gian nằm ngang cho biết điều gì?',['Vật đứng yên','Vật chuyển động đều','Vật chuyển động nhanh dần','Vật quay vòng'],'Quãng đường không thay đổi theo thời gian.']]},
+{s:'Âm thanh',n:'Âm thanh',q:[
+['Âm thanh truyền được trong những môi trường nào?',['Rắn, lỏng, khí','Chỉ chất khí','Chỉ chân không','Chỉ chất lỏng'],'Âm không truyền được trong chân không.'],
+['Tần số âm càng lớn thì âm càng như thế nào?',['Cao (bổng)','To','Trầm','Nhỏ'],'Tần số quyết định độ cao của âm.'],
+['Tiếng vang là gì?',['Âm phản xạ nghe được tách biệt với âm phát ra','Âm phát ra từ nhiều nguồn','Âm bị hấp thụ','Âm to hơn bình thường'],'Tiếng vang cần âm phản xạ đến tai chậm hơn đủ lâu.'],
+['Độ to của âm đo bằng đơn vị nào?',['Decibel (dB)','Hertz (Hz)','m/s','Newton (N)'],'Tần số đo bằng Hz, độ to đo bằng dB.']]},
+{s:'Ánh sáng',n:'Ánh sáng',q:[
+['Trong môi trường trong suốt và đồng tính, ánh sáng truyền theo đường nào?',['Thẳng','Cong','Zigzag','Tròn'],'Đây là định luật truyền thẳng của ánh sáng.'],
+['Vật nào sau đây là nguồn sáng?',['Mặt Trời','Mặt Trăng','Tấm gương','Quyển sách'],'Nguồn sáng tự phát ra ánh sáng.'],
+['Bóng tối xuất hiện khi nào?',['Ánh sáng bị vật cản chặn lại','Không có vật nào','Trời mưa','Dùng gương'],'Vật chắn sáng tạo ra vùng bóng tối phía sau.'],
+['Ảnh của vật qua gương phẳng cách gương một khoảng như thế nào?',['Bằng khoảng cách từ vật đến gương','Gấp đôi','Bằng một nửa','Vô hạn'],'Ảnh và vật đối xứng qua gương.']]},
+{s:'Từ',n:'Từ',q:[
+['Hai cực của nam châm gọi là gì?',['Cực Bắc và cực Nam','Cực Đông và cực Tây','Cực âm và cực dương','Cực trên và cực dưới'],'Mỗi nam châm luôn có hai cực.'],
+['Hai cực cùng tên của hai nam châm đặt gần nhau thì sao?',['Đẩy nhau','Hút nhau','Không tác dụng','Triệt tiêu nhau'],'Cùng tên đẩy nhau, khác tên hút nhau.'],
+['Dụng cụ nào dùng để phát hiện từ trường?',['Kim nam châm (la bàn)','Thước thẳng','Nhiệt kế','Lực kế'],'Kim nam châm bị lệch trong từ trường.'],
+['Vì sao la bàn chỉ hướng Bắc–Nam?',['Trái Đất là một nam châm khổng lồ','Do gió thổi','Do ánh sáng','Do hơi nước'],'Từ trường Trái Đất tác dụng lên kim la bàn.']]},
+{s:'Trao đổi chất',n:'Trao đổi chất và chuyển hóa năng lượng ở sinh vật',q:[
+['Nguyên liệu của quang hợp là gì?',['Carbon dioxide và nước','Oxygen và glucose','Nitrogen và nước','Glucose và carbon dioxide'],'Cây hấp thụ CO₂ qua khí khổng và nước qua rễ.'],
+['Khí khổng ở lá có vai trò gì?',['Trao đổi khí và thoát hơi nước','Hút nước từ đất','Dự trữ chất dinh dưỡng','Bảo vệ lá khỏi ánh sáng'],'Khí khổng đóng mở để điều chỉnh khí và hơi nước.'],
+['Hô hấp tế bào xảy ra chủ yếu ở bào quan nào?',['Ty thể','Lục lạp','Nhân','Màng tế bào'],'Ty thể giải phóng năng lượng từ chất hữu cơ.'],
+['Trao đổi chất ở sinh vật là gì?',['Lấy chất từ môi trường, biến đổi chúng và thải ra ngoài','Chỉ ăn uống','Chỉ hô hấp','Chỉ lớn lên'],'Gắn với chuyển hóa năng lượng.']]},
+{s:'Cảm ứng, sinh sản',n:'Cảm ứng, sinh trưởng và phát triển, sinh sản',q:[
+['Cảm ứng ở sinh vật là gì?',['Khả năng nhận kích thích và phản ứng lại','Khả năng sinh con','Tăng kích thước cơ thể','Hấp thụ ánh sáng'],'Ví dụ: ngọn cây cong về phía ánh sáng.'],
+['Ví dụ nào là tập tính bẩm sinh?',['Nhện giăng tơ','Học thuộc bài','Đi xe đạp','Chó biết ngồi theo lệnh'],'Tập tính bẩm sinh sinh ra đã có.'],
+['Yếu tố nào ảnh hưởng đến sinh trưởng và phát triển của thực vật?',['Nước, ánh sáng, nhiệt độ, dinh dưỡng','Chỉ màu sắc','Chỉ tên gọi','Không yếu tố nào'],'Điều kiện môi trường ảnh hưởng đến sinh trưởng.'],
+['Sinh sản hữu tính ở thực vật có hoa cần quá trình nào?',['Thụ phấn và thụ tinh','Giâm cành','Chiết cành','Ghép cành'],'Hạt hình thành sau thụ tinh.']]}
+];
+const BANKS={6:BANK6,7:BANK7};
+Object.values(BANKS).forEach(B=>B.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)})));
+function mig(o){const r={};for(const k in o)r[k.indexOf(':')<0?'6:'+k:k]=o[k];return r}
 let CH=0,P={},DBR=null;
 try{P=JSON.parse(localStorage.getItem('khtn6')||'{}')}catch(e){}
-let SB=null,USER=null,svT=null;
-function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}
-if(SB&&USER){clearTimeout(svT);svT=setTimeout(()=>{SB.from('progress').upsert({user_id:USER.id,data:P,updated_at:new Date().toISOString()}).then(r=>{if(r.error)console.warn(r.error.message)})},600)}}
-function esc(x){return String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function renderAuth(){const a=document.getElementById('auth');if(!SB){a.style.display='none';return}a.style.display='block';
-a.innerHTML=USER?'Đã đăng nhập: <b>'+esc(USER.email)+'</b> <button onclick="logout()">Đăng xuất</button>':'<b>Đăng nhập để lưu tiến độ trên mọi thiết bị</b><div class="arow"><input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="current-password"><button onclick="login()">Đăng nhập</button><button onclick="signup()">Đăng ký</button></div><div class="ex" id="am"></div>'}
-async function login(){const r=await SB.auth.signInWithPassword({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng nhập được: '+r.error.message:''}
-async function signup(){const r=await SB.auth.signUp({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng ký được: '+r.error.message:'Đã đăng ký. Nếu được yêu cầu, hãy xác nhận qua email rồi đăng nhập.'}
-async function logout(){await SB.auth.signOut()}
-async function setUser(u){USER=u||null;renderAuth();
-if(USER){const r=await SB.from('progress').select('data').eq('user_id',USER.id).maybeSingle();if(r.data&&r.data.data)P=Object.assign({},r.data.data,P);sv()}
-if(t=='qz'&&g==6)render()}
-function initAuth(){renderAuth();const u=window.SUPABASE_URL,k=window.SUPABASE_ANON_KEY;
-if(!window.supabase||!u||!k||/YOUR_/.test(u+k))return;
-SB=window.supabase.createClient(u,k);renderAuth();
-SB.auth.onAuthStateChange((e,se)=>{setUser(se&&se.user)})}
-function prog(){let a=0,b=0,c=0;BANK6.forEach((x,i)=>x.q.forEach((_,j)=>{b++;if(P[i+'-'+j]==1){a++;if(i==CH)c++}}));return 'Đã đúng '+c+'/'+BANK6[CH].q.length+' câu của chương này, '+a+'/'+b+' câu toàn bộ.'}
+P=mig(P);
+function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}if(DBR)DBR.set({p:P}).catch(()=>{})}
+function prog(){let a=0,b=0,c=0;BANKS[g].forEach((x,i)=>x.q.forEach((_,j)=>{b++;if(P[g+':'+i+'-'+j]==1){a++;if(i==CH)c++}}));return 'Đã đúng '+c+'/'+BANKS[g][CH].q.length+' câu của chương này, '+a+'/'+b+' câu toàn bộ.'}
 function setC(i){CH=i;render()}
-function resetC(){BANK6[CH].q.forEach((_,j)=>delete P[CH+'-'+j]);sv();render()}
-function bank6(){const c=BANK6[CH];
-return `<div class="tabs">${BANK6.map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+`<p class="note">${USER?'Tiến độ được lưu theo tài khoản của bạn.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
-function ansC(i,j){const q=BANK6[CH].q[i],b=document.getElementById('c'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q.a].classList.add('ok');if(j!=q.a)o[j].classList.add('bad');P[CH+'-'+i]=j==q.a?1:0;sv();document.getElementById('ce'+i).textContent=(j==q.a?'Chính xác. ':'Chưa đúng. ')+q[2];document.getElementById('pg').textContent=prog()}
+function resetC(){BANKS[g][CH].q.forEach((_,j)=>delete P[g+':'+CH+'-'+j]);sv();render()}
+function bank6(){const c=BANKS[g][CH];
+return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+`<p class="note">${DBR?'Tiến độ được lưu theo tài khoản của bạn và trên thiết bị này.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
+function ansC(i,j){const q=BANKS[g][CH].q[i],b=document.getElementById('c'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q.a].classList.add('ok');if(j!=q.a)o[j].classList.add('bad');P[g+':'+CH+'-'+i]=j==q.a?1:0;sv();document.getElementById('ce'+i).textContent=(j==q.a?'Chính xác. ':'Chưa đúng. ')+q[2];document.getElementById('pg').textContent=prog()}
 const EX6={
 'Giữa kỳ 1':{sc:'Phạm vi: mở đầu (an toàn, đo lường), chất quanh ta, sự chuyển thể, oxygen và không khí.',
 mc:[['Dụng cụ nào dùng để đo thể tích chất lỏng?',['Thước dây','Ống đong','Cân đồng hồ','Nhiệt kế'],1,'Ống đong có vạch chia thể tích.'],
@@ -417,7 +453,7 @@ function render(){pills();const d=D[g];let h='';
 if(t=='ov')h=d.ov.map(([a,b])=>card(a,b)).join('');
 if(t=='kn')h=d.kn.map(([a,b])=>card(a,b)).join('');
 if(t=='fm')h='<div class="card">'+d.fm.map(([a,b])=>`<div class="f"><b>${a}</b><span>${b}</span></div>`).join('')+'</div>';
-if(t=='qz'&&g==6)h=bank6();else if(t=='qz'){h=`<div class="score"><span id="sc">Điểm: ${score}/${d.qz.length}</span><button onclick="setG(g)">Làm lại</button></div>`+d.qz.map((q,i)=>`<div class="card q" id="q${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ans(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="e${i}"></div></div>`).join('')}
+if(t=='qz'&&BANKS[g])h=bank6();else if(t=='qz'){h=`<div class="score"><span id="sc">Điểm: ${score}/${d.qz.length}</span><button onclick="setG(g)">Làm lại</button></div>`+d.qz.map((q,i)=>`<div class="card q" id="q${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ans(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="e${i}"></div></div>`).join('')}
 if(t=='tl'){h=card('Đề mẫu tổng hợp lớp '+g,'<ul><li>Thời gian gợi ý: 45 phút.</li><li>Phần I, trắc nghiệm (3 điểm): làm ở tab Luyện tập.</li><li>Phần II, tự luận (7 điểm): các câu dưới đây. Tự làm trước, rồi mới bấm xem đáp án.</li></ul>')+TL[g].map((q,i)=>`<div class="card"><h3>Câu ${i+1} (${String(q[0]).replace('.',',')} điểm)</h3><div>${q[1]}</div><button id="b${i}" onclick="tog(${i})" style="margin-top:8px">Xem đáp án</button><div class="ans" id="a${i}">${q[2]}</div></div>`).join('')}
 if(t=='ex')h=ex6();else if(t=='ex'){h=Object.entries(d.ex).map(([a,b])=>card(a,b)).join('')+card('Cấu trúc đề thường gặp','<ul>'+STR.map(([a,b])=>`<li><b>${a}.</b> ${b}</li>`).join('')+'</ul>')+card('Mẹo làm bài','<ul>'+TIPS.map(x=>`<li>${x}</li>`).join('')+'</ul>')}
 $('main').innerHTML=h}
@@ -426,7 +462,7 @@ const bs=box.querySelectorAll('.opt');bs[q[2]].classList.add('ok');
 if(j==q[2])score++;else bs[j].classList.add('bad');
 $('e'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];
 $('sc').textContent='Điểm: '+score+'/'+D[g].qz.length}
-initAuth();
+(async()=>{try{if(!window.claude)return;const db=await claude.use('db'),u=await claude.use('user');if(!db||!u)return;const id=await u.id();if(!id)return;DBR=db.collection('data/users/'+id).doc('khtn6');const s=await DBR.get();if(s.exists)P=Object.assign({},mig(s.data().p||{}),P);DBR.set({p:P}).catch(()=>{});if(t=='qz'&&BANKS[g])render()}catch(e){}})();
 render();
 </script>
 </body>
