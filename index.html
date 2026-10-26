@@ -37,17 +37,21 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .score button{padding:4px 10px;font-size:.85rem}
 .note{font-size:.85rem;color:var(--mute);margin-top:18px}
 .ans{display:none;margin-top:8px;padding:10px 12px;border-left:4px solid var(--accent);background:var(--hi);border-radius:6px;font-size:.95rem}.ans.show{display:block}
+.auth input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;flex:1 1 150px}.arow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 </style>
 </head>
 <body>
 <div class="wrap">
 <h1>Ôn Khoa học tự nhiên 6–9</h1>
 <p class="sub">Tổng quan chương trình, công thức cần nhớ, luyện tập và cấu trúc đề kiểm tra. Miễn phí, không cần đăng ký.</p>
+<div class="card auth" id="auth" style="display:none"></div>
 <div class="pills" id="pills" role="tablist" aria-label="Chọn lớp"></div>
 <div class="tabs" id="tabs"></div>
 <div id="main"></div>
 <p class="note">Nội dung bám khung chương trình GDPT 2018 và tên chủ đề của sách Kết nối tri thức với cuộc sống, mang tính tham khảo. Phân phối chương trình và đề thi thực tế tùy sách giáo khoa và nhà trường, hãy đối chiếu với đề cương của giáo viên.</p>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
 <script>
 const D={
 6:{
@@ -262,18 +266,126 @@ const BANK7=[
 ['Yếu tố nào ảnh hưởng đến sinh trưởng và phát triển của thực vật?',['Nước, ánh sáng, nhiệt độ, dinh dưỡng','Chỉ màu sắc','Chỉ tên gọi','Không yếu tố nào'],'Điều kiện môi trường ảnh hưởng đến sinh trưởng.'],
 ['Sinh sản hữu tính ở thực vật có hoa cần quá trình nào?',['Thụ phấn và thụ tinh','Giâm cành','Chiết cành','Ghép cành'],'Hạt hình thành sau thụ tinh.']]}
 ];
-const BANKS={6:BANK6,7:BANK7};
+const mk=(s,n,t)=>({s,n,q:t.trim().split('\n').map(l=>{const a=l.split('|');return [a[0],a.slice(1,5),a[5]]})});
+const BANK8=[
+mk('Phản ứng hóa học','Phản ứng hóa học',`Biến đổi nào là biến đổi hóa học?|Đốt cháy tờ giấy|Hòa tan đường vào nước|Nước đá tan chảy|Cắt dây đồng|Biến đổi hóa học tạo ra chất mới.
+Chất phản ứng là gì?|Chất ban đầu bị biến đổi|Chất mới tạo thành|Chất xúc tác|Dung môi|Chất phản ứng nằm ở vế trái phương trình.
+Phương trình nào đã cân bằng đúng?|2H₂ + O₂ → 2H₂O|H₂ + O₂ → H₂O|H₂ + 2O₂ → 2H₂O|2H₂ + 2O₂ → 2H₂O|Số nguyên tử mỗi nguyên tố hai vế phải bằng nhau.
+Phản ứng tỏa nhiệt là phản ứng nào?|Giải phóng nhiệt ra môi trường|Hấp thụ nhiệt từ môi trường|Không có nhiệt|Chỉ xảy ra ở nhiệt độ thấp|Ví dụ: đốt cháy than.`),
+mk('Mol, tỉ khối','Mol, thể tích khí, tỉ khối',`Khối lượng 1 mol nguyên tử Fe là bao nhiêu (Fe = 56)?|56 g|56 mol|5,6 g|560 g|Khối lượng mol tính bằng g/mol.
+Số mol của 4,4 g CO₂ (M = 44 g/mol) là bao nhiêu?|0,1 mol|1 mol|0,01 mol|4,4 mol|n = m / M.
+Thể tích 1 mol chất khí ở 25 °C, 1 bar là bao nhiêu?|24,79 L|22,4 L|1 L|100 L|Điều kiện này dùng trong chương trình mới.
+Khí nào nhẹ hơn không khí (M = 29)?|H₂|CO₂|O₂|Cl₂|M(H₂) = 2 nhỏ hơn 29.`),
+mk('Nồng độ dung dịch','Nồng độ dung dịch',`Công thức nồng độ phần trăm là gì?|C% = m chất tan / m dung dịch × 100%|C% = m dung môi / m dung dịch × 100%|C% = n / V|C% = m / V|Chất tan nằm ở tử số.
+Dung dịch NaCl 5% có khối lượng 200 g chứa bao nhiêu gam NaCl?|10 g|5 g|40 g|100 g|200 × 5% = 10 g.
+Nồng độ mol (CM) được tính như thế nào?|CM = n / V (mol/L)|CM = m / V|CM = n × V|CM = V / n|V tính bằng lít.
+Hòa tan 0,2 mol NaOH vào nước được 0,5 L dung dịch. Nồng độ mol là bao nhiêu?|0,4 M|0,1 M|2,5 M|1 M|0,2 / 0,5 = 0,4 M.`),
+mk('Acid, base, pH','Acid, base và thang pH',`Dung dịch HCl làm quỳ tím chuyển màu nào?|Đỏ|Xanh|Không đổi màu|Mất màu|Acid làm quỳ tím hóa đỏ.
+NaOH thuộc loại hợp chất nào?|Base (kiềm)|Acid|Muối|Oxide|NaOH là base tan trong nước.
+Dung dịch có pH = 7 là dung dịch nào?|Trung tính|Acid mạnh|Base mạnh|Acid yếu|pH = 7 là trung tính.
+Phản ứng trung hòa là phản ứng nào?|Acid tác dụng base tạo muối và nước|Kim loại tác dụng oxygen|Muối tác dụng muối|Base tác dụng kim loại|Ví dụ HCl + NaOH → NaCl + H₂O.`),
+mk('Oxide, muối, phân bón','Oxide, muối, phân bón hóa học',`CO₂ thuộc loại oxide nào?|Oxide acid|Oxide base|Oxide lưỡng tính|Oxide trung tính|CO₂ tác dụng với dung dịch base.
+Thành phần chính của muối ăn là chất nào?|NaCl|CaCO₃|CuSO₄|KNO₃|Muối ăn là sodium chloride.
+Phân kali chủ yếu cung cấp nguyên tố nào?|Potassium (K)|Nitrogen (N)|Phosphorus (P)|Calcium (Ca)|Ba nguyên tố chính: N, P, K.
+Vôi sống CaO tác dụng với nước tạo ra chất nào?|Ca(OH)₂|CaCO₃|CaCl₂|CaSO₄|CaO + H₂O → Ca(OH)₂.`),
+mk('Khối lượng riêng, áp suất','Khối lượng riêng và áp suất',`Đơn vị khối lượng riêng là gì?|kg/m³|N/m²|kg|m³|D = m / V.
+Vật có khối lượng riêng nhỏ hơn nước sẽ ở trạng thái nào khi thả vào nước?|Nổi|Chìm|Tan ra|Bay hơi|Khối lượng riêng nhỏ hơn thì nổi.
+Đơn vị áp suất là gì?|Pa (N/m²)|N|kg|m|p = F / S.
+Cùng áp lực, diện tích bị ép càng lớn thì áp suất như thế nào?|Càng nhỏ|Càng lớn|Không đổi|Bằng 0|p tỉ lệ nghịch với S.`),
+mk('Lực đẩy, moment','Lực đẩy Archimedes và moment lực',`Lực đẩy Archimedes phụ thuộc vào yếu tố nào?|Trọng lượng riêng chất lỏng và thể tích phần chất lỏng bị chiếm chỗ|Khối lượng vật|Hình dạng vật|Màu của vật|F(A) = d × V.
+Vật lơ lửng trong chất lỏng khi nào?|P = F(A)|P > F(A)|P < F(A)|F(A) = 0|Lực đẩy cân bằng với trọng lượng.
+Moment của lực 20 N có cánh tay đòn 0,5 m là bao nhiêu?|10 N·m|40 N·m|20,5 N·m|0,025 N·m|M = F × d.
+Cánh tay đòn là gì?|Khoảng cách từ trục quay đến giá của lực|Chiều dài của vật|Độ lớn của lực|Thể tích của vật|Đo vuông góc từ trục đến giá của lực.`),
+mk('Điện','Điện',`Vật liệu nào dẫn điện tốt?|Đồng|Nhựa|Gỗ khô|Cao su|Kim loại dẫn điện tốt.
+Ampe kế được mắc như thế nào trong mạch?|Nối tiếp|Song song|Tùy ý|Không cần mắc|Ampe kế đo cường độ dòng điện chạy qua.
+Vôn kế đo hiệu điện thế được mắc như thế nào?|Song song với đoạn cần đo|Nối tiếp|Tùy ý|Trong dây dẫn|Mắc vào hai đầu đoạn mạch.
+Hiệu điện thế 12 V đặt vào điện trở 4 Ω. Cường độ dòng điện là bao nhiêu?|3 A|48 A|0,33 A|8 A|I = U / R = 12 / 4.`),
+mk('Nhiệt','Nhiệt',`Khi nhiệt độ vật tăng thì động năng các hạt cấu tạo nên vật thay đổi thế nào?|Tăng|Giảm|Không đổi|Bằng 0|Nhiệt độ cao thì các hạt chuyển động nhanh hơn.
+Chất nào dẫn nhiệt tốt nhất?|Kim loại|Gỗ|Len|Nhựa xốp|Kim loại là chất dẫn nhiệt tốt.
+Đối lưu xảy ra chủ yếu ở đâu?|Chất lỏng và chất khí|Chất rắn|Chân không|Mọi nơi như nhau|Dòng chất nóng lên, chất lạnh đi xuống.
+Đơn vị của nhiệt lượng là gì?|Joule (J)|Newton (N)|Watt (W)|Mét (m)|Nhiệt lượng đo bằng joule.`),
+mk('Cơ thể người','Cơ thể người',`Enzyme amylase trong nước bọt biến tinh bột thành chất nào?|Đường (maltose)|Protein|Chất béo|Nước|Tiêu hóa hóa học bắt đầu ở khoang miệng.
+Trao đổi khí ở phổi diễn ra tại đâu?|Phế nang|Khí quản|Thanh quản|Mũi|Phế nang có thành mỏng, nhiều mao mạch.
+Máu gồm huyết tương và thành phần nào?|Các tế bào máu|Chỉ nước|Chỉ hồng cầu|Chỉ tiểu cầu|Tế bào máu gồm hồng cầu, bạch cầu, tiểu cầu.
+Hệ thần kinh gồm những phần nào?|Thần kinh trung ương và thần kinh ngoại biên|Tim và phổi|Dạ dày và ruột|Xương và cơ|Trung ương gồm não và tủy sống.`),
+mk('Môi trường','Sinh vật và môi trường',`Nhân tố nào là nhân tố sinh thái hữu sinh?|Con người|Nhiệt độ|Ánh sáng|Độ ẩm|Hữu sinh là các sinh vật.
+Chuỗi thức ăn bắt đầu từ nhóm sinh vật nào?|Sinh vật sản xuất|Động vật ăn thịt|Sinh vật phân giải|Con người|Cây xanh tự tổng hợp chất hữu cơ.
+Hệ sinh thái gồm những gì?|Quần xã sinh vật và môi trường sống|Chỉ động vật|Chỉ thực vật|Chỉ đất và nước|Hai thành phần tác động qua lại.
+Quần xã là gì?|Nhiều quần thể khác loài cùng sống trong một khu vực|Các cá thể cùng loài|Một cá thể|Môi trường vô sinh|Ví dụ: ao có cá, tôm, tảo.`)
+];
+const BANK9=[
+mk('Năng lượng cơ học','Năng lượng cơ học',`Động năng của vật 4 kg chuyển động với tốc độ 5 m/s là bao nhiêu?|50 J|20 J|100 J|10 J|½ × 4 × 5² = 50 J.
+Thế năng trọng trường phụ thuộc vào yếu tố nào?|Độ cao và khối lượng|Tốc độ|Màu sắc|Thể tích|W(t) = 10 m h.
+Cơ năng của vật bằng gì?|Động năng cộng thế năng|Động năng trừ thế năng|Động năng nhân thế năng|Bằng 0|Cơ năng = động năng + thế năng.
+Vật rơi tự do (bỏ qua ma sát) thì cơ năng như thế nào?|Bảo toàn|Tăng|Giảm|Bằng 0|Thế năng giảm, động năng tăng.`),
+mk('Công, công suất','Công và công suất',`Công thức tính công cơ học là gì?|A = F × s|A = F / s|A = s / F|A = F + s|Lực cùng phương chuyển dời.
+Đơn vị của công suất là gì?|Watt (W)|Joule (J)|Newton (N)|Pascal (Pa)|1 W = 1 J/s.
+Nâng vật 20 N lên cao 3 m. Công thực hiện là bao nhiêu?|60 J|23 J|6,7 J|17 J|A = F × s = 20 × 3.
+Một máy thực hiện công 3000 J trong 60 s. Công suất là bao nhiêu?|50 W|180000 W|0,02 W|3060 W|P = A / t.`),
+mk('Khúc xạ, thấu kính','Khúc xạ ánh sáng và thấu kính',`Tia sáng truyền từ không khí vào nước thì góc khúc xạ so với góc tới như thế nào?|Nhỏ hơn|Lớn hơn|Bằng nhau|Luôn bằng 90°|Ánh sáng đi vào môi trường chiết quang hơn bị bẻ lại gần pháp tuyến.
+Thấu kính hội tụ có phần giữa như thế nào?|Dày hơn phần rìa|Mỏng hơn phần rìa|Bằng phần rìa|Rỗng|Đặc điểm nhận biết thấu kính hội tụ.
+Tia sáng đi qua quang tâm thấu kính sẽ như thế nào?|Truyền thẳng|Bị gãy khúc|Bị phản xạ|Bị hấp thụ|Tia qua quang tâm không đổi hướng.
+Ảnh thật của vật qua thấu kính hội tụ có tính chất nào?|Ngược chiều với vật|Cùng chiều với vật|Luôn nhỏ hơn vật|Luôn là ảnh ảo|Ảnh thật hứng được trên màn.`),
+mk('Mắt, kính lúp','Mắt và kính lúp',`Mắt cận thị nhìn rõ vật ở đâu?|Vật ở gần|Vật ở xa|Mọi khoảng cách|Không nhìn thấy gì|Mắt cận đeo kính phân kì.
+Mắt lão cần đeo loại kính nào?|Hội tụ|Phân kì|Gương phẳng|Không cần đeo|Mắt lão nhìn gần kém.
+Bộ phận nào của mắt đóng vai trò màn hứng ảnh?|Võng mạc|Thủy tinh thể|Con ngươi|Giác mạc|Ảnh của vật hiện lên võng mạc.
+Kính lúp có tiêu cự 5 cm. Số bội giác G = 25 / f là bao nhiêu?|5|125|0,2|30|25 / 5 = 5.`),
+mk('Định luật Ohm, mạch','Định luật Ohm và đoạn mạch',`Điện trở 3 Ω đặt vào hiệu điện thế 6 V. Cường độ dòng điện là bao nhiêu?|2 A|18 A|0,5 A|9 A|I = U / R.
+Trong đoạn mạch nối tiếp, cường độ dòng điện như thế nào?|Bằng nhau ở mọi điểm|Cộng lại|Khác nhau|Bằng 0|I = I₁ = I₂.
+Trong đoạn mạch song song, hiệu điện thế giữa các nhánh như thế nào?|Bằng nhau|Cộng lại|Khác nhau|Bằng 0|U = U₁ = U₂.
+Hai điện trở 10 Ω mắc song song. Điện trở tương đương là bao nhiêu?|5 Ω|20 Ω|10 Ω|0,2 Ω|1/R = 1/10 + 1/10.`),
+mk('Điện năng','Điện năng và công suất điện',`Công thức công suất điện là gì?|P = U × I|P = U / I|P = I / U|P = U + I|Công suất bằng hiệu điện thế nhân cường độ.
+Công thức tính điện năng là gì?|A = P × t|A = P / t|A = U / I|A = I × R|Điện năng = công suất × thời gian.
+Đèn 40 W bật trong 5 giờ tiêu thụ bao nhiêu điện năng?|0,2 kWh|8 kWh|200 kWh|45 kWh|0,04 kW × 5 h.
+Biện pháp nào giúp tiết kiệm điện?|Tắt thiết bị khi không sử dụng|Bật đèn cả ngày|Để quạt chạy khi vắng người|Cắm sạc liên tục|Tránh lãng phí điện.`),
+mk('Điện từ','Điện từ',`Dòng điện xoay chiều có đặc điểm nào?|Đổi chiều liên tục|Chỉ chạy một chiều|Không đổi|Bằng 0|Chiều thay đổi theo chu kì.
+Nam châm điện gồm những bộ phận nào?|Cuộn dây có lõi sắt non, có dòng điện chạy qua|Một thanh nam châm vĩnh cửu|Một viên đá|Một sợi dây trần|Ngắt điện thì mất từ tính.
+Máy biến thế dùng để làm gì?|Thay đổi hiệu điện thế xoay chiều|Thay đổi dòng điện một chiều|Biến ánh sáng thành điện|Đo nhiệt độ|Dùng trong truyền tải điện.
+Quy tắc nắm tay phải dùng để xác định điều gì?|Chiều đường sức từ trong lòng ống dây|Chiều của lực ma sát|Nhiệt độ|Tốc độ ánh sáng|Chiều dòng điện chỉ ra chiều ngón tay.`),
+mk('Kim loại','Kim loại',`Tính chất vật lí chung của kim loại là gì?|Dẫn điện, dẫn nhiệt, có ánh kim|Cách điện|Giòn, dễ vỡ|Nhẹ như khí|Kim loại thường dẻo và có ánh kim.
+Kim loại nào đẩy được đồng ra khỏi dung dịch CuSO₄?|Fe|Ag|Au|Hg|Fe + CuSO₄ → FeSO₄ + Cu.
+Nhôm có tính chất nào?|Nhẹ, dẻo, dẫn điện tốt|Nặng, giòn|Cách điện|Nổi trong không khí|Nhôm dùng làm dây điện, vỏ máy bay.
+Biện pháp nào giúp chống gỉ cho sắt?|Sơn, mạ|Ngâm nước muối|Để ngoài mưa|Để nơi ẩm|Cách li sắt khỏi không khí và nước.`),
+mk('Phi kim','Phi kim',`Đa số phi kim có tính chất nào?|Dẫn điện kém|Dẫn điện tốt|Có ánh kim sáng|Rất dẻo|Ví dụ: sulfur, phosphorus.
+Khí chlorine có đặc điểm nào?|Màu vàng lục, độc|Không màu, không mùi|Nhẹ hơn không khí|Chất rắn|Cl₂ gây hại cho đường hô hấp.
+Khí nào là khí nhà kính chính?|CO₂|O₂|N₂|He|CO₂ giữ nhiệt trong khí quyển.
+Đốt sulfur trong không khí tạo ra chất nào?|SO₂|SO₃|H₂S|S₂|S + O₂ → SO₂.`),
+mk('Hữu cơ','Hợp chất hữu cơ',`Hợp chất hữu cơ luôn chứa nguyên tố nào?|Carbon|Nitrogen|Sulfur|Iron|Hợp chất của carbon (trừ một số ít).
+Ethylene C₂H₄ có đặc điểm cấu tạo nào?|Có liên kết đôi C=C|Có liên kết ba|Chỉ có liên kết đơn|Có liên kết ion|Liên kết đôi dễ tham gia phản ứng cộng.
+Ethylic alcohol C₂H₅OH có nhóm đặc trưng nào?|–OH|–COOH|–NH₂|–CHO|Nhóm hydroxyl.
+Giấm ăn chứa chất nào?|Acetic acid|Ethanol|Methane|Glucose|Giấm là dung dịch acetic acid khoảng 2–5%.`),
+mk('Di truyền, tiến hóa','Di truyền và tiến hóa',`DNA nằm chủ yếu ở đâu trong tế bào?|Nhân tế bào (trên nhiễm sắc thể)|Màng tế bào|Thành tế bào|Không bào|DNA là vật chất di truyền.
+Kiểu hình là gì?|Biểu hiện ra bên ngoài của kiểu gene|Tổ hợp gene|Bộ nhiễm sắc thể|Một tế bào|Kiểu hình chịu ảnh hưởng của môi trường.
+Đột biến là gì?|Biến đổi trong vật chất di truyền|Thay đổi do thời tiết|Sự lớn lên|Sự sinh sản|Có thể di truyền cho đời sau.
+Chọn lọc nhân tạo do yếu tố nào thực hiện?|Con người|Tự nhiên|Nước|Nhiệt độ|Con người chọn giống theo nhu cầu.`)
+];
+const BANKS={6:BANK6,7:BANK7,8:BANK8,9:BANK9};
 Object.values(BANKS).forEach(B=>B.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)})));
 function mig(o){const r={};for(const k in o)r[k.indexOf(':')<0?'6:'+k:k]=o[k];return r}
 let CH=0,P={},DBR=null;
 try{P=JSON.parse(localStorage.getItem('khtn6')||'{}')}catch(e){}
 P=mig(P);
-function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}if(DBR)DBR.set({p:P}).catch(()=>{})}
+let SB=null,USER=null,svT=null;
+function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}
+if(SB&&USER){clearTimeout(svT);svT=setTimeout(()=>{SB.from('progress').upsert({user_id:USER.id,data:P,updated_at:new Date().toISOString()}).then(r=>{if(r.error)console.warn(r.error.message)})},600)}}
+function esc(x){return String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function renderAuth(){const a=document.getElementById('auth');if(!SB){a.style.display='none';return}a.style.display='block';
+a.innerHTML=USER?'Đã đăng nhập: <b>'+esc(USER.email)+'</b> <button onclick="logout()">Đăng xuất</button>':'<b>Đăng nhập để lưu tiến độ trên mọi thiết bị</b><div class="arow"><input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="current-password"><button onclick="login()">Đăng nhập</button><button onclick="signup()">Đăng ký</button></div><div class="ex" id="am"></div>'}
+async function login(){const r=await SB.auth.signInWithPassword({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng nhập được: '+r.error.message:''}
+async function signup(){const r=await SB.auth.signUp({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng ký được: '+r.error.message:'Đã đăng ký. Nếu được yêu cầu, hãy xác nhận qua email rồi đăng nhập.'}
+async function logout(){await SB.auth.signOut()}
+async function setUser(u){USER=u||null;renderAuth();
+if(USER){const r=await SB.from('progress').select('data').eq('user_id',USER.id).maybeSingle();if(r.data&&r.data.data)P=Object.assign({},mig(r.data.data),P);sv()}
+if(t=='qz'&&BANKS[g])render()}
+function initAuth(){renderAuth();const u=window.SUPABASE_URL,k=window.SUPABASE_ANON_KEY;
+if(!window.supabase||!u||!k||/YOUR_/.test(u+k))return;
+SB=window.supabase.createClient(u,k);renderAuth();
+SB.auth.onAuthStateChange((e,se)=>{setUser(se&&se.user)})}
 function prog(){let a=0,b=0,c=0;BANKS[g].forEach((x,i)=>x.q.forEach((_,j)=>{b++;if(P[g+':'+i+'-'+j]==1){a++;if(i==CH)c++}}));return 'Đã đúng '+c+'/'+BANKS[g][CH].q.length+' câu của chương này, '+a+'/'+b+' câu toàn bộ.'}
 function setC(i){CH=i;render()}
 function resetC(){BANKS[g][CH].q.forEach((_,j)=>delete P[g+':'+CH+'-'+j]);sv();render()}
 function bank6(){const c=BANKS[g][CH];
-return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+`<p class="note">${DBR?'Tiến độ được lưu theo tài khoản của bạn và trên thiết bị này.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
+return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+`<p class="note">${USER?'Tiến độ được lưu theo tài khoản của bạn.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
 function ansC(i,j){const q=BANKS[g][CH].q[i],b=document.getElementById('c'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q.a].classList.add('ok');if(j!=q.a)o[j].classList.add('bad');P[g+':'+CH+'-'+i]=j==q.a?1:0;sv();document.getElementById('ce'+i).textContent=(j==q.a?'Chính xác. ':'Chưa đúng. ')+q[2];document.getElementById('pg').textContent=prog()}
 const EX6={
 'Giữa kỳ 1':{sc:'Phạm vi: mở đầu (an toàn, đo lường), chất quanh ta, sự chuyển thể, oxygen và không khí.',
@@ -462,7 +574,7 @@ const bs=box.querySelectorAll('.opt');bs[q[2]].classList.add('ok');
 if(j==q[2])score++;else bs[j].classList.add('bad');
 $('e'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];
 $('sc').textContent='Điểm: '+score+'/'+D[g].qz.length}
-(async()=>{try{if(!window.claude)return;const db=await claude.use('db'),u=await claude.use('user');if(!db||!u)return;const id=await u.id();if(!id)return;DBR=db.collection('data/users/'+id).doc('khtn6');const s=await DBR.get();if(s.exists)P=Object.assign({},mig(s.data().p||{}),P);DBR.set({p:P}).catch(()=>{});if(t=='qz'&&BANKS[g])render()}catch(e){}})();
+initAuth();
 render();
 </script>
 </body>
