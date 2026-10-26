@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ôn KHTN 6–9</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f7f4;--card:#fff;--ink:#16302b;--mute:#58706a;--line:#d5e2dc;--accent:#0f766e;--accent-ink:#fff;--ok:#15803d;--okbg:#dcfce7;--bad:#b91c1c;--badbg:#fee2e2;--hi:#fff3c4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a18;--card:#172623;--ink:#e6f2ee;--mute:#9db5ae;--line:#2b403b;--accent:#2dd4bf;--accent-ink:#06201c;--ok:#86efac;--okbg:#14532d;--bad:#fca5a5;--badbg:#7f1d1d;--hi:#3d3a14}}
+:root[data-theme="dark"]{--bg:#0f1a18;--card:#172623;--ink:#e6f2ee;--mute:#9db5ae;--line:#2b403b;--accent:#2dd4bf;--accent-ink:#06201c;--ok:#86efac;--okbg:#14532d;--bad:#fca5a5;--badbg:#7f1d1d;--hi:#3d3a14}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Be Vietnam Pro',system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:8px 0 2px;font-weight:800}
+.sub{color:var(--mute);margin:0 0 14px;font-size:.92rem}
+.pills,.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:8px 14px}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pills button{font-weight:700;font-size:1.05rem;min-width:84px}
+.pills button.on,.tabs button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tabs{border-bottom:2px solid var(--line);padding-bottom:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.card h3{margin:0 0 6px;font-size:1.05rem}
+.card ul{margin:6px 0 0;padding-left:20px}
+.card li{margin:3px 0}
+.f{display:flex;gap:10px;justify-content:space-between;padding:8px 10px;border-radius:8px;background:var(--hi);margin:6px 0;flex-wrap:wrap}
+.f b{font-weight:700}.f span{font-family:ui-monospace,Menlo,monospace;font-size:.95rem}
+.q{margin-bottom:14px}
+.q p{font-weight:700;margin:0 0 8px}
+.opt{display:block;width:100%;text-align:left;margin:6px 0}
+.opt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.ex{margin-top:6px;font-size:.92rem;color:var(--mute)}
+.score{position:sticky;top:env(safe-area-inset-top,0px);background:var(--accent);color:var(--accent-ink);padding:8px 14px;border-radius:10px;margin-bottom:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.score button{padding:4px 10px;font-size:.85rem}
+.note{font-size:.85rem;color:var(--mute);margin-top:18px}
+.ans{display:none;margin-top:8px;padding:10px 12px;border-left:4px solid var(--accent);background:var(--hi);border-radius:6px;font-size:.95rem}.ans.show{display:block}
+.auth input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;flex:1 1 150px}.arow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Ôn Khoa học tự nhiên 6–9</h1>
+<p class="sub">Tổng quan chương trình, công thức cần nhớ, luyện tập và cấu trúc đề kiểm tra. Miễn phí, không cần đăng ký.</p>
+<div class="card auth" id="auth" style="display:none"></div>
+<div class="pills" id="pills" role="tablist" aria-label="Chọn lớp"></div>
+<div class="tabs" id="tabs"></div>
+<div id="main"></div>
+<p class="note">Nội dung bám khung chương trình GDPT 2018 và tên chủ đề của sách Kết nối tri thức với cuộc sống, mang tính tham khảo. Phân phối chương trình và đề thi thực tế tùy sách giáo khoa và nhà trường, hãy đối chiếu với đề cương của giáo viên.</p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script>
+const D={
+6:{
+ov:[["Mở đầu","Giới thiệu KHTN, các lĩnh vực, quy tắc an toàn phòng thực hành, đo chiều dài, khối lượng, thời gian, nhiệt độ."],
+["Chất và sự biến đổi của chất","Ba thể của chất, sự nóng chảy, sôi, bay hơi, ngưng tụ. Oxygen và không khí. Vật liệu, nhiên liệu, nguyên liệu. Hỗn hợp và các cách tách chất."],
+["Vật sống","Tế bào, sự lớn lên và sinh sản của tế bào, cơ thể đơn bào và đa bào. Phân loại sinh vật: virus, vi khuẩn, nguyên sinh vật, nấm, thực vật, động vật."],
+["Lực và năng lượng","Lực, tác dụng của lực, lực tiếp xúc và không tiếp xúc, ma sát, lực hấp dẫn, trọng lượng, biến dạng của lò xo. Năng lượng và các dạng năng lượng."],
+["Trái Đất và bầu trời","Chuyển động nhìn thấy của Mặt Trời, Mặt Trăng, các hành tinh, hệ Mặt Trời và Ngân Hà."]],
+kn:[["Ba thể của chất","Rắn: hình dạng cố định, khó nén. Lỏng: có thể tích riêng, hình dạng theo bình chứa, khó nén. Khí: dễ nén, lan ra mọi hướng."],
+["Hỗn hợp","Gồm hai hay nhiều chất trộn lẫn. Tách bằng lọc, cô cạn, chưng cất, chiết, dùng nam châm."],
+["Tế bào","Đơn vị cấu trúc và chức năng của sự sống. Gồm màng tế bào, tế bào chất, nhân (hoặc vùng nhân). Thực vật còn có thành tế bào, lục lạp."],
+["Thang phân loại","Loài, chi (giống), họ, bộ, lớp, ngành, giới."],
+["Lực","Lực là sự đẩy hoặc kéo. Đơn vị là newton (N). Ma sát cản trở chuyển động giữa hai bề mặt tiếp xúc."]],
+fm:[["Trọng lượng","P = 10 × m (P: N, m: kg)"],["Đổi nhiệt độ","°F = °C × 1,8 + 32"],["Đổi đơn vị","1 m = 100 cm = 1000 mm; 1 kg = 1000 g; 1 giờ = 3600 giây"],["Oxygen trong không khí","khoảng 21% thể tích (nitrogen khoảng 78%)"]],
+qz:[["Đơn vị đo chiều dài trong hệ SI là gì?",["Centimét","Mét","Kilômét","Inch"],1,"Đơn vị chuẩn SI của chiều dài là mét (m)."],
+["Vật có hình dạng cố định, rất khó nén thuộc thể nào?",["Rắn","Lỏng","Khí","Plasma"],0,"Chất rắn có hình dạng và thể tích xác định, rất khó nén."],
+["Vật có khối lượng 3 kg có trọng lượng khoảng bao nhiêu?",["3 N","0,3 N","30 N","300 N"],2,"P = 10 × m = 10 × 3 = 30 N."],
+["Oxygen chiếm khoảng bao nhiêu phần trăm thể tích không khí?",["78%","21%","1%","50%"],1,"Oxygen khoảng 21%, nitrogen khoảng 78%."],
+["Đơn vị cấu trúc cơ bản của sự sống là gì?",["Mô","Cơ quan","Tế bào","Phân tử"],2,"Mọi sinh vật đều cấu tạo từ tế bào."],
+["Tách muối ra khỏi hỗn hợp muối và cát bằng cách nào?",["Dùng nam châm","Cho vào nước, lọc lấy cát, cô cạn nước muối","Chưng cất ngay hỗn hợp khô","Cân hỗn hợp"],1,"Muối tan trong nước, cát không tan. Lọc bỏ cát rồi cô cạn dung dịch để thu muối."]],
+ex:{"Giữa kỳ 1":"Mở đầu, đo lường, các thể của chất, sự chuyển thể, oxygen và không khí.","Học kỳ 1":"Toàn bộ nội dung giữa kỳ 1, thêm vật liệu, nhiên liệu, hỗn hợp, tách chất, bắt đầu phần tế bào.","Giữa kỳ 2":"Tế bào, cơ thể đa bào, phân loại sinh vật (virus, vi khuẩn, nguyên sinh vật, nấm).","Học kỳ 2":"Thực vật, động vật, lực và ma sát, năng lượng, Trái Đất và bầu trời."}},
+7:{
+ov:[["Nguyên tử, nguyên tố, phân tử","Mô hình nguyên tử, nguyên tố hóa học, bảng tuần hoàn (20 nguyên tố đầu), phân tử, đơn chất, hợp chất."],
+["Liên kết hóa học và công thức","Liên kết ion, liên kết cộng hóa trị, hóa trị, công thức hóa học, phân tử khối."],
+["Tốc độ, âm thanh, ánh sáng, từ","Tốc độ chuyển động, đồ thị quãng đường–thời gian, đặc trưng của âm thanh, phản xạ ánh sáng, từ trường Trái Đất, nam châm."],
+["Trao đổi chất và chuyển hóa năng lượng","Quang hợp, hô hấp tế bào, trao đổi nước và khí ở thực vật, sự trao đổi chất ở sinh vật."],
+["Cảm ứng, sinh trưởng, sinh sản","Cảm ứng ở sinh vật, tập tính, sinh trưởng và phát triển, sinh sản ở sinh vật."]],
+kn:[["Nguyên tử","Hạt nhân (proton mang điện dương, neutron không mang điện) và vỏ (electron mang điện âm). Số proton = số electron."],
+["Nguyên tố hóa học","Tập hợp nguyên tử cùng loại, có cùng số proton."],
+["Đơn chất, hợp chất","Đơn chất do một nguyên tố tạo nên. Hợp chất do hai nguyên tố trở lên liên kết với nhau."],
+["Quang hợp","Cây xanh dùng ánh sáng, nước, carbon dioxide tạo chất hữu cơ và giải phóng oxygen."],
+["Phản xạ ánh sáng","Tia phản xạ nằm trong mặt phẳng tới, góc phản xạ bằng góc tới."]],
+fm:[["Tốc độ","v = s / t (1 m/s = 3,6 km/h)"],["Tần số","f = số dao động / thời gian (Hz)"],["Phân tử khối","tổng khối lượng nguyên tử các nguyên tử trong phân tử"],["% khối lượng nguyên tố","% = (số nguyên tử × khối lượng nguyên tử) / phân tử khối × 100%"],["Quang hợp","CO₂ + H₂O → (ánh sáng, diệp lục) → C₆H₁₂O₆ + O₂"],["Hô hấp tế bào","C₆H₁₂O₆ + O₂ → CO₂ + H₂O + năng lượng"]],
+qz:[["Hạt nào trong nguyên tử mang điện dương?",["Electron","Neutron","Proton","Không hạt nào"],2,"Proton điện tích dương, electron âm, neutron trung hòa."],
+["Đổi 90 km/h sang m/s.",["25 m/s","30 m/s","324 m/s","9 m/s"],0,"90 ÷ 3,6 = 25 m/s."],
+["Sản phẩm của quá trình quang hợp là gì?",["CO₂ và nước","Glucose và oxygen","Glucose và CO₂","Nước và oxygen"],1,"Quang hợp tạo glucose (chất hữu cơ) và giải phóng oxygen."],
+["Phân tử khối của nước (H₂O), biết H = 1, O = 16?",["17","18","16","34"],1,"2 × 1 + 16 = 18."],
+["Âm thanh không truyền được trong môi trường nào?",["Chất rắn","Chất lỏng","Chất khí","Chân không"],3,"Âm cần môi trường vật chất để truyền, không truyền được trong chân không."],
+["Theo định luật phản xạ ánh sáng, góc phản xạ như thế nào so với góc tới?",["Lớn hơn","Nhỏ hơn","Bằng nhau","Luôn bằng 90°"],2,"Góc phản xạ bằng góc tới."]],
+ex:{"Giữa kỳ 1":"Nguyên tử, nguyên tố hóa học, bảng tuần hoàn, phân tử, tốc độ chuyển động.","Học kỳ 1":"Thêm liên kết hóa học, hóa trị, công thức hóa học, đồ thị quãng đường–thời gian, âm thanh.","Giữa kỳ 2":"Ánh sáng, từ, trao đổi chất, quang hợp, hô hấp tế bào.","Học kỳ 2":"Cảm ứng, sinh trưởng và phát triển, sinh sản ở sinh vật, ôn tập toàn năm."}},
+8:{
+ov:[["Phản ứng hóa học","Biến đổi vật lí và hóa học, phương trình hóa học, định luật bảo toàn khối lượng, mol, tỉ khối chất khí, nồng độ dung dịch, tốc độ phản ứng."],
+["Acid, base, pH, oxide, muối","Tính chất của acid, base, thang pH, oxide, muối, phân bón hóa học."],
+["Khối lượng riêng, áp suất, lực đẩy","Khối lượng riêng, áp suất chất rắn, lỏng, khí, lực đẩy Archimedes, tác dụng làm quay của lực (moment)."],
+["Điện và nhiệt","Dòng điện, điện trở, định luật Ohm, năng lượng nhiệt, sự truyền nhiệt."],
+["Cơ thể người","Hệ vận động, tiêu hóa, hô hấp, tuần hoàn, bài tiết, thần kinh, nội tiết, sinh sản, miễn dịch."],
+["Sinh vật và môi trường","Môi trường và các nhân tố sinh thái, quần thể, quần xã, hệ sinh thái."]],
+kn:[["Phản ứng hóa học","Quá trình biến đổi chất này thành chất khác. Chất đầu là chất phản ứng, chất mới là sản phẩm."],
+["Định luật bảo toàn khối lượng","Tổng khối lượng các chất tham gia bằng tổng khối lượng các sản phẩm."],
+["Acid, base","Acid làm quỳ tím hóa đỏ (pH < 7). Base (kiềm) làm quỳ tím hóa xanh (pH > 7). pH = 7 là trung tính."],
+["Lực đẩy Archimedes","Vật nhúng trong chất lỏng chịu lực đẩy hướng lên, độ lớn bằng trọng lượng phần chất lỏng bị chiếm chỗ."],
+["Định luật Ohm","Cường độ dòng điện tỉ lệ thuận với hiệu điện thế và tỉ lệ nghịch với điện trở."]],
+fm:[["Số mol","n = m / M"],["Thể tích chất khí (ở 25 °C, 1 bar)","V = n × 24,79 (L)"],["Tỉ khối","d(A/B) = M(A) / M(B); d(A/KK) = M(A) / 29"],["Nồng độ phần trăm","C% = m(chất tan) / m(dung dịch) × 100%"],["Nồng độ mol","C(M) = n / V (mol/L)"],["Hiệu suất","H = lượng thực tế / lượng lí thuyết × 100%"],["Khối lượng riêng","D = m / V"],["Áp suất","p = F / S (Pa); chất lỏng: p = d × h"],["Lực đẩy Archimedes","F(A) = d × V"],["Moment lực","M = F × d"],["Định luật Ohm","I = U / R"]],
+qz:[["Số mol của 5,6 g Fe (M = 56 g/mol)?",["0,1 mol","1 mol","0,5 mol","10 mol"],0,"n = m / M = 5,6 / 56 = 0,1 mol."],
+["Hòa tan muối vào nước để được 200 g dung dịch 15%. Khối lượng muối là?",["15 g","30 g","3 g","185 g"],1,"m(chất tan) = 200 × 15% = 30 g."],
+["Công thức tính lực đẩy Archimedes là?",["F = d × V","F = p × S","F = m × g","F = U / R"],0,"d: trọng lượng riêng của chất lỏng, V: thể tích phần chất lỏng bị chiếm chỗ."],
+["Lực 100 N tác dụng vuông góc lên diện tích 0,5 m². Áp suất là?",["50 Pa","200 Pa","100 Pa","0,005 Pa"],1,"p = F / S = 100 / 0,5 = 200 Pa."],
+["Dung dịch acid có giá trị pH như thế nào?",["Lớn hơn 7","Bằng 7","Nhỏ hơn 7","Luôn bằng 0"],2,"Acid có pH < 7."],
+["Điện trở 6 Ω, hiệu điện thế 12 V. Cường độ dòng điện là?",["0,5 A","2 A","72 A","18 A"],1,"I = U / R = 12 / 6 = 2 A."],
+["Cơ quan nào hấp thụ chủ yếu chất dinh dưỡng?",["Dạ dày","Thực quản","Ruột non","Ruột già"],2,"Ruột non có lông ruột, diện tích hấp thụ rất lớn."]],
+ex:{"Giữa kỳ 1":"Biến đổi vật lí và hóa học, phản ứng hóa học, phương trình hóa học, mol, tỉ khối, nồng độ dung dịch, khối lượng riêng.","Học kỳ 1":"Thêm acid, base, pH, oxide, muối, phân bón, áp suất, lực đẩy Archimedes.","Giữa kỳ 2":"Moment lực, điện, định luật Ohm, nhiệt, cơ thể người (vận động, tiêu hóa, hô hấp).","Học kỳ 2":"Tuần hoàn, bài tiết, thần kinh, nội tiết, sinh sản, sinh vật và môi trường."}},
+9:{
+ov:[["Năng lượng cơ học","Động năng, thế năng, cơ năng, bảo toàn cơ năng, công và công suất."],
+["Ánh sáng","Khúc xạ ánh sáng, phản xạ toàn phần, thấu kính hội tụ, kính lúp, mắt và các tật của mắt."],
+["Điện","Điện trở, định luật Ohm, đoạn mạch nối tiếp và song song, năng lượng điện và công suất điện."],
+["Điện từ","Từ trường của dòng điện, cảm ứng điện từ, máy phát điện, dòng điện xoay chiều."],
+["Kim loại và phi kim","Tính chất kim loại, dãy hoạt động hóa học, hợp kim, sự khác nhau giữa kim loại và phi kim, khai thác tài nguyên."],
+["Hóa học hữu cơ","Hydrocarbon (methane, ethylene), ethylic alcohol, acetic acid, lipid, carbohydrate, protein, polymer."],
+["Di truyền và tiến hóa","Gene, DNA, nhiễm sắc thể, quy luật Mendel, đột biến, tiến hóa, chọn lọc tự nhiên."]],
+kn:[["Dãy hoạt động kim loại","K, Na, Ca, Mg, Al, Zn, Fe, Pb, (H), Cu, Ag, Au. Kim loại đứng trước H đẩy được hydrogen khỏi dung dịch acid loãng."],
+["Hợp chất hữu cơ","Hợp chất của carbon (trừ CO, CO₂, muối carbonate, ...). Hydrocarbon chỉ gồm C và H."],
+["Gene","Đoạn DNA mang thông tin quy định một tính trạng. Gene nằm trên nhiễm sắc thể."],
+["Quy luật phân li (Mendel)","Lai một cặp tính trạng tương phản thuần chủng, F1 đồng tính, F2 phân li theo tỉ lệ 3 trội : 1 lặn."],
+["Cảm ứng điện từ","Khi từ thông qua cuộn dây biến thiên thì trong cuộn dây xuất hiện dòng điện cảm ứng."]],
+fm:[["Động năng","W(đ) = ½ m v²"],["Thế năng trọng trường","W(t) = P × h = 10 m h"],["Công","A = F × s"],["Công suất","P = A / t"],["Định luật Ohm","I = U / R"],["Điện trở dây dẫn","R = ρ × l / S"],["Nối tiếp","I = I₁ = I₂; U = U₁ + U₂; R = R₁ + R₂"],["Song song","U = U₁ = U₂; I = I₁ + I₂; 1/R = 1/R₁ + 1/R₂"],["Công suất và điện năng","P = U × I; A = P × t; Q = I² R t"],["Công thức hữu cơ","CH₄, C₂H₄, C₂H₅OH, CH₃COOH"],["Tỉ lệ Mendel","1 cặp: 3 : 1 (F2). 2 cặp: 9 : 3 : 3 : 1"]],
+qz:[["Động năng của vật 2 kg chuyển động với tốc độ 3 m/s?",["6 J","9 J","18 J","3 J"],1,"W = ½ × 2 × 3² = 9 J."],
+["Hai điện trở 10 Ω và 20 Ω mắc nối tiếp. Điện trở tương đương?",["30 Ω","6,67 Ω","200 Ω","10 Ω"],0,"R = R₁ + R₂ = 30 Ω."],
+["Bóng đèn 100 W bật 2 giờ tiêu thụ bao nhiêu điện năng?",["200 kWh","0,2 kWh","2 kWh","50 kWh"],1,"A = P × t = 0,1 kW × 2 h = 0,2 kWh."],
+["Công thức của ethylic alcohol là?",["CH₃COOH","C₂H₄","C₂H₅OH","CH₄"],2,"Ethylic alcohol: C₂H₅OH. Acetic acid: CH₃COOH."],
+["Lai một cặp tính trạng thuần chủng, F2 có tỉ lệ kiểu hình là?",["1 : 1","3 : 1","9 : 3 : 3 : 1","1 : 2 : 1 về kiểu hình"],1,"F2 phân li 3 trội : 1 lặn."],
+["Kim loại nào không tác dụng với dung dịch HCl loãng?",["Zn","Fe","Mg","Cu"],3,"Cu đứng sau H trong dãy hoạt động hóa học."]],
+ex:{"Giữa kỳ 1":"Năng lượng cơ học, công và công suất, ánh sáng (khúc xạ, thấu kính).","Học kỳ 1":"Thêm mắt và kính lúp, điện trở, định luật Ohm, đoạn mạch nối tiếp, song song, năng lượng điện.","Giữa kỳ 2":"Điện từ, kim loại, dãy hoạt động, phi kim, khai thác tài nguyên.","Học kỳ 2":"Hóa hữu cơ, di truyền Mendel, DNA và nhiễm sắc thể, tiến hóa, ôn tập thi vào lớp 10."}}
+};
+const TL={
+6:[[2,"Nêu ba thể của chất. Vì sao có thể nén không khí trong bơm xe đạp nhưng khó nén một thanh sắt?","Ba thể: rắn, lỏng, khí.<br>Chất khí có các hạt ở xa nhau nên dễ bị nén lại. Chất rắn có các hạt xếp sát nhau nên rất khó nén."],
+[2,"Trình bày cách tách riêng cát và muối ăn ra khỏi hỗn hợp gồm cát, muối ăn và nước.","Lọc hỗn hợp: cát nằm lại trên giấy lọc. Cô cạn nước lọc (nước muối) thì thu được muối ăn."],
+[1.5,"Nêu các thành phần chính của tế bào và chức năng của từng thành phần.","Màng tế bào: bao bọc, kiểm soát chất ra vào.<br>Tế bào chất: nơi diễn ra các hoạt động sống.<br>Nhân (vùng nhân): chứa vật chất di truyền, điều khiển hoạt động của tế bào."],
+[1.5,"Một học sinh có khối lượng 45 kg. Tính trọng lượng của bạn đó.","P = 10 × m = 10 × 45 = 450 N."]],
+7:[[2,"Nguyên tử oxygen có 8 proton. Cho biết số electron và điện tích hạt nhân của nguyên tử này.","Nguyên tử trung hòa về điện nên số electron = số proton = 8.<br>Điện tích hạt nhân là +8."],
+[2,"Tính phần trăm khối lượng của oxygen trong nước H₂O (H = 1, O = 16).","M(H₂O) = 2 × 1 + 16 = 18.<br>%O = 16 / 18 × 100% ≈ 88,9%."],
+[1.5,"Một xe máy đi được 90 km trong 2 giờ 30 phút. Tính tốc độ theo km/h và m/s.","t = 2,5 h, v = s / t = 90 / 2,5 = 36 km/h.<br>36 ÷ 3,6 = 10 m/s."],
+[1.5,"Viết phương trình quang hợp bằng chữ và nêu ý nghĩa của quang hợp.","Carbon dioxide + nước → (ánh sáng, diệp lục) → glucose + oxygen.<br>Ý nghĩa: tạo chất hữu cơ nuôi sống sinh vật, giải phóng oxygen cho khí quyển, chuyển năng lượng ánh sáng thành hóa năng."]],
+8:[[2,"Hòa tan 11,2 g Fe trong dung dịch HCl dư: Fe + 2HCl → FeCl₂ + H₂. Tính thể tích H₂ (25 °C, 1 bar) và khối lượng FeCl₂ tạo thành (Fe = 56, Cl = 35,5).","n(Fe) = 11,2 / 56 = 0,2 mol.<br>Theo phương trình: n(H₂) = n(FeCl₂) = 0,2 mol.<br>V(H₂) = 0,2 × 24,79 = 4,958 L.<br>m(FeCl₂) = 0,2 × 127 = 25,4 g."],
+[2,"Hòa tan 20 g NaOH vào nước để được 250 mL dung dịch. Tính nồng độ mol (Na = 23, O = 16, H = 1).","M(NaOH) = 40; n = 20 / 40 = 0,5 mol.<br>C(M) = 0,5 / 0,25 = 2 mol/L."],
+[1.5,"Khối gỗ thể tích 200 cm³ được nhúng chìm hoàn toàn trong nước (trọng lượng riêng 10000 N/m³). Tính lực đẩy Archimedes.","V = 200 cm³ = 0,0002 m³.<br>F(A) = d × V = 10000 × 0,0002 = 2 N."],
+[1.5,"Điện trở 20 Ω mắc vào hiệu điện thế 12 V. Tính cường độ dòng điện.","I = U / R = 12 / 20 = 0,6 A."]],
+9:[[2,"Vật 0,5 kg thả rơi từ độ cao 10 m, bỏ qua ma sát. Tính thế năng ban đầu và tốc độ khi chạm đất.","W(t) = 10 × m × h = 10 × 0,5 × 10 = 50 J.<br>Bảo toàn cơ năng: ½ m v² = 50 nên v² = 200, v ≈ 14,1 m/s."],
+[2,"Mắc nối tiếp R₁ = 6 Ω và R₂ = 12 Ω vào nguồn 18 V. Tính điện trở tương đương, cường độ dòng điện và hiệu điện thế hai đầu R₁.","R = 6 + 12 = 18 Ω.<br>I = U / R = 18 / 18 = 1 A.<br>U₁ = I × R₁ = 6 V."],
+[1.5,"Viết phương trình hóa học: (a) Fe tác dụng dung dịch HCl; (b) đốt cháy hoàn toàn ethylic alcohol.","(a) Fe + 2HCl → FeCl₂ + H₂.<br>(b) C₂H₅OH + 3O₂ → (to) 2CO₂ + 3H₂O."],
+[1.5,"Ở đậu Hà Lan, hoa đỏ (A) trội hoàn toàn so với hoa trắng (a). Viết sơ đồ lai P thuần chủng đỏ × trắng đến F2.","P: AA (đỏ) × aa (trắng). F1: 100% Aa (đỏ).<br>F1 × F1: Aa × Aa, F2: 1 AA : 2 Aa : 1 aa, kiểu hình 3 đỏ : 1 trắng."]]
+};
+const TIPS=["Gạch chân từ khóa và đơn vị trong đề trước khi làm.","Với bài tính, viết công thức, thay số, rồi ghi kết quả kèm đơn vị.","Cân bằng phương trình hóa học và kiểm tra lại số nguyên tử hai vế.","Phân bổ thời gian: câu dễ làm trước, câu khó quay lại sau.","Dành vài phút cuối để rà soát đơn vị và kết quả."];
+const STR=[["Trắc nghiệm (nhận biết, thông hiểu)","Khoảng 40–70% số điểm, kiểm tra khái niệm, đơn vị, hiện tượng."],["Tự luận (thông hiểu, vận dụng)","Giải thích hiện tượng, viết phương trình, bài toán một đến hai bước."],["Vận dụng cao","Bài toán nhiều bước hoặc tình huống thực tế, thường 1 đến 2 điểm."]];
+let g=6,t='ov',score=0,done=0;
+const tabs=[['ov','Tổng quan'],['kn','Khái niệm'],['fm','Công thức'],['qz','Luyện tập'],['tl','Tự luận & đề mẫu'],['ex','Đề kiểm tra']];
+const $=id=>document.getElementById(id);
+function pills(){$('pills').innerHTML=[6,7,8,9].map(n=>`<button class="${n==g?'on':''}" onclick="setG(${n})" aria-pressed="${n==g}">Lớp ${n}</button>`).join('');
+$('tabs').innerHTML=tabs.map(([k,l])=>`<button class="${k==t?'on':''}" onclick="setT('${k}')">${l}</button>`).join('')}
+function setG(n){g=n;es=0;score=0;done=0;render()}
+function setT(k){t=k;es=0;render()}
+const BANK6=[
+{s:'Mở đầu',n:'Mở đầu: giới thiệu KHTN, an toàn, đo lường',q:[
+['Khoa học tự nhiên nghiên cứu về điều gì?',['Các sự vật, hiện tượng tự nhiên và tác động của con người lên tự nhiên','Các sự kiện lịch sử','Các quy luật xã hội','Ngôn ngữ và văn học'],'KHTN nghiên cứu các sự vật, hiện tượng, quy luật tự nhiên.'],
+['Kí hiệu cảnh báo hóa chất độc hại có ý nghĩa gì?',['Cần thận trọng, có nguy hiểm khi tiếp xúc','Chất ăn được','Chất dùng làm thuốc','Chỉ để trang trí'],'Biển báo giúp phòng tránh tai nạn trong phòng thực hành.'],
+['Giới hạn đo (GHĐ) của thước là gì?',['Độ dài lớn nhất ghi trên thước','Khoảng cách giữa hai vạch liên tiếp','Chiều dài thân thước','Số vạch trên thước'],'GHĐ là giá trị lớn nhất ghi trên dụng cụ. Khoảng cách hai vạch gần nhất là ĐCNN.'],
+['Để đo khối lượng cặp sách em dùng dụng cụ nào?',['Cân','Nhiệt kế','Ống đong','Thước dây'],'Cân dùng đo khối lượng.']]},
+{s:'Chất quanh ta',n:'Chất quanh ta: ba thể, sự chuyển thể',q:[
+['Chất rắn có đặc điểm nào?',['Có hình dạng và thể tích xác định','Dễ nén','Chảy tràn mọi hướng','Không có thể tích'],'Hạt chất rắn sắp xếp sát nhau, cố định.'],
+['Sự bay hơi của nước nhanh hơn khi nào?',['Nhiệt độ cao, có gió, diện tích mặt thoáng lớn','Nhiệt độ thấp, không gió','Nước đựng trong chai đậy kín','Nước trong tủ lạnh'],'Nhiệt độ, gió và diện tích mặt thoáng ảnh hưởng đến tốc độ bay hơi.'],
+['Sương mù hình thành từ hiện tượng nào?',['Sự ngưng tụ hơi nước','Sự nóng chảy','Sự đông đặc','Sự sôi'],'Hơi nước gặp lạnh ngưng tụ thành giọt nhỏ.'],
+['Đặc điểm nào đúng với chất khí?',['Dễ nén, lan ra mọi hướng','Có hình dạng cố định','Không thể nén','Có thể tích xác định'],'Các hạt khí ở xa nhau, chuyển động tự do.']]},
+{s:'Vật liệu, nhiên liệu',n:'Một số vật liệu, nhiên liệu, nguyên liệu',q:[
+['Vật liệu nào cách điện tốt?',['Nhựa','Đồng','Nhôm','Sắt'],'Nhựa, cao su, sứ là vật liệu cách điện.'],
+['Nguyên liệu nào dùng để sản xuất gạch?',['Đất sét','Xăng','Khí gas','Nhựa'],'Đất sét là nguyên liệu làm gạch, gốm.'],
+['Chất nào sau đây là nhiên liệu hóa thạch?',['Than đá','Củi','Rơm','Gỗ'],'Than đá, dầu mỏ, khí tự nhiên là nhiên liệu hóa thạch.'],
+['Cách dùng bình gas an toàn là gì?',['Kiểm tra bình, khóa van khi không dùng','Để bình gần lửa','Để bình trong nơi nóng','Giữ nguyên van mở'],'Gas dễ cháy nổ nên cần cẩn thận.']]},
+{s:'Hỗn hợp, tách chất',n:'Hỗn hợp, chất tinh khiết, tách chất',q:[
+['Hỗn hợp nào là hỗn hợp đồng nhất?',['Nước muối','Nước và dầu ăn','Cát và nước','Đất và nước'],'Hỗn hợp đồng nhất không phân biệt được các thành phần bằng mắt.'],
+['Tách dầu ăn khỏi nước bằng cách nào?',['Dùng phễu chiết','Lọc bằng giấy lọc','Dùng nam châm','Cô cạn'],'Dầu và nước không tan vào nhau, tách lớp nên chiết được.'],
+['Chưng cất dùng để tách những chất nào?',['Chất lỏng có nhiệt độ sôi khác nhau','Chất rắn không tan','Chất có từ tính','Khí với rắn'],'Chất có nhiệt độ sôi thấp bay hơi trước.'],
+['Trong nước đường, chất tan là chất nào?',['Đường','Nước','Cả nước và đường','Không có'],'Nước là dung môi, đường là chất tan.']]},
+{s:'Tế bào',n:'Tế bào: cấu tạo và sự phân chia',q:[
+['Tế bào mới được tạo ra bằng cách nào?',['Tế bào mẹ phân chia thành hai tế bào con','Tự xuất hiện từ nước','Từ virus','Từ chất vô cơ'],'Tế bào sinh sản bằng cách phân chia.'],
+['Lục lạp có chức năng gì?',['Quang hợp','Điều khiển hoạt động tế bào','Bao bọc tế bào','Dự trữ nước'],'Lục lạp chứa diệp lục để quang hợp.'],
+['Màng tế bào có chức năng gì?',['Kiểm soát chất ra vào tế bào','Quang hợp','Chứa vật chất di truyền chính','Dự trữ năng lượng'],'Màng bao bọc và kiểm soát trao đổi chất.'],
+['Nhiều tế bào giống nhau cùng làm một chức năng tạo thành gì?',['Mô','Cơ quan','Hệ cơ quan','Cơ thể'],'Tế bào, mô, cơ quan, hệ cơ quan, cơ thể.']]},
+{s:'Cơ thể',n:'Từ tế bào đến cơ thể',q:[
+['Dạ dày thuộc hệ cơ quan nào?',['Hệ tiêu hóa','Hệ hô hấp','Hệ thần kinh','Hệ bài tiết'],'Dạ dày tham gia tiêu hóa thức ăn.'],
+['Sinh vật nào là sinh vật đơn bào?',['Vi khuẩn','Cây cam','Con bò','Con chim'],'Vi khuẩn chỉ có một tế bào.'],
+['Lá cây thuộc cấp độ tổ chức nào?',['Cơ quan','Mô','Tế bào','Cơ thể'],'Lá là cơ quan của cây.'],
+['Cơ thể đa bào lớn lên nhờ đâu?',['Tế bào tăng kích thước và số lượng','Chỉ tăng nước','Chỉ ăn nhiều','Chỉ tăng chiều cao'],'Sự lớn lên của cơ thể nhờ sự lớn lên và phân chia tế bào.']]},
+{s:'Đa dạng sinh vật',n:'Đa dạng thế giới sống',q:[
+['Thứ tự bậc phân loại từ lớn đến nhỏ là gì?',['Giới, ngành, lớp, bộ, họ, chi, loài','Loài, chi, họ, bộ, lớp, ngành, giới','Ngành, giới, lớp, họ, bộ, chi, loài','Giới, lớp, ngành, bộ, họ, loài, chi'],'Giới là bậc lớn nhất, loài là bậc nhỏ nhất.'],
+['Vi khuẩn có hình dạng nào?',['Cầu, que, xoắn','Chỉ hình sao','Chỉ hình cầu','Không có hình dạng'],'Vi khuẩn có hình cầu, que, phẩy, xoắn.'],
+['Trùng roi xanh có thể quang hợp nhờ đâu?',['Hạt diệp lục','Roi','Không bào','Lông bơi'],'Trùng roi có hạt diệp lục nên tự tổng hợp chất hữu cơ.'],
+['Nấm men thuộc giới nào?',['Giới Nấm','Giới Thực vật','Giới Động vật','Giới Khởi sinh'],'Nấm không quang hợp, sống dị dưỡng.']]},
+{s:'Lực',n:'Lực trong đời sống',q:[
+['Ví dụ nào là lực tiếp xúc?',['Đẩy chiếc xe','Nam châm hút đinh sắt ở xa','Trọng lực kéo quả táo rơi','Lực hấp dẫn của Trái Đất'],'Lực tiếp xúc xuất hiện khi hai vật chạm nhau.'],
+['Lò xo bị nén là tác dụng nào của lực?',['Làm vật biến dạng','Làm vật đổi hướng','Làm vật nổi','Làm vật nóng'],'Lực làm vật biến dạng hoặc đổi chuyển động.'],
+['Lực kế dùng để đo đại lượng nào?',['Lực','Khối lượng','Nhiệt độ','Thể tích'],'Lực kế đo độ lớn của lực, đơn vị N.'],
+['Lực ma sát có tác dụng như thế nào?',['Cản trở chuyển động giữa hai bề mặt','Làm vật chuyển động nhanh','Làm vật nhẹ đi','Không có tác dụng'],'Ma sát có lúc có ích, có lúc có hại.']]},
+{s:'Năng lượng',n:'Năng lượng',q:[
+['Đơn vị đo năng lượng là gì?',['Joule (J)','Newton (N)','Mét (m)','Kilôgam (kg)'],'Năng lượng đo bằng joule.'],
+['Bóng đèn điện phát sáng chủ yếu chuyển hóa điện năng thành gì?',['Quang năng và nhiệt năng','Hóa năng','Cơ năng','Âm năng'],'Đèn phát ra ánh sáng và tỏa nhiệt.'],
+['Phát biểu nào đúng về bảo toàn năng lượng?',['Năng lượng không tự sinh ra hay mất đi, chỉ chuyển hóa','Năng lượng mất đi khi sử dụng','Năng lượng chỉ tăng','Năng lượng tự sinh ra'],'Năng lượng chuyển từ dạng này sang dạng khác.'],
+['Nguồn năng lượng nào là năng lượng tái tạo?',['Năng lượng Mặt Trời','Than đá','Dầu mỏ','Khí tự nhiên'],'Mặt Trời, gió, nước chảy không cạn kiệt.']]},
+{s:'Trái Đất',n:'Trái Đất và bầu trời',q:[
+['Hiện tượng ngày và đêm do đâu?',['Trái Đất tự quay quanh trục','Trái Đất quay quanh Mặt Trời','Mặt Trăng che Mặt Trời','Mây che ánh sáng'],'Một nửa Trái Đất hướng về Mặt Trời là ban ngày.'],
+['Khi nào ta thấy Trăng tròn?',['Thấy trọn phần mặt Trăng sáng','Không thấy Mặt Trăng','Chỉ thấy lưỡi liềm','Thấy một nửa'],'Trăng tròn khi phần sáng hướng hết về Trái Đất.'],
+['Trái Đất ở vị trí thứ mấy tính từ Mặt Trời?',['Thứ 3','Thứ 2','Thứ 4','Thứ 5'],'Thứ tự: Thủy, Kim, Trái Đất, Hỏa...'],
+['Hệ Mặt Trời gồm những gì?',['Mặt Trời và các thiên thể chuyển động quanh nó','Chỉ Mặt Trời','Chỉ Trái Đất và Mặt Trăng','Chỉ các ngôi sao'],'Gồm Mặt Trời, hành tinh, vệ tinh, tiểu hành tinh...']]}
+];
+BANK6.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)}));
+let CH=0,P={},DBR=null;
+try{P=JSON.parse(localStorage.getItem('khtn6')||'{}')}catch(e){}
+let SB=null,USER=null,svT=null;
+function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}
+if(SB&&USER){clearTimeout(svT);svT=setTimeout(()=>{SB.from('progress').upsert({user_id:USER.id,data:P,updated_at:new Date().toISOString()}).then(r=>{if(r.error)console.warn(r.error.message)})},600)}}
+function esc(x){return String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function renderAuth(){const a=document.getElementById('auth');if(!SB){a.style.display='none';return}a.style.display='block';
+a.innerHTML=USER?'Đã đăng nhập: <b>'+esc(USER.email)+'</b> <button onclick="logout()">Đăng xuất</button>':'<b>Đăng nhập để lưu tiến độ trên mọi thiết bị</b><div class="arow"><input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="current-password"><button onclick="login()">Đăng nhập</button><button onclick="signup()">Đăng ký</button></div><div class="ex" id="am"></div>'}
+async function login(){const r=await SB.auth.signInWithPassword({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng nhập được: '+r.error.message:''}
+async function signup(){const r=await SB.auth.signUp({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng ký được: '+r.error.message:'Đã đăng ký. Nếu được yêu cầu, hãy xác nhận qua email rồi đăng nhập.'}
+async function logout(){await SB.auth.signOut()}
+async function setUser(u){USER=u||null;renderAuth();
+if(USER){const r=await SB.from('progress').select('data').eq('user_id',USER.id).maybeSingle();if(r.data&&r.data.data)P=Object.assign({},r.data.data,P);sv()}
+if(t=='qz'&&g==6)render()}
+function initAuth(){renderAuth();const u=window.SUPABASE_URL,k=window.SUPABASE_ANON_KEY;
+if(!window.supabase||!u||!k||/YOUR_/.test(u+k))return;
+SB=window.supabase.createClient(u,k);renderAuth();
+SB.auth.onAuthStateChange((e,se)=>{setUser(se&&se.user)})}
+function prog(){let a=0,b=0,c=0;BANK6.forEach((x,i)=>x.q.forEach((_,j)=>{b++;if(P[i+'-'+j]==1){a++;if(i==CH)c++}}));return 'Đã đúng '+c+'/'+BANK6[CH].q.length+' câu của chương này, '+a+'/'+b+' câu toàn bộ.'}
+function setC(i){CH=i;render()}
+function resetC(){BANK6[CH].q.forEach((_,j)=>delete P[CH+'-'+j]);sv();render()}
+function bank6(){const c=BANK6[CH];
+return `<div class="tabs">${BANK6.map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+`<p class="note">${USER?'Tiến độ được lưu theo tài khoản của bạn.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
+function ansC(i,j){const q=BANK6[CH].q[i],b=document.getElementById('c'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q.a].classList.add('ok');if(j!=q.a)o[j].classList.add('bad');P[CH+'-'+i]=j==q.a?1:0;sv();document.getElementById('ce'+i).textContent=(j==q.a?'Chính xác. ':'Chưa đúng. ')+q[2];document.getElementById('pg').textContent=prog()}
+const EX6={
+'Giữa kỳ 1':{sc:'Phạm vi: mở đầu (an toàn, đo lường), chất quanh ta, sự chuyển thể, oxygen và không khí.',
+mc:[['Dụng cụ nào dùng để đo thể tích chất lỏng?',['Thước dây','Ống đong','Cân đồng hồ','Nhiệt kế'],1,'Ống đong có vạch chia thể tích.'],
+['Hành động nào đúng khi làm thí nghiệm?',['Nếm thử hóa chất','Đọc kĩ hướng dẫn và đeo kính bảo vệ mắt','Đùa nghịch trong phòng thực hành','Đổ hóa chất thừa xuống bồn rửa'],1,'Luôn thực hiện đúng quy tắc an toàn.'],
+['Đơn vị đo thời gian trong hệ SI là gì?',['Phút','Giờ','Giây','Ngày'],2,'Đơn vị SI của thời gian là giây (s).'],
+['Nước sôi ở nhiệt độ bao nhiêu (áp suất thường)?',['0 °C','50 °C','100 °C','212 °C'],2,'Nước sôi ở 100 °C (212 °F).'],
+['Quá trình nước đá chuyển thành nước lỏng gọi là gì?',['Sự đông đặc','Sự nóng chảy','Sự bay hơi','Sự ngưng tụ'],1,'Rắn sang lỏng là sự nóng chảy.'],
+['Hơi nước gặp lạnh chuyển thành giọt nước gọi là gì?',['Sự sôi','Sự nóng chảy','Sự ngưng tụ','Sự đông đặc'],2,'Khí sang lỏng là sự ngưng tụ.'],
+['Khí nào duy trì sự cháy và sự sống?',['Nitrogen','Carbon dioxide','Oxygen','Hơi nước'],2,'Oxygen duy trì sự cháy và hô hấp.'],
+['Oxygen chiếm khoảng bao nhiêu thể tích không khí?',['21%','78%','0,03%','50%'],0,'Oxygen khoảng 21%, nitrogen khoảng 78%.']],
+tl:[[2,'Nêu các bước đo chiều dài một cái bút bằng thước.','1) Ước lượng chiều dài. 2) Chọn thước có GHĐ và ĐCNN phù hợp. 3) Đặt thước dọc theo bút, vạch số 0 ngang một đầu. 4) Đặt mắt nhìn vuông góc với vạch cuối của bút. 5) Đọc và ghi kết quả kèm đơn vị.'],
+[2,'Phân biệt sự bay hơi và sự sôi.','Sự sôi: xảy ra ở nhiệt độ xác định, ngay cả trong lòng chất lỏng, có bọt khí nổi lên. Sự bay hơi: xảy ra ở mọi nhiệt độ, chỉ trên bề mặt chất lỏng.'],
+[2,'Nêu hai biện pháp bảo vệ môi trường không khí và giải thích vì sao cần bảo vệ.','Biện pháp: trồng nhiều cây xanh, hạn chế đốt rác và khói bụi, dùng phương tiện giao thông công cộng. Cần bảo vệ vì không khí cần cho sự sống, ô nhiễm gây bệnh hô hấp và biến đổi khí hậu.']]},
+'Học kỳ 1':{sc:'Phạm vi: toàn bộ giữa kỳ 1, thêm vật liệu và nhiên liệu, hỗn hợp, tách chất, tế bào.',
+mc:[['Vật liệu nào dễ bị gỉ?',['Nhôm','Sắt','Nhựa','Thủy tinh'],1,'Sắt tiếp xúc nước và không khí bị gỉ.'],
+['Chất nào sau đây là nhiên liệu?',['Xăng','Cát','Nước','Muối'],0,'Xăng cháy tỏa nhiệt nên là nhiên liệu.'],
+['Chất nào là chất tinh khiết?',['Nước muối','Nước cất','Nước sông','Sữa'],1,'Nước cất chỉ gồm một chất.'],
+['Tách cát khỏi nước bằng phương pháp nào?',['Lọc','Cô cạn','Dùng nam châm','Chiết'],0,'Cát không tan nên lọc được.'],
+['Thành phần chỉ có ở tế bào thực vật là?',['Màng tế bào','Nhân','Thành tế bào','Tế bào chất'],2,'Thực vật có thành tế bào và lục lạp.'],
+['Một tế bào phân chia 3 lần liên tiếp tạo ra bao nhiêu tế bào?',['3','6','8','9'],2,'1 → 2 → 4 → 8 tế bào.'],
+['Tế bào hồng cầu cần quan sát bằng dụng cụ nào?',['Kính hiển vi','Kính lúp','Mắt thường','Thước'],0,'Tế bào rất nhỏ nên cần kính hiển vi.'],
+['Nhân tế bào có chức năng gì?',['Bao bọc tế bào','Điều khiển hoạt động của tế bào','Quang hợp','Dự trữ nước'],1,'Nhân chứa vật chất di truyền và điều khiển tế bào.']],
+tl:[[2,'Phân biệt chất tinh khiết và hỗn hợp, mỗi loại cho một ví dụ.','Chất tinh khiết chỉ gồm một chất (ví dụ: nước cất). Hỗn hợp gồm hai hay nhiều chất trộn lẫn (ví dụ: nước muối).'],
+[2,'Đề xuất cách tách riêng mạt sắt, cát và muối ăn từ hỗn hợp ba chất này.','Dùng nam châm hút mạt sắt. Cho phần còn lại vào nước, khuấy cho muối tan, lọc lấy cát. Cô cạn nước lọc để thu muối.'],
+[2,'Nêu hai điểm giống và hai điểm khác nhau giữa tế bào thực vật và tế bào động vật.','Giống: đều có màng tế bào, tế bào chất, nhân. Khác: tế bào thực vật có thành tế bào, lục lạp và không bào lớn; tế bào động vật không có.']]},
+'Giữa kỳ 2':{sc:'Phạm vi: từ tế bào đến cơ thể, phân loại sinh vật, virus, vi khuẩn, nguyên sinh vật, nấm.',
+mc:[['Thứ tự các cấp tổ chức từ nhỏ đến lớn là?',['Cơ quan, tế bào, mô, cơ thể','Tế bào, mô, cơ quan, hệ cơ quan, cơ thể','Mô, tế bào, cơ thể, cơ quan','Cơ thể, hệ cơ quan, cơ quan, mô'],1,'Tế bào → mô → cơ quan → hệ cơ quan → cơ thể.'],
+['Sinh vật nào sau đây là đơn bào?',['Cây ngô','Con gà','Amip (trùng biến hình)','Con cá'],2,'Amip chỉ có một tế bào.'],
+['Bậc phân loại nhỏ nhất là?',['Giới','Ngành','Họ','Loài'],3,'Loài là bậc nhỏ nhất.'],
+['Đặc điểm của virus là gì?',['Có cấu tạo tế bào','Chưa có cấu tạo tế bào','Có lục lạp','Sống tự do'],1,'Virus chưa có cấu tạo tế bào, phải kí sinh.'],
+['Bệnh nào do virus gây ra?',['Tả','Sốt rét','Cúm','Hắc lào'],2,'Tả do vi khuẩn, sốt rét do nguyên sinh vật, hắc lào do nấm.'],
+['Nấm men được dùng để làm gì?',['Làm bánh mì','Lọc nước','Chế tạo thuốc nổ','Tạo oxygen'],0,'Nấm men lên men làm bánh mì, rượu bia.'],
+['Tên khoa học của một loài gồm?',['Một từ','Tên chi và tên loài','Tên họ','Tên giới'],1,'Cách đặt tên kép: tên chi và tên loài.'],
+['Nguyên sinh vật thường sống ở đâu?',['Môi trường nước','Trên sa mạc','Trong không khí khô','Trong đá'],0,'Chúng thường sống ở nước hoặc nơi ẩm.']],
+tl:[[2,'Phân biệt cơ thể đơn bào và cơ thể đa bào, mỗi loại cho một ví dụ.','Đơn bào: cơ thể chỉ có một tế bào (vi khuẩn, trùng roi). Đa bào: cơ thể gồm nhiều tế bào (cây bàng, con người).'],
+[2,'Nêu hai lợi ích và hai tác hại của vi khuẩn.','Lợi ích: làm sữa chua, muối chua; phân giải xác sinh vật làm sạch môi trường. Tác hại: gây bệnh (tả, lị); làm hỏng thức ăn.'],
+[2,'Nêu ba biện pháp phòng tránh bệnh do virus và vi khuẩn.','Tiêm vắc xin đầy đủ, rửa tay và giữ vệ sinh cá nhân, ăn chín uống sôi, đeo khẩu trang khi cần, diệt côn trùng truyền bệnh.']]},
+'Học kỳ 2':{sc:'Phạm vi: thực vật, động vật, lực và ma sát, năng lượng, Trái Đất và bầu trời.',
+mc:[['Cây thông thuộc nhóm thực vật nào?',['Rêu','Dương xỉ','Hạt trần','Hạt kín'],2,'Thông có hạt nhưng không có hoa và quả thật sự.'],
+['Động vật nào có xương sống?',['Con tôm','Con giun đất','Con cá','Con ốc'],2,'Cá thuộc nhóm có xương sống.'],
+['Đơn vị đo lực là gì?',['Kilôgam','Newton','Mét','Giây'],1,'Đơn vị lực là newton (N).'],
+['Trường hợp nào ma sát có hại?',['Ma sát giữa đế giày và mặt đường','Ma sát khi phanh xe','Ma sát làm mòn trục xe','Ma sát giữa viên phấn và bảng'],2,'Ma sát làm mòn và tiêu hao năng lượng là có hại.'],
+['Vật có khối lượng 2 kg có trọng lượng khoảng bao nhiêu?',['2 N','20 N','0,2 N','200 N'],1,'P = 10 × 2 = 20 N.'],
+['Quạt điện hoạt động đã chuyển hóa điện năng chủ yếu thành?',['Cơ năng','Hóa năng','Quang năng','Nhiệt năng hoàn toàn'],0,'Cánh quạt quay nên chủ yếu là cơ năng.'],
+['Mặt Trăng là gì của Trái Đất?',['Hành tinh','Vệ tinh tự nhiên','Ngôi sao','Sao chổi'],1,'Mặt Trăng quay quanh Trái Đất.'],
+['Nguồn năng lượng nào là năng lượng tái tạo?',['Than đá','Dầu mỏ','Gió','Khí tự nhiên'],2,'Gió và Mặt Trời không cạn kiệt.']],
+tl:[[2,'Nêu hai tác dụng của lực, mỗi tác dụng cho một ví dụ.','Làm vật biến dạng (nén lò xo). Làm biến đổi chuyển động của vật (đá quả bóng đang nằm yên làm bóng lăn).'],
+[2,'Tính trọng lượng của hộp có khối lượng 3,5 kg. Nêu hai cách tăng ma sát khi cần.','P = 10 × 3,5 = 35 N. Tăng ma sát: làm nhám bề mặt tiếp xúc, tạo rãnh trên đế giày hoặc lốp xe.'],
+[2,'Giải thích vì sao ta thấy Mặt Trời mọc ở hướng đông và lặn ở hướng tây.','Trái Đất tự quay quanh trục theo chiều từ tây sang đông nên ta thấy Mặt Trời chuyển động ngược lại: mọc ở đông, lặn ở tây. Đó là chuyển động nhìn thấy của Mặt Trời.']]}
+};
+let E6='Giữa kỳ 1',es=0;
+function setE(k){E6=k;es=0;render()}
+function ex6(){const e=EX6[E6];
+return `<div class="pills">${Object.keys(EX6).map(k=>`<button class="${k==E6?'on':''}" onclick="setE('${k}')">${k}</button>`).join('')}</div>`+card('Đề '+E6+' lớp 6 (Kết nối tri thức)','<ul><li>'+e.sc+'</li><li>Thời gian gợi ý: 45 phút. Phần I trắc nghiệm 8 câu (4 điểm), phần II tự luận 3 câu (6 điểm).</li></ul>')+`<div class="score"><span id="es">Trắc nghiệm: ${es}/8</span></div>`+e.mc.map((q,i)=>`<div class="card q" id="x${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ansE(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="xe${i}"></div></div>`).join('')+'<div class="card"><h3>Phần II. Tự luận (6 điểm)</h3></div>'+e.tl.map((q,i)=>`<div class="card"><h3>Câu ${i+1} (${q[0]} điểm)</h3><div>${q[1]}</div><button id="b${i}" onclick="tog(${i})" style="margin-top:8px">Xem đáp án</button><div class="ans" id="a${i}">${q[2]}</div></div>`).join('')}
+function ansE(i,j){const q=EX6[E6].mc[i],b=document.getElementById('x'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q[2]].classList.add('ok');if(j==q[2])es++;else o[j].classList.add('bad');document.getElementById('xe'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];document.getElementById('es').textContent='Trắc nghiệm: '+es+'/8'}
+function tog(i){const e=document.getElementById('a'+i),b=document.getElementById('b'+i),s=e.classList.toggle('show');b.textContent=s?'Ẩn đáp án':'Xem đáp án'}
+function card(h,b){return `<div class="card"><h3>${h}</h3><div>${b}</div></div>`}
+function render(){pills();const d=D[g];let h='';
+if(t=='ov')h=d.ov.map(([a,b])=>card(a,b)).join('');
+if(t=='kn')h=d.kn.map(([a,b])=>card(a,b)).join('');
+if(t=='fm')h='<div class="card">'+d.fm.map(([a,b])=>`<div class="f"><b>${a}</b><span>${b}</span></div>`).join('')+'</div>';
+if(t=='qz'&&g==6)h=bank6();else if(t=='qz'){h=`<div class="score"><span id="sc">Điểm: ${score}/${d.qz.length}</span><button onclick="setG(g)">Làm lại</button></div>`+d.qz.map((q,i)=>`<div class="card q" id="q${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ans(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="e${i}"></div></div>`).join('')}
+if(t=='tl'){h=card('Đề mẫu tổng hợp lớp '+g,'<ul><li>Thời gian gợi ý: 45 phút.</li><li>Phần I, trắc nghiệm (3 điểm): làm ở tab Luyện tập.</li><li>Phần II, tự luận (7 điểm): các câu dưới đây. Tự làm trước, rồi mới bấm xem đáp án.</li></ul>')+TL[g].map((q,i)=>`<div class="card"><h3>Câu ${i+1} (${String(q[0]).replace('.',',')} điểm)</h3><div>${q[1]}</div><button id="b${i}" onclick="tog(${i})" style="margin-top:8px">Xem đáp án</button><div class="ans" id="a${i}">${q[2]}</div></div>`).join('')}
+if(t=='ex'&&g==6)h=ex6();else if(t=='ex'){h=Object.entries(d.ex).map(([a,b])=>card(a,b)).join('')+card('Cấu trúc đề thường gặp','<ul>'+STR.map(([a,b])=>`<li><b>${a}.</b> ${b}</li>`).join('')+'</ul>')+card('Mẹo làm bài','<ul>'+TIPS.map(x=>`<li>${x}</li>`).join('')+'</ul>')}
+$('main').innerHTML=h}
+function ans(i,j){const q=D[g].qz[i],box=$('q'+i);if(box.dataset.d)return;box.dataset.d=1;
+const bs=box.querySelectorAll('.opt');bs[q[2]].classList.add('ok');
+if(j==q[2])score++;else bs[j].classList.add('bad');
+$('e'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];
+$('sc').textContent='Điểm: '+score+'/'+D[g].qz.length}
+initAuth();
+render();
+</script>
+</body>
+</html>
