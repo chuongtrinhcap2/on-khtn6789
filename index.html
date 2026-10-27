@@ -428,6 +428,71 @@ function tlbank(){const T=TLB[g]&&TLB[g][CH];if(!T)return '';return '<h3>Tự lu
 function genEx(){const pool=[];BANKS[g].forEach(c=>c.q.forEach(q=>pool.push(q)));pool.sort(()=>Math.random()-.5);
 const tp=[];Object.entries(EXALL[g]).forEach(([k,e])=>{if(k!='Đề ngẫu nhiên')e.tl.forEach(q=>tp.push([q[1],q[2]]))});(TLB[g]||[]).forEach(c=>c.forEach(q=>tp.push(q)));tp.sort(()=>Math.random()-.5);
 EXALL[g]['Đề ngẫu nhiên']={sc:'Đề tạo ngẫu nhiên từ ngân hàng câu hỏi lớp '+g+', phạm vi toàn bộ chương trình.',mc:pool.slice(0,8).map(q=>[q[0],q.o,q.a,q[2]]),tl:tp.slice(0,3).map(q=>[2,q[0],q[1]])};E6='Đề ngẫu nhiên';es=0;render()}
+const EXTRA7=[
+`Hạt nào trong nguyên tử không mang điện?|Neutron|Proton|Electron|Hạt nhân|Neutron trung hòa về điện.
+Điện tích của hạt nhân nguyên tử là gì?|Dương|Âm|Bằng không|Thay đổi liên tục|Proton mang điện dương, neutron không mang điện.
+Nguyên tử có 17 proton thì có bao nhiêu electron?|17|34|0|18|Nguyên tử trung hòa nên số electron bằng số proton.
+Khối lượng nguyên tử tập trung chủ yếu ở đâu?|Hạt nhân|Lớp vỏ|Khoảng trống|Electron|Proton và neutron nặng hơn electron rất nhiều.`,
+`Nguyên tử nào cùng nguyên tố hóa học với nguyên tử có 6 proton?|Nguyên tử có 6 proton|Nguyên tử có 7 proton|Nguyên tử có 8 proton|Nguyên tử có 12 proton|Cùng số proton thì cùng nguyên tố.
+Nguyên tố hóa học nào có kí hiệu O?|Oxygen|Osmium|Hydrogen|Nitrogen|O là oxygen.
+Bảng tuần hoàn có bao nhiêu chu kì?|7|3|10|1|Mỗi hàng ngang là một chu kì.
+Nguyên tử sodium ở ô số 11 có điện tích hạt nhân là bao nhiêu?|+11|+23|−11|0|Số hiệu nguyên tử bằng số proton.`,
+`Chất nào là hợp chất?|H₂O|O₂|N₂|Fe|Hợp chất do hai nguyên tố trở lên tạo nên.
+Phân tử khí oxygen gồm bao nhiêu nguyên tử?|2|1|3|4|Công thức là O₂.
+Khi tạo NaCl, nguyên tử Na làm gì với electron?|Nhường 1 electron|Nhận 1 electron|Dùng chung 1 electron|Nhường 2 electron|Na tạo ion Na⁺.
+Chất nào được tạo bởi liên kết cộng hóa trị?|Nước (H₂O)|NaCl|MgO|KCl|Các nguyên tử phi kim dùng chung electron.`,
+`Hóa trị của O trong hầu hết hợp chất là bao nhiêu?|II|I|III|IV|Oxygen thường có hóa trị II.
+Công thức hóa học của hợp chất gồm Na (I) và O (II) là gì?|Na₂O|NaO|NaO₂|Na₂O₂|2 × I = 1 × II.
+Phân tử khối của CaCO₃ là bao nhiêu (Ca = 40, C = 12, O = 16)?|100|68|84|56|40 + 12 + 3 × 16 = 100.
+Công thức hóa học cho biết điều gì?|Nguyên tố tạo nên và số nguyên tử của mỗi nguyên tố|Màu sắc của chất|Giá bán|Nơi sản xuất|Gồm kí hiệu nguyên tố và chỉ số.`,
+`Một người chạy 100 m trong 20 s. Tốc độ là bao nhiêu?|5 m/s|2000 m/s|0,2 m/s|120 m/s|v = s / t = 100 / 20.
+Đơn vị nào dùng để đo tốc độ?|m/s|kg|N|J|Tốc độ có đơn vị m/s hoặc km/h.
+Xe đạp đi với tốc độ 15 km/h trong 2 giờ. Quãng đường là bao nhiêu?|30 km|7,5 km|17 km|13 km|s = v × t.
+Thiết bị nào thường dùng để đo tốc độ của xe trên đường?|Thiết bị bắn tốc độ (radar)|Nhiệt kế|Lực kế|Ống đong|Dùng để kiểm tra tốc độ xe.`,
+`Bộ phận nào của cơ thể người nhận biết âm thanh?|Tai|Mắt|Mũi|Da|Âm thanh truyền vào tai.
+Âm thanh phản xạ tốt trên bề mặt nào?|Cứng, nhẵn|Mềm, xốp|Vải dày|Bông|Bề mặt cứng và nhẵn phản xạ âm tốt.
+Vật dao động 200 lần trong 2 giây. Tần số là bao nhiêu?|100 Hz|400 Hz|2 Hz|200 Hz|f = số dao động / thời gian.
+Biện pháp nào giúp giảm tiếng ồn?|Trồng cây xanh, dùng vật liệu cách âm|Tăng âm lượng|Mở nhạc to|Xây nhà sát đường|Cách âm hoặc chắn âm.`,
+`Nguồn sáng nào là nguồn sáng nhân tạo?|Bóng đèn điện|Mặt Trời|Ngôi sao|Tia chớp|Do con người tạo ra.
+Ánh sáng từ Mặt Trời đến Trái Đất truyền theo đường nào?|Đường thẳng|Đường cong|Đường gấp khúc|Đường tròn|Ánh sáng truyền thẳng.
+Loại gương nào cho ảnh ảo bằng vật?|Gương phẳng|Gương cầu lồi|Gương cầu lõm|Gương cong|Gương phẳng cho ảnh ảo bằng vật.
+Tia phản xạ và tia tới nằm ở đâu?|Cùng một mặt phẳng|Hai mặt phẳng khác nhau|Trên một đường thẳng|Không xác định|Tia phản xạ nằm trong mặt phẳng tới.`,
+`Nam châm hút mạnh nhất ở vị trí nào?|Hai cực|Chính giữa|Mọi nơi như nhau|Không hút|Từ tính mạnh nhất ở hai đầu.
+Vật nào bị nam châm hút?|Sắt|Đồng|Nhôm|Nhựa|Sắt, nickel, cobalt bị nam châm hút.
+Bên ngoài nam châm, đường sức từ đi theo chiều nào?|Từ cực Bắc sang cực Nam|Từ cực Nam sang cực Bắc|Quay quanh một cực|Đứt đoạn|Đó là quy ước chiều đường sức từ.
+Hai cực khác tên của hai nam châm đặt gần nhau thì sao?|Hút nhau|Đẩy nhau|Không tác dụng|Quay tròn|Khác tên hút nhau.`,
+`Quang hợp xảy ra chủ yếu ở bộ phận nào của cây?|Lá|Rễ|Hoa|Quả|Lá có nhiều lục lạp.
+Cây hấp thụ nước từ đất bằng bộ phận nào?|Rễ|Lá|Thân|Hoa|Lông hút ở rễ hấp thụ nước.
+Hô hấp tế bào cần khí nào?|Oxygen|Carbon dioxide|Nitrogen|Hydrogen|Hô hấp lấy O₂ và thải CO₂.
+Sản phẩm của quang hợp có vai trò gì?|Nuôi sống cây và các sinh vật khác|Chỉ làm lá có màu|Không có vai trò|Làm cây khô|Glucose là nguồn chất hữu cơ.`,
+`Ví dụ nào là cảm ứng ở động vật?|Rụt chân khi chạm vật nóng|Hạt nảy mầm|Cây lớn lên|Quả chín|Đây là phản ứng với kích thích.
+Giai đoạn nào là một giai đoạn phát triển của ếch?|Nòng nọc|Hạt|Cành|Rễ|Ếch phát triển qua biến thái.
+Thụ phấn là gì?|Hạt phấn tiếp xúc với đầu nhụy|Cây ra rễ|Hạt nảy mầm|Quả rụng|Thụ phấn diễn ra trước thụ tinh.
+Ví dụ nào là sinh sản vô tính ở động vật?|Thủy tức mọc chồi|Chó đẻ con|Mèo đẻ con|Người sinh con|Thủy tức sinh sản bằng nảy chồi.`
+];
+BANK7.forEach((c,i)=>EXTRA7[i].trim().split('\n').forEach(l=>{const a=l.split('|');c.q.push([a[0],a.slice(1,5),a[5]])}));
+TLB[7]=[
+`Mô tả cấu tạo của nguyên tử.|Nguyên tử gồm hạt nhân (proton mang điện dương, neutron không mang điện) và lớp vỏ chứa electron mang điện âm. Số proton bằng số electron nên nguyên tử trung hòa về điện.
+Vì sao khối lượng nguyên tử tập trung chủ yếu ở hạt nhân?|Proton và neutron nặng hơn electron khoảng 1800 lần, nên khối lượng electron có thể bỏ qua.`,
+`Nguyên tố hóa học là gì? Cho một ví dụ.|Là tập hợp các nguyên tử cùng loại có cùng số proton. Ví dụ: nguyên tố carbon có 6 proton.
+Nêu cách đọc vị trí một nguyên tố trong bảng tuần hoàn.|Ô nguyên tố cho biết số hiệu nguyên tử, kí hiệu và tên. Hàng ngang là chu kì, cột dọc là nhóm.`,
+`Phân biệt đơn chất và hợp chất, mỗi loại cho hai ví dụ.|Đơn chất do một nguyên tố tạo nên (O₂, Fe). Hợp chất do hai nguyên tố trở lên tạo nên (H₂O, NaCl).
+Trình bày sự hình thành liên kết ion trong NaCl.|Na nhường 1 electron thành ion Na⁺, Cl nhận 1 electron thành ion Cl⁻. Hai ion trái dấu hút nhau tạo liên kết ion.`,
+`Lập công thức hóa học của hợp chất gồm Ca (II) và Cl (I), rồi tính phân tử khối (Ca = 40, Cl = 35,5).|x × II = y × I nên x : y = 1 : 2, công thức CaCl₂. Phân tử khối = 40 + 2 × 35,5 = 111.
+Tính phần trăm khối lượng của Fe trong Fe₂O₃ (Fe = 56, O = 16).|M = 2 × 56 + 3 × 16 = 160. %Fe = 112 / 160 × 100% = 70%.`,
+`Xe máy đi 45 km trong 1,5 giờ. Tính tốc độ theo km/h và m/s.|v = 45 / 1,5 = 30 km/h = 30 ÷ 3,6 ≈ 8,3 m/s.
+Mô tả chuyển động của vật có đồ thị quãng đường–thời gian là đường thẳng đi lên từ gốc.|Vật chuyển động đều, quãng đường tăng đều theo thời gian, độ dốc của đồ thị cho biết tốc độ.`,
+`Nêu hai biện pháp chống ô nhiễm tiếng ồn.|Trồng cây xanh, làm tường cách âm, giảm âm lượng thiết bị, đeo nút tai khi cần.
+Phân biệt âm cao (bổng) và âm thấp (trầm).|Âm cao có tần số lớn, âm trầm có tần số nhỏ. Tần số càng lớn thì âm càng cao.`,
+`Phát biểu định luật phản xạ ánh sáng.|Tia phản xạ nằm trong mặt phẳng tới và góc phản xạ bằng góc tới.
+Giải thích vì sao ta nhìn thấy một vật không tự phát sáng.|Vật hắt lại ánh sáng chiếu tới nó, ánh sáng đó đi vào mắt ta nên ta nhìn thấy vật.`,
+`Nêu cách phát hiện từ trường bằng kim nam châm.|Đặt kim nam châm vào vùng cần kiểm tra. Nếu kim bị lệch khỏi hướng Bắc–Nam ban đầu thì có từ trường.
+Vì sao la bàn giúp xác định phương hướng?|Trái Đất là một nam châm khổng lồ nên kim la bàn luôn chỉ theo hướng Bắc–Nam.`,
+`Viết phương trình quang hợp bằng chữ và nêu vai trò của lá cây.|CO₂ + nước → (ánh sáng, diệp lục) → glucose + oxygen. Lá có nhiều lục lạp và khí khổng nên là cơ quan quang hợp chính.
+Phân biệt quang hợp và hô hấp tế bào.|Quang hợp tạo chất hữu cơ, tích lũy năng lượng, cần ánh sáng và thải O₂. Hô hấp phân giải chất hữu cơ, giải phóng năng lượng, cần O₂ và thải CO₂.`,
+`Nêu một ví dụ cảm ứng ở thực vật và ý nghĩa của nó.|Ngọn cây hướng sáng giúp nhận nhiều ánh sáng để quang hợp, rễ hướng nước giúp hút nước.
+Phân biệt sinh trưởng và phát triển.|Sinh trưởng là tăng kích thước và khối lượng. Phát triển là biến đổi về cấu tạo và chức năng qua các giai đoạn.`
+].map(t=>t.trim().split('\n').map(l=>l.split('|')));
 const BANKS={6:BANK6,7:BANK7,8:BANK8,9:BANK9};
 Object.values(BANKS).forEach(B=>B.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)})));
 function mig(o){const r={};for(const k in o)r[k.indexOf(':')<0?'6:'+k:k]=o[k];return r}
