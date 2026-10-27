@@ -647,8 +647,8 @@ h+='<div class="card"><h3>Gợi ý ôn tập</h3>'+(w.length?'Nên làm lại c�
 return h+'<p class="note">Tiến độ lấy từ thiết bị này và từ tài khoản nếu đã đăng nhập. Phụ huynh có thể đăng nhập bằng tài khoản của con trên máy khác để xem lại.</p>'}
 const TOC6=['Mở đầu về KHTN','Chất quanh ta','Vật liệu, nguyên liệu, nhiên liệu, lương thực, thực phẩm','Hỗn hợp, tách chất','Tế bào','Từ tế bào đến cơ thể','Đa dạng thế giới sống','Lực trong đời sống','Năng lượng','Trái Đất và bầu trời'];
 BANK6.forEach((c,i)=>c.n='Chương '+(i+1)+': '+TOC6[i]);
-const REMAP={7:{},8:{}};
-function regroup(g,B,spec){return spec.map((sp,ni)=>{const q=[];sp.from.forEach(([oc,ids])=>{const src=B[oc].q;(ids||src.map((_,i)=>i)).forEach(i=>{REMAP[g][oc+'-'+i]=ni+'-'+q.length;q.push(src[i])})});if(sp.add)sp.add.trim().split('\n').forEach(l=>{const a=l.split('|');q.push([a[0],a.slice(1,5),a[5]])});return {s:sp.s,n:'Chương '+(ni+1)+': '+sp.n,q}})}
+const REMAP={7:{},8:{},9:{}};
+function regroup(g,B,spec){return spec.map((sp,ni)=>{const q=[];sp.from.forEach(([oc,ids])=>{const src=B[oc].q;(ids||src.map((_,i)=>i)).forEach(i=>{REMAP[g][oc+'-'+i]=ni+'-'+q.length;q.push(src[i])})});if(sp.add)sp.add.trim().split('\n').forEach(l=>{const a=l.split('|');q.push([a[0],a.slice(1,5),a[5]])});return {s:sp.s,n:(sp.num||'Chương '+(ni+1))+': '+sp.n,q}})}
 function regroupTL(T,spec){return spec.map(sp=>{const r=[];sp.tl.forEach(([oc,ids])=>{(ids||T[oc].map((_,i)=>i)).forEach(i=>r.push(T[oc][i]))});if(sp.addtl)sp.addtl.trim().split('\n').forEach(l=>r.push(l.split('|')));return r})}
 const S7=[
 {s:'Nguyên tử, BTH',n:'Nguyên tử và bảng tuần hoàn các nguyên tố hóa học',from:[[0],[1]],tl:[[0],[1]]},
@@ -697,9 +697,79 @@ addtl:`Đòn bẩy cân bằng với F₁ = 20 N, d₁ = 0,3 m. Tính F₂ biế
 {s:'Môi trường',n:'Sinh vật và môi trường',from:[[10]],tl:[[10]]}];
 const BANK7n=regroup(7,BANK7,S7),BANK8n=regroup(8,BANK8,S8);
 TLB[7]=regroupTL(TLB[7],S7);TLB[8]=regroupTL(TLB[8],S8);
-const BANKS={6:BANK6,7:BANK7n,8:BANK8n,9:BANK9};
+const S9=[
+{s:'Cơ năng, công',n:'Năng lượng cơ học',from:[[0],[1]],tl:[[0],[1]]},
+{s:'Ánh sáng',n:'Ánh sáng',from:[[2],[3]],tl:[[2],[3]]},
+{s:'Điện',n:'Điện',from:[[4],[5]],tl:[[4],[5]]},
+{s:'Điện từ',n:'Điện từ',from:[[6]],tl:[[6]]},
+{s:'Năng lượng sống',n:'Năng lượng với cuộc sống',from:[],tl:[],
+add:`Nguồn năng lượng nào là năng lượng tái tạo?|Năng lượng gió|Than đá|Dầu mỏ|Khí đốt|Gió là nguồn không cạn kiệt.
+Nhiên liệu hóa thạch gồm những gì?|Than đá, dầu mỏ, khí tự nhiên|Gió, nước, Mặt Trời|Củi, rơm|Pin, ắc quy|Hình thành từ xác sinh vật qua hàng triệu năm.
+Nhà máy thủy điện biến đổi năng lượng nào thành điện năng?|Thế năng của nước|Nhiệt năng|Năng lượng hạt nhân|Hóa năng|Nước chảy từ cao xuống làm quay tuabin.
+Pin Mặt Trời hoạt động dựa trên nguồn nào?|Ánh sáng Mặt Trời|Gió|Nhiệt từ lòng đất|Nước|Biến quang năng thành điện năng.
+Hiệu suất của máy là gì?|Tỉ số giữa năng lượng có ích và năng lượng toàn phần|Tỉ số giữa công suất và thời gian|Tổng năng lượng hao phí|Khối lượng của máy|H = A có ích / A toàn phần.
+Hiệu suất của động cơ thực tế như thế nào?|Nhỏ hơn 100%|Bằng 100%|Lớn hơn 100%|Bằng 0|Luôn có hao phí năng lượng.
+Dùng nhiều nhiên liệu hóa thạch gây hậu quả nào?|Ô nhiễm môi trường, biến đổi khí hậu|Không khí sạch hơn|Làm Trái Đất lạnh đi|Không có hậu quả|Khí thải CO₂ gây hiệu ứng nhà kính.
+Biện pháp nào giúp sử dụng năng lượng hiệu quả?|Dùng thiết bị tiết kiệm điện, tận dụng ánh sáng tự nhiên|Bật mọi thiết bị suốt ngày|Dùng thiết bị cũ hỏng|Để chế độ chờ liên tục|Giảm lãng phí năng lượng.`,
+addtl:`Động cơ nhận 500 J năng lượng toàn phần và sinh công có ích 400 J. Tính hiệu suất.|H = 400 / 500 × 100% = 80%.
+Nêu hai ưu điểm và một hạn chế của năng lượng gió hoặc năng lượng Mặt Trời.|Ưu điểm: sạch, không cạn kiệt. Hạn chế: phụ thuộc thời tiết, chi phí đầu tư ban đầu cao.`},
+{s:'Kim loại',n:'Kim loại',from:[[7],[8]],tl:[[7],[8]]},
+{s:'Hydrocarbon',n:'Chất hữu cơ. Hydrocarbon',from:[[9,[0,1,4,5]]],tl:[],
+add:`Alkane đơn giản nhất là chất nào?|Methane|Ethane|Ethylene|Acetylene|CH₄ là alkane đơn giản nhất.
+Hydrocarbon nào có liên kết đôi trong phân tử?|Ethylene|Methane|Ethane|Propane|C₂H₄ có liên kết đôi C=C.
+Phản ứng đặc trưng của alkane là phản ứng nào?|Phản ứng thế|Phản ứng cộng|Phản ứng trùng hợp|Phản ứng trung hòa|Alkane chỉ có liên kết đơn.
+Ethylene làm mất màu dung dịch nào?|Dung dịch bromine|Dung dịch NaCl|Nước vôi trong|Dung dịch đường|C₂H₄ + Br₂ → C₂H₄Br₂.`,
+addtl:`Viết phương trình đốt cháy hoàn toàn methane và nêu một ứng dụng.|CH₄ + 2O₂ → (t°) CO₂ + 2H₂O. Dùng làm nhiên liệu (khí gas, biogas).
+Nêu cách phân biệt methane và ethylene.|Dẫn từng khí qua dung dịch bromine: ethylene làm mất màu dung dịch, methane thì không.`},
+{s:'Ethanol, acetic acid',n:'Ethylic alcohol. Acetic acid',from:[[9,[2,3,6]]],tl:[[9]],
+add:`Ethylic alcohol có đặc điểm nào?|Tan vô hạn trong nước|Không tan trong nước|Là chất rắn màu vàng|Có mùi khai|Ethanol tan vô hạn trong nước.
+Cồn y tế dùng để làm gì?|Sát khuẩn|Làm nước uống|Làm phân bón|Làm dây điện|Ethanol có tác dụng sát khuẩn.
+Công thức của acetic acid là gì?|CH₃COOH|C₂H₅OH|CH₄|C₂H₄|Acetic acid là acid hữu cơ.
+Acetic acid tác dụng với kẽm tạo ra khí nào?|Hydrogen|Oxygen|Carbon dioxide|Chlorine|Acetic acid có tính acid.
+Ethanol phản ứng với acetic acid (xúc tác H₂SO₄ đặc) tạo ra chất nào?|Ethyl acetate|Methane|Ethylene|Glucose|Đó là phản ứng ester hóa.`},
+{s:'Lipid, protein...',n:'Lipid - Carbohydrate - Protein - Polymer',from:[[9,[7]]],tl:[],
+add:`Chất nào là carbohydrate?|Glucose|Ethanol|Acetic acid|Methane|Glucose C₆H₁₂O₆ là carbohydrate.
+Tinh bột có nhiều trong thực phẩm nào?|Gạo, khoai, ngô|Dầu ăn|Thịt|Nước|Tinh bột là carbohydrate dự trữ ở thực vật.
+Protein được cấu tạo từ đơn vị nào?|Amino acid|Glucose|Acid béo|Ethylene|Nhiều amino acid liên kết với nhau.
+Protein bị đông tụ khi nào?|Khi đun nóng|Khi để nguội|Khi thêm đường|Khi để trong tối|Nhiệt làm biến tính protein, ví dụ luộc trứng.
+Polymer là gì?|Hợp chất có phân tử khối lớn tạo từ nhiều mắt xích|Chất lỏng dễ bay hơi|Một kim loại|Một loại khí|Ví dụ polyethylene.
+Chất nào là polymer?|Polyethylene (PE)|Glucose|Ethanol|Methane|PE được tạo từ ethylene.
+Dùng nhiều túi nilon gây hậu quả gì?|Ô nhiễm môi trường vì khó phân hủy|Làm đất màu mỡ|Làm sạch nước|Không ảnh hưởng|Polymer tổng hợp khó phân hủy.`,
+addtl:`Nêu vai trò của lipid, carbohydrate và protein đối với cơ thể.|Lipid dự trữ và cung cấp năng lượng, carbohydrate là nguồn năng lượng chính, protein xây dựng và sửa chữa tế bào.
+Nêu hai biện pháp giảm ô nhiễm do chất dẻo.|Hạn chế đồ nhựa dùng một lần, phân loại và tái chế rác thải nhựa.`},
+{s:'Tài nguyên',n:'Khai thác tài nguyên vỏ Trái Đất',from:[],tl:[],
+add:`Vỏ Trái Đất chứa nhiều nhất nguyên tố nào?|Oxygen|Iron|Calcium|Hydrogen|Oxygen chiếm khoảng 46% khối lượng vỏ Trái Đất.
+Quặng là gì?|Khoáng vật chứa kim loại có thể khai thác|Một loại đá bất kì|Một loại hợp kim|Một chất khí|Quặng có hàm lượng kim loại đáng kể.
+Quặng nào là nguồn quặng sắt?|Hematite|Bauxite|Đá vôi|Muối ăn|Hematite chứa Fe₂O₃.
+Nhôm được sản xuất từ quặng nào?|Bauxite|Hematite|Magnetite|Pyrite|Bauxite chứa Al₂O₃.
+Thành phần chính của đá vôi là gì?|CaCO₃|NaCl|SiO₂|Fe₂O₃|Đá vôi dùng làm vôi và xi măng.
+Khai thác khoáng sản thiếu kiểm soát gây hậu quả nào?|Ô nhiễm và cạn kiệt tài nguyên|Tăng tài nguyên|Làm sạch môi trường|Không ảnh hưởng|Cần khai thác hợp lí.
+Chất khử dùng để luyện gang trong lò cao là chất nào?|Carbon monoxide (CO)|Nước|Oxygen|Nitrogen|CO khử oxide sắt thành sắt.
+Việc tái chế kim loại có lợi ích gì?|Tiết kiệm tài nguyên và năng lượng|Làm cạn tài nguyên|Tăng ô nhiễm|Không có lợi ích|Giảm nhu cầu khai thác quặng.`,
+addtl:`Nêu các nguồn tài nguyên từ vỏ Trái Đất và hai biện pháp sử dụng hợp lí.|Khoáng sản (quặng, than, dầu mỏ, đá vôi), nước, đất. Biện pháp: khai thác có kế hoạch, tái chế, tiết kiệm.
+Viết phương trình khử Fe₂O₃ bằng CO trong lò cao.|Fe₂O₃ + 3CO → (t°) 2Fe + 3CO₂.`},
+{s:'Di truyền học',num:'Chương 11–13',n:'Di truyền học',from:[[10,[0,1,2,4,5,6]]],tl:[[10,[0]]],
+add:`Phép lai nào cho F1 đồng tính khi bố mẹ thuần chủng khác nhau một cặp tính trạng?|AA × aa|Aa × Aa|Aa × aa|aa × aa|F1 đều có kiểu gene Aa.
+DNA có bao nhiêu mạch polynucleotide?|2|1|3|4|DNA có cấu trúc xoắn kép.
+Các nitrogenous base trong DNA là những chất nào?|A, T, G, C|A, U, G, C|A, T, U, C|T, U, G, C|Trong DNA có thymine, RNA có uracil.
+Nguyên tắc bổ sung trong DNA là gì?|A liên kết với T, G liên kết với C|A liên kết với G, T liên kết với C|A liên kết với C|T liên kết với G|Hai mạch bổ sung cho nhau.
+DNA nhân đôi chủ yếu ở đâu?|Nhân tế bào|Màng tế bào|Thành tế bào|Không bào|Nhân đôi diễn ra trước phân bào.
+Biến dị nào có thể di truyền cho đời sau?|Đột biến|Béo lên do ăn nhiều|Rám nắng do phơi nắng|Gãy chân do tai nạn|Đột biến làm biến đổi vật chất di truyền.`,
+addtl:`Đậu hạt vàng (A) thuần chủng lai với hạt xanh (a). Viết sơ đồ lai từ P đến F2.|P: AA × aa. F1: 100% Aa (vàng). F1 × F1 cho F2: 1 AA : 2 Aa : 1 aa, kiểu hình 3 vàng : 1 xanh.
+Nêu cấu trúc và chức năng của DNA.|DNA gồm hai mạch xoắn kép, các nucleotide liên kết theo nguyên tắc bổ sung (A–T, G–C). DNA mang và truyền thông tin di truyền.
+Đột biến là gì? Nêu một nguyên nhân gây đột biến.|Là biến đổi trong vật chất di truyền. Nguyên nhân: tia phóng xạ, hóa chất, hoặc sai sót khi nhân đôi DNA.`},
+{s:'Tiến hóa',num:'Chương 14',n:'Tiến hóa',from:[[10,[3,7]]],tl:[[10,[1]]],
+add:`Tiến hóa là gì?|Sự biến đổi của sinh vật qua nhiều thế hệ|Sự lớn lên của một cá thể|Sự sinh sản|Sự trao đổi chất|Sinh vật biến đổi dần và thích nghi.
+Bằng chứng nào cho thấy các sinh vật có chung nguồn gốc?|Cơ quan tương đồng|Màu lông|Kích thước cơ thể|Tên gọi|Ví dụ: chi trước của người, mèo, cá voi.
+Hóa thạch có vai trò gì?|Là bằng chứng về sinh vật xưa và tiến hóa|Làm thức ăn|Làm nhiên liệu|Không có vai trò|Hóa thạch là dấu tích sinh vật đã sống.
+Theo Darwin, nhân tố chính hình thành loài mới là gì?|Chọn lọc tự nhiên|Thay đổi tên gọi|Sự di chuyển|Thời gian đơn thuần|Chọn lọc tự nhiên giữ lại cá thể thích nghi.
+Vi khuẩn kháng thuốc kháng sinh là ví dụ của gì?|Chọn lọc tự nhiên|Chọn lọc nhân tạo|Cảm ứng|Quang hợp|Vi khuẩn kháng thuốc được giữ lại.
+Sự thích nghi của sinh vật với môi trường là kết quả của gì?|Chọn lọc tự nhiên tác động lên biến dị|Ý muốn của sinh vật|Sự ngẫu nhiên hoàn toàn|Sự can thiệp của con người|Cá thể thích nghi sống sót và sinh sản.`,
+addtl:`Nêu một ví dụ về thích nghi của sinh vật với môi trường và giải thích.|Gấu Bắc Cực có lông trắng để ngụy trang và lớp mỡ dày giữ ấm, do cá thể thích nghi được chọn lọc qua nhiều thế hệ.`}];
+const BANK9n=regroup(9,BANK9,S9);TLB[9]=regroupTL(TLB[9],S9);
+const BANKS={6:BANK6,7:BANK7n,8:BANK8n,9:BANK9n};
 Object.values(BANKS).forEach(B=>B.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)})));
-function mig(o){if(o&&o._v>=2)return o;const r={_v:2};for(const k in o){let kk=k.indexOf(':')<0?'6:'+k:k;const m=kk.split(':'),R=REMAP[m[0]];if(R&&R[m[1]])kk=m[0]+':'+R[m[1]];r[kk]=o[k]}return r}
+function mig(o){const v=(o&&o._v)||0;if(v>=3)return o;const r={_v:3};for(const k in o){if(k=='_v')continue;let kk=k.indexOf(':')<0?'6:'+k:k;const m=kk.split(':'),R=REMAP[m[0]];if(R&&R[m[1]]&&v<({7:2,8:2,9:3}[m[0]]))kk=m[0]+':'+R[m[1]];r[kk]=o[k]}return r}
 let CH=0,P={},DBR=null;
 try{P=JSON.parse(localStorage.getItem('khtn6')||'{}')}catch(e){}
 P=mig(P);
@@ -900,6 +970,9 @@ for(const gr in SC)for(const k in SC[gr])EXALL[gr][k].sc=SC[gr][k];
 D[6].ov=[['Chương 1. Mở đầu về KHTN','Giới thiệu KHTN, quy tắc an toàn, dụng cụ đo, đo chiều dài, khối lượng, thời gian, nhiệt độ.'],['Chương 2. Chất quanh ta','Ba thể của chất, sự chuyển thể, oxygen và không khí.'],['Chương 3. Vật liệu, nguyên liệu, nhiên liệu, lương thực, thực phẩm','Tính chất và ứng dụng, sử dụng an toàn và tiết kiệm.'],['Chương 4. Hỗn hợp, tách chất','Hỗn hợp, chất tinh khiết, dung dịch, huyền phù, các phương pháp tách chất.'],['Chương 5. Tế bào','Cấu tạo và chức năng các thành phần tế bào, sự lớn lên và phân chia tế bào.'],['Chương 6. Từ tế bào đến cơ thể','Cơ thể đơn bào, đa bào, các cấp độ tổ chức của cơ thể.'],['Chương 7. Đa dạng thế giới sống','Phân loại, khóa lưỡng phân, virus, vi khuẩn, nguyên sinh vật, nấm, thực vật, động vật.'],['Chương 8. Lực trong đời sống','Lực, tác dụng của lực, ma sát, trọng lượng, biến dạng lò xo.'],['Chương 9. Năng lượng','Các dạng năng lượng, chuyển hóa, bảo toàn, năng lượng tái tạo, tiết kiệm năng lượng.'],['Chương 10. Trái Đất và bầu trời','Chuyển động nhìn thấy của Mặt Trời, các pha của Mặt Trăng, hệ Mặt Trời, Ngân Hà.']];
 D[7].ov=[['Chương 1. Nguyên tử và bảng tuần hoàn các nguyên tố hóa học','Mô hình nguyên tử, nguyên tố hóa học, sơ lược bảng tuần hoàn.'],['Chương 2. Phân tử và liên kết hóa học','Phân tử, đơn chất, hợp chất, liên kết ion, liên kết cộng hóa trị, hóa trị, công thức hóa học.'],['Chương 3. Tốc độ','Tốc độ chuyển động, đo tốc độ, đồ thị quãng đường–thời gian.'],['Chương 4. Âm thanh','Sóng âm, độ cao, độ to, phản xạ âm, chống ô nhiễm tiếng ồn.'],['Chương 5. Ánh sáng','Tia sáng, phản xạ ánh sáng, ảnh qua gương phẳng.'],['Chương 6. Từ','Nam châm, từ trường, từ trường Trái Đất.'],['Chương 7. Trao đổi chất và chuyển hóa năng lượng ở sinh vật','Quang hợp, hô hấp tế bào, trao đổi nước và khí.'],['Chương 8. Cảm ứng ở sinh vật','Cảm ứng và tập tính ở thực vật và động vật.'],['Chương 9. Sinh trưởng và phát triển ở sinh vật','Sinh trưởng, phát triển và các nhân tố ảnh hưởng.'],['Chương 10. Sinh sản ở sinh vật','Sinh sản vô tính, hữu tính, thụ phấn, thụ tinh.']];
 D[8].ov=[['Chương 1. Phản ứng hóa học','Biến đổi vật lí và hóa học, phương trình hóa học, bảo toàn khối lượng, mol, tỉ khối, nồng độ dung dịch.'],['Chương 2. Một số hợp chất thông dụng','Acid, base, thang pH, oxide, muối, phân bón.'],['Chương 3. Khối lượng riêng và áp suất','Khối lượng riêng, áp suất, lực đẩy Archimedes.'],['Chương 4. Tác dụng làm quay của lực','Moment lực, đòn bẩy.'],['Chương 5. Điện','Dòng điện, hiệu điện thế, điện trở, định luật Ohm, mạch nối tiếp và song song.'],['Chương 6. Nhiệt','Năng lượng nhiệt, truyền nhiệt.'],['Chương 7. Sinh học cơ thể người','Các hệ cơ quan: tiêu hóa, hô hấp, tuần hoàn, bài tiết, thần kinh, nội tiết.'],['Chương 8. Sinh vật và môi trường','Nhân tố sinh thái, quần thể, quần xã, hệ sinh thái.']];
+const SC9={'Giữa kỳ 1':'Phạm vi (gợi ý): Chương 1 Năng lượng cơ học, Chương 2 Ánh sáng.','Học kỳ 1':'Phạm vi (gợi ý): Chương 1–3, gồm mắt và kính lúp, điện, năng lượng điện.','Giữa kỳ 2':'Phạm vi (gợi ý): Chương 4–6, gồm điện từ, năng lượng với cuộc sống, kim loại và phi kim.','Học kỳ 2':'Phạm vi (gợi ý): Chương 7–14, gồm chất hữu cơ, di truyền học, tiến hóa; ôn tập thi vào lớp 10.'};
+for(const k in SC9)EXALL[9][k].sc=SC9[k];
+D[9].ov=[['Chương 1. Năng lượng cơ học','Động năng, thế năng, cơ năng, bảo toàn cơ năng, công và công suất.'],['Chương 2. Ánh sáng','Khúc xạ ánh sáng, thấu kính hội tụ, mắt, kính lúp.'],['Chương 3. Điện','Điện trở, định luật Ohm, đoạn mạch nối tiếp và song song, năng lượng và công suất điện.'],['Chương 4. Điện từ','Từ trường, cảm ứng điện từ, máy phát điện, máy biến thế.'],['Chương 5. Năng lượng với cuộc sống','Nguồn năng lượng, năng lượng tái tạo, hiệu suất, sử dụng hiệu quả.'],['Chương 6. Kim loại','Tính chất kim loại, dãy hoạt động, hợp kim, phi kim và sự khác nhau với kim loại.'],['Chương 7. Chất hữu cơ. Hydrocarbon','Hợp chất hữu cơ, methane, ethylene.'],['Chương 8. Ethylic alcohol. Acetic acid','Tính chất, ứng dụng, phản ứng của ethanol và acetic acid.'],['Chương 9. Lipid – Carbohydrate – Protein – Polymer','Vai trò, tính chất cơ bản, polymer và ô nhiễm chất dẻo.'],['Chương 10. Khai thác tài nguyên vỏ Trái Đất','Quặng, luyện kim, khai thác và sử dụng hợp lí tài nguyên.'],['Chương 11–13. Di truyền học','Gene, DNA, nhiễm sắc thể, quy luật Mendel, đột biến.'],['Chương 14. Tiến hóa','Bằng chứng tiến hóa, chọn lọc tự nhiên, thích nghi.']];
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){const e=EXALL[g][E6],pm=e.mc.length/2;
