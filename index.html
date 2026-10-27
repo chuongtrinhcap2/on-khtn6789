@@ -564,6 +564,77 @@ Nêu chức năng của hồng cầu, bạch cầu và tiểu cầu.|Hồng cầ
 `Viết một chuỗi thức ăn có 4 mắt xích ở đồng cỏ.|Cỏ → châu chấu → ếch → rắn.
 Nêu vai trò của rừng đối với môi trường.|Điều hòa khí hậu, giữ đất chống xói mòn, hấp thụ CO₂ và thải O₂, là nơi sống của nhiều sinh vật.`
 ].map(t=>t.trim().split('\n').map(l=>l.split('|')));
+const EXTRA9=[
+`Vật 2 kg ở độ cao 3 m có thế năng bao nhiêu (P = 10m)?|60 J|6 J|30 J|20 J|W(t) = 10 × 2 × 3.
+Vật chuyển động càng nhanh thì động năng thay đổi thế nào?|Càng lớn|Càng nhỏ|Không đổi|Bằng 0|Động năng tăng theo tốc độ.
+Khi ném vật lên cao, thế năng thay đổi ra sao?|Tăng|Giảm|Không đổi|Bằng 0|Độ cao tăng thì thế năng tăng.
+Ở đỉnh quỹ đạo khi ném thẳng đứng, vật có đặc điểm nào?|Động năng bằng 0|Thế năng bằng 0|Cơ năng bằng 0|Tốc độ lớn nhất|Tại đỉnh vật dừng lại tức thời.`,
+`Công suất cho biết điều gì?|Tốc độ thực hiện công|Độ lớn của lực|Quãng đường đi|Khối lượng vật|P = A / t.
+Máy thực hiện công 6000 J trong 2 phút. Công suất là bao nhiêu?|50 W|3000 W|12000 W|0,02 W|t = 120 s.
+Lực 10 N kéo vật đi 5 m cùng phương lực. Công là bao nhiêu?|50 J|2 J|15 J|0,5 J|A = F × s.
+Đơn vị của công là gì?|Joule (J)|Watt (W)|Newton (N)|Pascal (Pa)|1 J = 1 N·m.`,
+`Tia sáng từ nước ra không khí, góc khúc xạ so với góc tới như thế nào?|Lớn hơn|Nhỏ hơn|Bằng nhau|Luôn bằng 0|Tia bị lệch xa pháp tuyến.
+Tia tới vuông góc với mặt phân cách thì tia khúc xạ như thế nào?|Truyền thẳng|Bị gãy 90°|Bị phản xạ hoàn toàn|Biến mất|Góc tới bằng 0 nên góc khúc xạ bằng 0.
+Thấu kính hội tụ cho ảnh ảo khi nào?|Vật nằm trong khoảng tiêu cự|Vật ở rất xa|Vật ở vô cực|Không bao giờ|Ảnh ảo cùng chiều và lớn hơn vật.
+Tiêu điểm của thấu kính hội tụ là gì?|Điểm hội tụ của chùm tia tới song song|Quang tâm|Tâm của thấu kính|Điểm xa nhất|Chùm tia song song hội tụ tại tiêu điểm.`,
+`Thủy tinh thể của mắt đóng vai trò như vật nào?|Thấu kính hội tụ|Gương phẳng|Thấu kính phân kì|Lăng kính|Tạo ảnh trên võng mạc.
+Mắt viễn thị khó nhìn rõ vật nào?|Vật ở gần|Vật ở xa|Mọi vật|Không có vật nào|Viễn thị nhìn gần kém.
+Đeo kính cận thị để làm gì?|Làm ảnh hiện đúng trên võng mạc|Làm mắt to hơn|Làm tối mắt|Giảm ánh sáng|Kính phân kì điều chỉnh vị trí ảnh.
+Kính lúp có số bội giác bằng 5 nghĩa là gì?|Ảnh lớn hơn vật khoảng 5 lần|Ảnh nhỏ hơn vật 5 lần|Tiêu cự bằng 5 m|Giá 5 nghìn|G cho biết độ phóng đại.`,
+`Hai điện trở 4 Ω và 6 Ω mắc nối tiếp. Điện trở tương đương là bao nhiêu?|10 Ω|2,4 Ω|24 Ω|5 Ω|R = R₁ + R₂.
+Điện trở 8 Ω có dòng 1,5 A chạy qua. Hiệu điện thế hai đầu là bao nhiêu?|12 V|5,3 V|0,19 V|9,5 V|U = I × R.
+Điện trở tương đương của đoạn mạch song song so với từng điện trở thành phần như thế nào?|Nhỏ hơn|Lớn hơn|Bằng nhau|Bằng tổng|Song song làm giảm điện trở.
+Điện trở của dây dẫn tính bằng công thức nào?|R = ρ × l / S|R = ρ × S / l|R = ρ / (l × S)|R = l × S|ρ là điện trở suất.`,
+`Đơn vị công suất điện là gì?|Watt (W)|Ampe (A)|Vôn (V)|Ôm (Ω)|P đo bằng watt.
+Bàn là 1000 W dùng 2 giờ tiêu thụ bao nhiêu điện năng?|2 kWh|0,5 kWh|2000 kWh|1000 kWh|A = P × t.
+Thiết bị nào thường có công suất lớn nhất trong nhà?|Bình nóng lạnh|Bóng đèn LED|Sạc điện thoại|Quạt nhỏ|Thiết bị tỏa nhiệt có công suất lớn.
+Nhiệt lượng tỏa ra trên điện trở tính bằng công thức nào?|Q = I² R t|Q = I R / t|Q = U t / R²|Q = P / t|Định luật Joule–Lenz.`,
+`Hiện tượng cảm ứng điện từ do ai tìm ra?|Faraday|Newton|Archimedes|Ohm|Faraday phát hiện hiện tượng này.
+Máy phát điện xoay chiều có hai bộ phận chính nào?|Nam châm và cuộn dây|Pin và dây dẫn|Bóng đèn và công tắc|Thấu kính và gương|Một bộ phận đứng yên, một bộ phận quay.
+Thiết bị nào dùng để tăng hiệu điện thế xoay chiều?|Máy biến thế|Ampe kế|Nhiệt kế|Cầu chì|Máy biến thế tăng áp.
+Vì sao khi truyền tải điện đi xa phải tăng hiệu điện thế?|Giảm hao phí nhiệt trên đường dây|Làm đèn sáng hơn|Làm dây nhẹ hơn|Không có lí do|Hao phí giảm khi hiệu điện thế tăng.`,
+`Kim loại nào dẫn điện tốt và thường dùng làm dây điện?|Đồng|Chì|Thủy ngân|Gỗ|Đồng dẫn điện rất tốt.
+Kim loại nào ở thể lỏng ở nhiệt độ thường?|Thủy ngân|Sắt|Nhôm|Đồng|Hg là kim loại lỏng.
+Thả đinh sắt vào dung dịch CuSO₄, hiện tượng nào xảy ra?|Có lớp đồng đỏ bám vào đinh|Không có hiện tượng|Có khí bay lên|Tạo kết tủa trắng|Fe + CuSO₄ → FeSO₄ + Cu.
+Thép là hợp kim của sắt với nguyên tố nào?|Carbon (ít hơn gang)|Chì|Thủy ngân|Vàng|Thép chứa dưới 2% carbon.`,
+`Phi kim nào ở thể lỏng ở điều kiện thường?|Bromine|Chlorine|Sulfur|Carbon|Br₂ là chất lỏng.
+Carbon có những dạng thù hình nào?|Kim cương, than chì|Vàng, bạc|Sắt, đồng|Nước, muối|Carbon có nhiều dạng thù hình.
+Khí nào làm đục nước vôi trong?|CO₂|O₂|N₂|H₂|CO₂ + Ca(OH)₂ → CaCO₃ + H₂O.
+Chlorine được dùng để làm gì?|Khử trùng nước|Làm thực phẩm|Làm nhiên liệu|Làm dây điện|Cl₂ có tính sát trùng.`,
+`Chất nào là hydrocarbon?|CH₄|C₂H₅OH|CH₃COOH|CO₂|Hydrocarbon chỉ gồm C và H.
+Thành phần chính của khí thiên nhiên là gì?|Methane|Ethylene|Ethanol|Acetic acid|Methane cháy tỏa nhiều nhiệt.
+Ethylic alcohol còn gọi là gì?|Ethanol|Methane|Acetic acid|Ethylene|C₂H₅OH.
+Chất béo (lipid) có vai trò nào?|Cung cấp và dự trữ năng lượng|Làm sạch nước|Tạo oxygen|Làm giảm đường huyết|Chất béo là nguồn năng lượng quan trọng.`,
+`Gene quy định tính trạng nằm ở đâu?|Trên nhiễm sắc thể|Trên màng tế bào|Trong không bào|Trong nước|Gene nằm trên DNA của nhiễm sắc thể.
+Allele trội được kí hiệu như thế nào?|Chữ in hoa (A)|Chữ thường (a)|Số 1|Dấu cộng|Đây là quy ước kí hiệu.
+Lai Aa × Aa cho tỉ lệ kiểu gene như thế nào?|1 AA : 2 Aa : 1 aa|3 AA : 1 aa|1 Aa : 1 aa|Tất cả Aa|Lập bảng Punnett.
+Nguyên nhân làm xuất hiện biến dị là gì?|Đột biến và tổ hợp gene|Không có nguyên nhân|Chỉ do thức ăn|Chỉ do tuổi tác|Biến dị là nguyên liệu của tiến hóa.`
+];
+BANK9.forEach((c,i)=>EXTRA9[i].trim().split('\n').forEach(l=>{const a=l.split('|');c.q.push([a[0],a.slice(1,5),a[5]])}));
+TLB[9]=[
+`Thả vật 0,2 kg từ độ cao 5 m. Tính thế năng ban đầu và tốc độ khi chạm đất (bỏ qua ma sát).|W(t) = 10 × 0,2 × 5 = 10 J. ½ × 0,2 × v² = 10 nên v² = 100, v = 10 m/s.
+Nêu định luật bảo toàn cơ năng.|Khi chỉ có trọng lực tác dụng, cơ năng của vật không đổi: thế năng giảm thì động năng tăng và ngược lại.`,
+`Máy nâng vật 200 kg lên cao 4 m trong 8 s. Tính công và công suất.|P = 2000 N. A = 2000 × 4 = 8000 J. Công suất = 8000 / 8 = 1000 W.
+Phân biệt công và công suất.|Công đo lượng năng lượng được chuyển hóa (J). Công suất đo công thực hiện trong một giây (W).`,
+`Nêu hiện tượng khúc xạ ánh sáng và cho một ví dụ.|Tia sáng bị gãy khúc khi đi qua mặt phân cách giữa hai môi trường trong suốt. Ví dụ: chiếc đũa nhúng trong nước trông bị gãy.
+Nêu đường truyền của ba tia đặc biệt qua thấu kính hội tụ.|Tia song song trục chính cho tia ló qua tiêu điểm; tia qua quang tâm truyền thẳng; tia qua tiêu điểm cho tia ló song song trục chính.`,
+`Nêu nguyên nhân và cách khắc phục tật cận thị.|Mắt cận có thủy tinh thể quá phồng hoặc cầu mắt dài nên ảnh hiện trước võng mạc. Đeo kính phân kì phù hợp để khắc phục.
+Kính lúp có tiêu cự 10 cm. Tính số bội giác G = 25 / f.|G = 25 / 10 = 2,5.`,
+`R₁ = 12 Ω và R₂ = 4 Ω mắc song song vào nguồn 12 V. Tính điện trở tương đương và dòng điện tổng.|1/R = 1/12 + 1/4 = 1/3 nên R = 3 Ω. I = 12 / 3 = 4 A.
+Dây đồng dài 100 m, tiết diện 0,5 mm², điện trở suất 1,7 × 10⁻⁸ Ω·m. Tính điện trở của dây.|S = 0,5 × 10⁻⁶ m². R = 1,7 × 10⁻⁸ × 100 / (0,5 × 10⁻⁶) = 3,4 Ω.`,
+`Điện trở 20 Ω có dòng 2 A chạy qua trong 5 phút. Tính nhiệt lượng tỏa ra.|t = 300 s. Q = I² R t = 4 × 20 × 300 = 24000 J.
+Quạt 50 W chạy 8 giờ mỗi ngày trong 30 ngày, giá điện 2000 đồng/kWh. Tính tiền điện.|Điện năng = 0,05 × 8 × 30 = 12 kWh. Tiền điện = 12 × 2000 = 24000 đồng.`,
+`Nêu nguyên tắc hoạt động của máy phát điện xoay chiều.|Cho nam châm hoặc cuộn dây quay làm số đường sức từ qua cuộn dây biến thiên, sinh ra dòng điện cảm ứng xoay chiều.
+Giải thích vì sao phải dùng máy biến thế khi truyền tải điện đi xa.|Tăng hiệu điện thế ở nhà máy giúp giảm cường độ dòng điện nên giảm hao phí nhiệt trên dây. Gần nơi dùng lại hạ hiệu điện thế để an toàn.`,
+`Viết phương trình Fe tác dụng CuSO₄ và nêu hiện tượng.|Fe + CuSO₄ → FeSO₄ + Cu. Có lớp đồng màu đỏ bám vào sắt, màu xanh của dung dịch nhạt dần.
+Nêu hai biện pháp bảo vệ kim loại khỏi gỉ.|Sơn hoặc mạ phủ bề mặt, bôi dầu mỡ, dùng hợp kim không gỉ như inox.`,
+`Nêu tính chất của chlorine khi tác dụng với kim loại, cho một ví dụ.|Chlorine tác dụng với nhiều kim loại tạo muối chloride. Ví dụ: 2Fe + 3Cl₂ → 2FeCl₃ (đun nóng).
+Nêu tác hại của khí CO₂ dư thừa trong khí quyển.|Gây hiệu ứng nhà kính, làm Trái Đất nóng lên và biến đổi khí hậu.`,
+`Viết phương trình đốt cháy hoàn toàn ethanol.|C₂H₅OH + 3O₂ → (t°) 2CO₂ + 3H₂O.
+Nêu hai ứng dụng của acetic acid.|Làm giấm ăn, dùng sản xuất tơ nhân tạo và dung môi.`,
+`Lai Aa × Aa (A trội hoàn toàn). Viết kết quả và tỉ lệ kiểu hình ở đời con.|F1: 1 AA : 2 Aa : 1 aa. Kiểu hình: 3 trội : 1 lặn.
+Phân biệt chọn lọc tự nhiên và chọn lọc nhân tạo.|Chọn lọc tự nhiên do môi trường giữ lại cá thể thích nghi. Chọn lọc nhân tạo do con người giữ lại cá thể có đặc điểm có lợi cho mình.`
+].map(t=>t.trim().split('\n').map(l=>l.split('|')));
 const BANKS={6:BANK6,7:BANK7,8:BANK8,9:BANK9};
 Object.values(BANKS).forEach(B=>B.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)})));
 function mig(o){const r={};for(const k in o)r[k.indexOf(':')<0?'6:'+k:k]=o[k];return r}
