@@ -39,6 +39,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .ans{display:none;margin-top:8px;padding:10px 12px;border-left:4px solid var(--accent);background:var(--hi);border-radius:6px;font-size:.95rem}.ans.show{display:block}
 .auth input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;flex:1 1 150px}.arow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}.row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;margin:12px 0}
+.mx{border-collapse:collapse;width:100%}.mx th,.mx td{border:1px solid var(--line);padding:6px 8px;text-align:left;font-size:.9rem}.mx th{background:var(--hi)}
 </style>
 </head>
 <body>
@@ -636,7 +637,7 @@ Nêu hai ứng dụng của acetic acid.|Làm giấm ăn, dùng sản xuất tơ
 `Lai Aa × Aa (A trội hoàn toàn). Viết kết quả và tỉ lệ kiểu hình ở đời con.|F1: 1 AA : 2 Aa : 1 aa. Kiểu hình: 3 trội : 1 lặn.
 Phân biệt chọn lọc tự nhiên và chọn lọc nhân tạo.|Chọn lọc tự nhiên do môi trường giữ lại cá thể thích nghi. Chọn lọc nhân tạo do con người giữ lại cá thể có đặc điểm có lợi cho mình.`
 ].map(t=>t.trim().split('\n').map(l=>l.split('|')));
-function stat(gr){const B=BANKS[gr];let tot=0,done=0,ok=0;const rows=B.map((c,i)=>{let d=0,k=0;c.q.forEach((_,j)=>{const v=P[gr+':'+i+'-'+j];if(v===0||v===1){d++;if(v==1)k++}});tot+=c.q.length;done+=d;ok+=k;return {n:c.s,t:c.q.length,d,k}});return {tot,done,ok,rows}}
+function stat(gr){const B=BANKS[gr];let tot=0,done=0,ok=0;const rows=B.map((c,i)=>{let d=0,k=0;c.q.forEach((_,j)=>{const v=(VP||P)[gr+':'+i+'-'+j];if(v===0||v===1){d++;if(v==1)k++}});tot+=c.q.length;done+=d;ok+=k;return {n:c.s,t:c.q.length,d,k}});return {tot,done,ok,rows}}
 function bar(l,r,p){return `<div class="row"><div>${l}</div><b>${r}</b><div class="bar" style="grid-column:1/3"><i style="width:${p}%"></i></div></div>`}
 function dash(){let h='<div class="card"><h3>Tổng quan các lớp</h3>';
 [6,7,8,9].forEach(gr=>{const s=stat(gr),p=s.tot?Math.round(s.done*100/s.tot):0;h+=bar('Lớp '+gr+': đã làm '+s.done+'/'+s.tot+' câu, đúng '+s.ok,p+'%',p)});
@@ -644,7 +645,7 @@ h+='</div>';const s=stat(g);
 h+='<div class="card"><h3>Chi tiết lớp '+g+'</h3><div class="ex">Thanh màu cho biết đã làm bao nhiêu câu, số bên phải là tỉ lệ làm đúng.</div>'+s.rows.map(r=>{const p=Math.round(r.d*100/r.t),a=r.d?Math.round(r.k*100/r.d):0,f=r.d==0?'Chưa làm':(r.d>=3&&a<60?'Nên ôn lại':'');return bar(r.n+': làm '+r.d+'/'+r.t+', đúng '+r.k+(f?' · <b>'+f+'</b>':''),a+'%',p)}).join('')+'</div>';
 const w=s.rows.filter(r=>r.d>=3&&r.k/r.d<0.6).map(r=>r.n),n=s.rows.filter(r=>r.d==0).length;
 h+='<div class="card"><h3>Gợi ý ôn tập</h3>'+(w.length?'Nên làm lại các chương: <b>'+w.join(', ')+'</b>.':'Chưa có chương nào cần ôn lại gấp.')+(n?' Còn '+n+' chương chưa làm.':' Đã làm ít nhất một câu ở mọi chương.')+'</div>';
-return h+'<p class="note">Tiến độ lấy từ thiết bị này và từ tài khoản nếu đã đăng nhập. Phụ huynh có thể đăng nhập bằng tài khoản của con trên máy khác để xem lại.</p>'}
+return h+linkUI()+'<p class="note">Tiến độ lấy từ thiết bị này và từ tài khoản nếu đã đăng nhập. Phụ huynh có thể đăng nhập bằng tài khoản của con trên máy khác để xem lại.</p>'}
 const TOC6=['Mở đầu về KHTN','Chất quanh ta','Vật liệu, nguyên liệu, nhiên liệu, lương thực, thực phẩm','Hỗn hợp, tách chất','Tế bào','Từ tế bào đến cơ thể','Đa dạng thế giới sống','Lực trong đời sống','Năng lượng','Trái Đất và bầu trời'];
 BANK6.forEach((c,i)=>c.n='Chương '+(i+1)+': '+TOC6[i]);
 const REMAP={7:{},8:{},9:{}};
@@ -823,7 +824,7 @@ function renderAuth(){const a=document.getElementById('auth');if(!SB){a.style.di
 a.innerHTML=USER?'Đã đăng nhập: <b>'+esc(USER.email)+'</b> <button onclick="logout()">Đăng xuất</button>':'<b>Đăng nhập để lưu tiến độ trên mọi thiết bị</b><div class="arow"><input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="current-password"><button onclick="login()">Đăng nhập</button><button onclick="signup()">Đăng ký</button></div><div class="ex" id="am"></div>'}
 async function login(){const r=await SB.auth.signInWithPassword({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng nhập được: '+r.error.message:''}
 async function signup(){const r=await SB.auth.signUp({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng ký được: '+r.error.message:'Đã đăng ký. Nếu được yêu cầu, hãy xác nhận qua email rồi đăng nhập.'}
-async function logout(){await SB.auth.signOut()}
+async function logout(){await SB.auth.signOut();LK=null;VP=null}
 async function setUser(u){USER=u||null;renderAuth();
 if(USER){const r=await SB.from('progress').select('data').eq('user_id',USER.id).maybeSingle();if(r.data&&r.data.data)P=Object.assign({},mig(r.data.data),P);sv()}
 if(t=='qz'&&BANKS[g])render()}
@@ -1049,10 +1050,41 @@ addE(9,'Giữa kỳ 2',`Dòng điện xoay chiều có đặc điểm nào?|Chi�
 Gang và thép khác nhau ở điểm nào?|Hàm lượng carbon|Màu sắc|Khối lượng|Hình dạng|Gang có hơn 2% carbon, thép dưới 2%.`,`Nêu hai biện pháp chống ăn mòn kim loại và giải thích.|Sơn hoặc mạ phủ bề mặt để cách li kim loại với oxygen và nước. Dùng hợp kim không gỉ như inox.`);
 addE(9,'Học kỳ 2',`Ethylic alcohol có công thức nào?|C₂H₅OH|CH₃COOH|CH₄|C₂H₄|Ethanol là C₂H₅OH.
 Quy luật phân li của Mendel cho F2 tỉ lệ kiểu hình nào (trội hoàn toàn)?|3 trội : 1 lặn|1 trội : 1 lặn|1 : 2 : 1|9 : 3 : 3 : 1|Lai một cặp tính trạng.`,`Viết phương trình phản ứng giữa acetic acid và kẽm.|2CH₃COOH + Zn → (CH₃COO)₂Zn + H₂.`);
+let VP=null,VPN='';
+function linkUI(){return ''}
+const VD={
+6:{'Giữa kỳ 1':['Giải thích vì sao quần áo phơi trong ngày nồm ẩm rất lâu khô, và nêu hai cách giúp quần áo khô nhanh hơn.','Độ ẩm không khí cao làm nước khó bay hơi. Cách giúp khô nhanh: phơi nơi thoáng gió, vắt kĩ trước khi phơi, dùng quạt hoặc phơi nơi nhiệt độ cao hơn.'],
+'Học kỳ 1':['Một hỗn hợp gồm muối ăn, cát, mạt sắt và dầu ăn lẫn trong nước. Đề xuất quy trình tách riêng từng chất.','Dùng nam châm hút mạt sắt. Dùng phễu chiết tách lớp dầu ăn khỏi nước. Lọc hỗn hợp còn lại để giữ cát. Cô cạn nước lọc để thu muối ăn.'],
+'Giữa kỳ 2':['Một vi khuẩn phân chia mỗi 30 phút một lần. Từ 1 vi khuẩn, sau 3 giờ có bao nhiêu vi khuẩn (điều kiện lí tưởng)?','3 giờ có 6 lần phân chia nên số vi khuẩn = 2⁶ = 64.'],
+'Học kỳ 2':['Lò xo dài 10 cm khi chưa treo vật. Treo vật 100 g lò xo dài 12 cm. Giả sử độ giãn tỉ lệ với khối lượng vật treo, treo vật 200 g thì lò xo dài bao nhiêu?','Độ giãn khi treo 100 g là 2 cm nên với 200 g độ giãn là 4 cm. Chiều dài lò xo = 10 + 4 = 14 cm.']},
+7:{'Giữa kỳ 1':['Nguyên tử X có tổng số hạt (proton, neutron, electron) là 18, trong đó số hạt không mang điện là 6. Xác định số proton và tên nguyên tố.','Số proton bằng số electron nên 2p + n = 18 với n = 6, suy ra p = 6. Đó là nguyên tố carbon.'],
+'Học kỳ 1':['Một người đi xe đạp trên nửa quãng đường đầu với tốc độ 12 km/h và nửa quãng đường sau với 24 km/h. Tính tốc độ trung bình trên cả quãng đường.','Gọi nửa quãng đường là s. Thời gian = s/12 + s/24 = s/8. Tốc độ trung bình = 2s / (s/8) = 16 km/h.'],
+'Giữa kỳ 2':['Một người đứng cách vách núi 340 m và hét lớn. Biết tốc độ truyền âm là 340 m/s. Sau bao lâu người đó nghe thấy tiếng vọng?','Âm đi tới vách núi và quay lại: 2 × 340 = 680 m. Thời gian = 680 / 340 = 2 s.'],
+'Học kỳ 2':['Giải thích vì sao cây đặt trong phòng kín thiếu ánh sáng vẫn sống được một thời gian nhưng yếu dần rồi chết.','Cây dùng chất hữu cơ dự trữ để hô hấp. Thiếu ánh sáng nên không quang hợp bù lại được, chất dự trữ cạn dần nên cây yếu đi và chết.']},
+8:{'Giữa kỳ 1':['Đốt cháy hoàn toàn 2,4 g Mg trong oxygen dư thu được 4,0 g MgO. Tính khối lượng oxygen đã phản ứng và thể tích oxygen (25 °C, 1 bar). O = 16.','m(O₂) = 4,0 − 2,4 = 1,6 g. n(O₂) = 1,6 / 32 = 0,05 mol. V = 0,05 × 24,79 ≈ 1,24 L.'],
+'Học kỳ 1':['Hòa tan 8 g NaOH vào nước thành 200 mL dung dịch. Tính nồng độ mol của dung dịch và thể tích dung dịch HCl 1 M cần để trung hòa hoàn toàn (Na = 23, O = 16, H = 1).','n(NaOH) = 8 / 40 = 0,2 mol; CM = 0,2 / 0,2 = 1 M. NaOH + HCl → NaCl + H₂O nên n(HCl) = 0,2 mol; V = 0,2 / 1 = 0,2 L = 200 mL.'],
+'Giữa kỳ 2':['Khối gỗ hình hộp 0,2 m × 0,1 m × 0,1 m có khối lượng 1,4 kg được thả vào nước (khối lượng riêng của nước là 1000 kg/m³). Vật nổi hay chìm? Giải thích.','V = 0,2 × 0,1 × 0,1 = 0,002 m³. D = 1,4 / 0,002 = 700 kg/m³ nhỏ hơn 1000 kg/m³ nên khối gỗ nổi.'],
+'Học kỳ 2':['Giải thích vì sao khi chạy nhanh nhịp thở và nhịp tim đều tăng.','Cơ hoạt động mạnh cần nhiều oxygen và năng lượng nên ta thở nhanh hơn để lấy nhiều O₂ và thải CO₂, tim đập nhanh hơn để vận chuyển O₂ và chất dinh dưỡng đến cơ.']},
+9:{'Giữa kỳ 1':['Ném vật 0,5 kg thẳng đứng lên với tốc độ 10 m/s từ mặt đất, bỏ qua ma sát. Tính độ cao tối đa (P = 10m).','Cơ năng ban đầu = ½ × 0,5 × 10² = 25 J. Tại độ cao cực đại động năng bằng 0 nên 10 × 0,5 × h = 25, suy ra h = 5 m.'],
+'Học kỳ 1':['Hai điện trở R₁ = 6 Ω và R₂ = 3 Ω mắc song song vào nguồn 12 V. Tính điện trở tương đương, dòng điện qua mỗi điện trở và công suất tiêu thụ toàn mạch.','R = 6 × 3 / (6 + 3) = 2 Ω. I₁ = 12 / 6 = 2 A, I₂ = 12 / 3 = 4 A, I = 6 A. P = U × I = 12 × 6 = 72 W.'],
+'Giữa kỳ 2':['Cho 5,6 g Fe vào dung dịch CuSO₄ dư. Tính khối lượng Cu sinh ra (Fe = 56, Cu = 64).','Fe + CuSO₄ → FeSO₄ + Cu. n(Fe) = 0,1 mol nên n(Cu) = 0,1 mol, m(Cu) = 6,4 g.'],
+'Học kỳ 2':['Đốt cháy hoàn toàn 0,1 mol ethanol. Tính thể tích CO₂ (25 °C, 1 bar) và khối lượng nước tạo thành (H = 1, O = 16).','C₂H₅OH + 3O₂ → 2CO₂ + 3H₂O. n(CO₂) = 0,2 mol nên V = 0,2 × 24,79 = 4,958 L. n(H₂O) = 0,3 mol nên m = 0,3 × 18 = 5,4 g.']}};
+for(const gr in VD)for(const k in VD[gr])EXALL[gr][k].vd=VD[gr][k];
+function mx(e){const n=e.mc.length,h=n/4,t=e.tl.length;return '<div class="card"><h3>Ma trận đề (ước lượng tham khảo)</h3><div style="overflow-x:auto"><table class="mx"><tr><th>Mức độ</th><th>Trắc nghiệm</th><th>Tự luận</th><th>Điểm</th></tr><tr><td>Nhận biết</td><td>'+(n/2)+' câu ('+h+' điểm)</td><td>–</td><td>'+h+'</td></tr><tr><td>Thông hiểu</td><td>'+(n/2)+' câu ('+h+' điểm)</td><td>Câu 1 (2 điểm)</td><td>'+(h+2)+'</td></tr><tr><td>Vận dụng</td><td>–</td><td>Câu 2–'+t+' ('+(2*(t-1))+' điểm)</td><td>'+(2*(t-1))+'</td></tr><tr><td>Vận dụng cao</td><td>–</td><td>Câu cộng thêm</td><td>+1</td></tr></table></div><div class="ex">Tổng 10 điểm, chưa tính câu cộng thêm. Cách chia mức độ chỉ là ước lượng theo cấu trúc đề, không phải ma trận chính thức của trường.</div></div>'}
+function vdc(){const e=EXALL[g][E6];if(!e.vd)return '';return '<div class="card"><h3>Câu vận dụng cao (cộng thêm 1 điểm, không bắt buộc)</h3><div>'+e.vd[0]+'</div><button id="bvd" onclick="tog(\'vd\')" style="margin-top:8px">Xem đáp án</button><div class="ans" id="avd">'+e.vd[1]+'</div></div>'}
+const addQ2=(g,c,t)=>t.trim().split('\n').forEach(l=>{const a=l.split('|'),q=[a[0],a.slice(1,5),a[5]],x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0);BANKS[g][c].q.push(q)});
+addQ2(9,10,`Nguyên phân là quá trình nào?|Một tế bào mẹ phân chia tạo hai tế bào con có bộ NST giống tế bào mẹ|Quá trình tạo giao tử|Quá trình hai tế bào hợp nhất|Quá trình tổng hợp protein|Nguyên phân giúp cơ thể lớn lên và thay thế tế bào.
+Giảm phân tạo ra loại tế bào nào?|Giao tử có bộ nhiễm sắc thể giảm đi một nửa|Tế bào thần kinh|Tế bào máu|Tế bào biểu bì|Giảm phân xảy ra khi hình thành giao tử.
+Hội chứng Down do nguyên nhân nào?|Thừa một nhiễm sắc thể số 21|Thiếu vitamin|Nhiễm virus|Thiếu nhiễm sắc thể giới tính|Người bị hội chứng Down có 47 nhiễm sắc thể.
+Bệnh nào là bệnh di truyền ở người?|Bệnh máu khó đông|Cúm mùa|Sốt rét|Lao phổi|Bệnh máu khó đông do đột biến gene.
+Việc lai và chọn lọc giống cây trồng, vật nuôi là ứng dụng của lĩnh vực nào?|Di truyền học|Quang hợp|Hô hấp|Trao đổi chất|Chọn giống dựa trên quy luật di truyền.`);
+TLB[9][10].push(['Phân biệt nguyên phân và giảm phân.','Nguyên phân: một tế bào mẹ tạo hai tế bào con giống mẹ, giúp cơ thể lớn lên và thay thế tế bào. Giảm phân: tạo giao tử có bộ nhiễm sắc thể giảm đi một nửa.']);
+D[9].ov[10][1]='Chương 11: Mendel và cơ sở phân tử (DNA, RNA, gene, nhân đôi, đột biến). Chương 12: nhiễm sắc thể, nguyên phân, giảm phân. Chương 13: di truyền học với con người và đời sống (bệnh di truyền, chọn giống).';
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
-function ex6(){const e=EXALL[g][E6],pm=e.mc.length/2;
-return `<div class="pills">${Object.keys(EXALL[g]).map(k=>`<button class="${k==E6?'on':''}" onclick="setE('${k}')">${k}</button>`).join('')}<button onclick="genEx()">+ Tạo đề ngẫu nhiên</button></div>`+card('Đề '+E6+' lớp '+g+' (Kết nối tri thức)','<ul><li>'+e.sc+'</li><li>Thời gian gợi ý: 45 phút. Phần I trắc nghiệm '+e.mc.length+' câu ('+String(pm).replace('.',',')+' điểm), phần II tự luận '+e.tl.length+' câu ('+(10-pm)+' điểm).</li></ul>')+`<div class="score"><span id="es">Trắc nghiệm: ${es}/${e.mc.length}</span></div>`+e.mc.map((q,i)=>`<div class="card q" id="x${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ansE(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="xe${i}"></div></div>`).join('')+'<div class="card"><h3>Phần II. Tự luận ('+(10-pm)+' điểm)</h3></div>'+e.tl.map((q,i)=>`<div class="card"><h3>Câu ${i+1} (${q[0]} điểm)</h3><div>${q[1]}</div><button id="b${i}" onclick="tog(${i})" style="margin-top:8px">Xem đáp án</button><div class="ans" id="a${i}">${q[2]}</div></div>`).join('')}
+function ex6(){return ex6b()+vdc()}
+function ex6b(){const e=EXALL[g][E6],pm=e.mc.length/2;
+return `<div class="pills">${Object.keys(EXALL[g]).map(k=>`<button class="${k==E6?'on':''}" onclick="setE('${k}')">${k}</button>`).join('')}<button onclick="genEx()">+ Tạo đề ngẫu nhiên</button></div>`+card('Đề '+E6+' lớp '+g+' (Kết nối tri thức)','<ul><li>'+e.sc+'</li><li>Thời gian gợi ý: 45 phút. Phần I trắc nghiệm '+e.mc.length+' câu ('+String(pm).replace('.',',')+' điểm), phần II tự luận '+e.tl.length+' câu ('+(10-pm)+' điểm).</li></ul>')+mx(e)+`<div class="score"><span id="es">Trắc nghiệm: ${es}/${e.mc.length}</span></div>`+e.mc.map((q,i)=>`<div class="card q" id="x${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ansE(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="xe${i}"></div></div>`).join('')+'<div class="card"><h3>Phần II. Tự luận ('+(10-pm)+' điểm)</h3></div>'+e.tl.map((q,i)=>`<div class="card"><h3>Câu ${i+1} (${q[0]} điểm)</h3><div>${q[1]}</div><button id="b${i}" onclick="tog(${i})" style="margin-top:8px">Xem đáp án</button><div class="ans" id="a${i}">${q[2]}</div></div>`).join('')}
 function ansE(i,j){const q=EXALL[g][E6].mc[i],b=document.getElementById('x'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q[2]].classList.add('ok');if(j==q[2])es++;else o[j].classList.add('bad');document.getElementById('xe'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];document.getElementById('es').textContent='Trắc nghiệm: '+es+'/'+EXALL[g][E6].mc.length}
 function tog(i){const e=document.getElementById('a'+i),b=document.getElementById('b'+i),s=e.classList.toggle('show');b.textContent=s?'Ẩn đáp án':'Xem đáp án'}
 function card(h,b){return `<div class="card"><h3>${h}</h3><div>${b}</div></div>`}
@@ -1069,6 +1101,22 @@ const bs=box.querySelectorAll('.opt');bs[q[2]].classList.add('ok');
 if(j==q[2])score++;else bs[j].classList.add('bad');
 $('e'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];
 $('sc').textContent='Điểm: '+score+'/'+D[g].qz.length}
+let LK=null,LCODE='';
+function kidsHtml(){return LK&&LK.length?'<div>Các con đã liên kết:</div>'+LK.map((k,i)=>'<div class="row"><div>'+esc(k.child_label||'Học sinh')+'</div><button onclick="viewKid('+i+')">Xem tiến độ</button></div>').join(''):''}
+function linkUI(){if(!SB||!USER)return '';if(LK===null){LK=[];loadKids()}
+let h='<div class="card"><h3>Liên kết phụ huynh</h3>';
+if(VP){return h+'Đang xem tiến độ của <b>'+esc(VPN)+'</b>. <button onclick="closeV()">Quay lại tiến độ của tôi</button></div>'}
+h+='<div class="ex">Học sinh bấm tạo mã, phụ huynh nhập mã trong tài khoản của mình để xem tiến độ. Mã có hiệu lực 24 giờ.</div>';
+h+='<div class="arow"><button onclick="mkCode()">Tạo mã liên kết (học sinh)</button><b>'+esc(LCODE)+'</b></div>';
+h+='<div class="arow"><input id="pc" placeholder="Nhập mã của con"><button onclick="useCode()">Liên kết (phụ huynh)</button></div><div class="ex" id="lm"></div>';
+return h+kidsHtml()+'</div>'}
+async function loadKids(){const r=await SB.from('parent_links').select('child_id,child_label').eq('parent_id',USER.id);LK=r.data||[];if(t=='tt')render()}
+async function mkCode(){const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let c='';for(let i=0;i<6;i++)c+=ch[Math.floor(Math.random()*ch.length)];
+const r=await SB.from('link_codes').insert({code:c,child_id:USER.id,expires_at:new Date(Date.now()+864e5).toISOString()});
+LCODE=r.error?'':c;render();if(r.error)lm.textContent='Không tạo được mã: '+r.error.message}
+async function useCode(){const r=await SB.rpc('claim_link',{p_code:pc.value.trim()});if(r.error){lm.textContent='Không liên kết được: '+r.error.message;return}await loadKids()}
+async function viewKid(i){const k=LK[i],r=await SB.from('progress').select('data').eq('user_id',k.child_id).maybeSingle();VP=r.data&&r.data.data?mig(r.data.data):{};VPN=k.child_label||'học sinh';render()}
+function closeV(){VP=null;render()}
 initAuth();
 render();
 </script>
