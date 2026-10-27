@@ -645,9 +645,61 @@ h+='<div class="card"><h3>Chi tiết lớp '+g+'</h3><div class="ex">Thanh màu 
 const w=s.rows.filter(r=>r.d>=3&&r.k/r.d<0.6).map(r=>r.n),n=s.rows.filter(r=>r.d==0).length;
 h+='<div class="card"><h3>Gợi ý ôn tập</h3>'+(w.length?'Nên làm lại các chương: <b>'+w.join(', ')+'</b>.':'Chưa có chương nào cần ôn lại gấp.')+(n?' Còn '+n+' chương chưa làm.':' Đã làm ít nhất một câu ở mọi chương.')+'</div>';
 return h+'<p class="note">Tiến độ lấy từ thiết bị này và từ tài khoản nếu đã đăng nhập. Phụ huynh có thể đăng nhập bằng tài khoản của con trên máy khác để xem lại.</p>'}
-const BANKS={6:BANK6,7:BANK7,8:BANK8,9:BANK9};
+const TOC6=['Mở đầu về KHTN','Chất quanh ta','Vật liệu, nguyên liệu, nhiên liệu, lương thực, thực phẩm','Hỗn hợp, tách chất','Tế bào','Từ tế bào đến cơ thể','Đa dạng thế giới sống','Lực trong đời sống','Năng lượng','Trái Đất và bầu trời'];
+BANK6.forEach((c,i)=>c.n='Chương '+(i+1)+': '+TOC6[i]);
+const REMAP={7:{},8:{}};
+function regroup(g,B,spec){return spec.map((sp,ni)=>{const q=[];sp.from.forEach(([oc,ids])=>{const src=B[oc].q;(ids||src.map((_,i)=>i)).forEach(i=>{REMAP[g][oc+'-'+i]=ni+'-'+q.length;q.push(src[i])})});if(sp.add)sp.add.trim().split('\n').forEach(l=>{const a=l.split('|');q.push([a[0],a.slice(1,5),a[5]])});return {s:sp.s,n:'Chương '+(ni+1)+': '+sp.n,q}})}
+function regroupTL(T,spec){return spec.map(sp=>{const r=[];sp.tl.forEach(([oc,ids])=>{(ids||T[oc].map((_,i)=>i)).forEach(i=>r.push(T[oc][i]))});if(sp.addtl)sp.addtl.trim().split('\n').forEach(l=>r.push(l.split('|')));return r})}
+const S7=[
+{s:'Nguyên tử, BTH',n:'Nguyên tử và bảng tuần hoàn các nguyên tố hóa học',from:[[0],[1]],tl:[[0],[1]]},
+{s:'Phân tử, liên kết',n:'Phân tử và liên kết hóa học',from:[[2],[3]],tl:[[2],[3]]},
+{s:'Tốc độ',n:'Tốc độ',from:[[4]],tl:[[4]]},
+{s:'Âm thanh',n:'Âm thanh',from:[[5]],tl:[[5]]},
+{s:'Ánh sáng',n:'Ánh sáng',from:[[6]],tl:[[6]]},
+{s:'Từ',n:'Từ',from:[[7]],tl:[[7]]},
+{s:'Trao đổi chất',n:'Trao đổi chất và chuyển hóa năng lượng ở sinh vật',from:[[8]],tl:[[8]]},
+{s:'Cảm ứng',n:'Cảm ứng ở sinh vật',from:[[9,[0,1,4]]],tl:[[9,[0]]],
+add:`Ví dụ nào là cảm ứng ở thực vật?|Hoa hướng dương quay về phía Mặt Trời|Hạt nảy mầm|Cây lớn lên|Quả chín|Cây phản ứng với kích thích ánh sáng.
+Cây trinh nữ cụp lá khi chạm vào là hiện tượng gì?|Cảm ứng|Sinh trưởng|Sinh sản|Quang hợp|Phản ứng với kích thích tiếp xúc.
+Bộ phận nào giúp động vật nhận biết kích thích từ môi trường?|Cơ quan thụ cảm|Cơ quan sinh sản|Cơ quan tiêu hóa|Lông, vảy|Thụ cảm tiếp nhận kích thích.
+Cảm ứng có ý nghĩa gì đối với sinh vật?|Giúp sinh vật thích nghi và tồn tại|Làm sinh vật lớn nhanh hơn|Giúp sinh vật sinh sản|Tăng khối lượng cơ thể|Phản ứng đúng kích thích giúp sinh vật tồn tại.
+Tập tính học được là gì?|Hình thành trong quá trình sống nhờ học tập|Sinh ra đã có|Hoàn toàn do gene quyết định|Chỉ có ở thực vật|Ví dụ: chó biết ngồi theo lệnh.`,
+addtl:`Phân biệt cảm ứng ở động vật và ở thực vật.|Động vật phản ứng nhanh, rõ nhờ hệ thần kinh. Thực vật phản ứng chậm, thường biểu hiện bằng sự hướng động.`},
+{s:'Sinh trưởng, phát triển',n:'Sinh trưởng và phát triển ở sinh vật',from:[[9,[2,5]]],tl:[[9,[1]]],
+add:`Sinh trưởng là gì?|Tăng kích thước và khối lượng cơ thể|Biến đổi cấu tạo|Sinh sản|Chết đi|Là sự tăng lên về kích thước.
+Phát triển là gì?|Biến đổi về cấu tạo và chức năng qua các giai đoạn|Chỉ tăng chiều cao|Chỉ tăng cân|Chỉ đẻ con|Gồm sinh trưởng và phân hóa tế bào.
+Vòng đời của bướm gồm những giai đoạn nào?|Trứng, sâu, nhộng, bướm|Hạt, mầm, cây|Trứng, nòng nọc, ếch|Phôi, thai|Đây là biến thái hoàn toàn.
+Nòng nọc biến đổi thành ếch trưởng thành gọi là gì?|Biến thái|Thụ tinh|Thụ phấn|Nảy chồi|Ếch phát triển qua biến thái.
+Nhân tố nào ảnh hưởng đến sinh trưởng của cây?|Ánh sáng, nước, nhiệt độ|Chỉ màu hoa|Chỉ tên cây|Không nhân tố nào|Điều kiện môi trường tác động đến cây.
+Muốn cây sinh trưởng tốt cần làm gì?|Cung cấp đủ nước, ánh sáng, dinh dưỡng|Để cây trong bóng tối|Không tưới nước|Bón quá nhiều phân|Đáp ứng nhu cầu của cây.`,
+addtl:`Nêu ba yếu tố ảnh hưởng đến sinh trưởng và phát triển của vật nuôi.|Thức ăn, nhiệt độ môi trường, chăm sóc và phòng bệnh.`},
+{s:'Sinh sản',n:'Sinh sản ở sinh vật',from:[[9,[3,6,7]]],tl:[],
+add:`Sinh sản ở sinh vật là gì?|Tạo ra cá thể mới để duy trì loài|Lớn lên|Trao đổi chất|Cảm ứng|Là quá trình tạo ra thế hệ mới.
+Hạt phấn nằm ở bộ phận nào của hoa?|Nhị|Nhụy|Đài hoa|Cánh hoa|Nhị chứa hạt phấn.
+Sau thụ tinh, bầu nhụy phát triển thành gì?|Quả|Hoa|Rễ|Lá|Noãn thành hạt, bầu nhụy thành quả.
+Sinh sản bằng bào tử gặp ở sinh vật nào?|Dương xỉ|Cây cam|Cây ổi|Cây ngô|Dương xỉ sinh sản bằng bào tử.
+Ở người, tinh trùng kết hợp với tế bào nào để tạo hợp tử?|Trứng|Tế bào cơ|Hồng cầu|Tế bào thần kinh|Thụ tinh là sự kết hợp tinh trùng và trứng.`,
+addtl:`Phân biệt thụ phấn và thụ tinh.|Thụ phấn là hạt phấn tiếp xúc với đầu nhụy. Thụ tinh là tế bào sinh dục đực kết hợp tế bào sinh dục cái tạo hợp tử.
+Nêu hai biện pháp điều khiển sinh sản ở sinh vật và cho ví dụ.|Kích thích ra hoa (che sáng cho cây cúc), thụ phấn nhân tạo cho bí, tiêm hormone kích thích cá đẻ trứng.`}];
+const S8=[
+{s:'Phản ứng hóa học',n:'Phản ứng hóa học',from:[[0],[1],[2]],tl:[[0],[1],[2]]},
+{s:'Hợp chất thông dụng',n:'Một số hợp chất thông dụng',from:[[3],[4]],tl:[[3],[4]]},
+{s:'KLR, áp suất',n:'Khối lượng riêng và áp suất',from:[[5],[6,[0,1,4,5]]],tl:[[5],[6,[0]]]},
+{s:'Moment lực',n:'Tác dụng làm quay của lực',from:[[6,[2,3,6,7]]],tl:[[6,[1]]],
+add:`Tác dụng làm quay của lực phụ thuộc vào yếu tố nào?|Độ lớn của lực và cánh tay đòn|Chỉ khối lượng vật|Chỉ màu sắc|Chỉ nhiệt độ|Moment M = F × d.
+Muốn mở cửa dễ hơn nên đẩy ở vị trí nào?|Xa bản lề|Gần bản lề|Ngay tại bản lề|Vị trí nào cũng như nhau|Cánh tay đòn lớn thì moment lớn.
+Dùng đòn bẩy có tác dụng gì?|Dùng lực nhỏ nâng vật nặng|Làm vật nhẹ đi|Giảm khối lượng vật|Tăng tốc độ vật|Cánh tay đòn dài làm giảm lực cần dùng.
+Hai bạn ngồi bập bênh cân bằng khi nào?|Moment hai bên bằng nhau|Hai bạn cao bằng nhau|Hai bạn cùng tuổi|Bập bênh không có trục|Đó là điều kiện cân bằng của đòn bẩy.`,
+addtl:`Đòn bẩy cân bằng với F₁ = 20 N, d₁ = 0,3 m. Tính F₂ biết d₂ = 0,6 m.|F₁ × d₁ = F₂ × d₂ nên F₂ = 20 × 0,3 / 0,6 = 10 N.`},
+{s:'Điện',n:'Điện',from:[[7]],tl:[[7]]},
+{s:'Nhiệt',n:'Nhiệt',from:[[8]],tl:[[8]]},
+{s:'Cơ thể người',n:'Sinh học cơ thể người',from:[[9]],tl:[[9]]},
+{s:'Môi trường',n:'Sinh vật và môi trường',from:[[10]],tl:[[10]]}];
+const BANK7n=regroup(7,BANK7,S7),BANK8n=regroup(8,BANK8,S8);
+TLB[7]=regroupTL(TLB[7],S7);TLB[8]=regroupTL(TLB[8],S8);
+const BANKS={6:BANK6,7:BANK7n,8:BANK8n,9:BANK9};
 Object.values(BANKS).forEach(B=>B.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)})));
-function mig(o){const r={};for(const k in o)r[k.indexOf(':')<0?'6:'+k:k]=o[k];return r}
+function mig(o){if(o&&o._v>=2)return o;const r={_v:2};for(const k in o){let kk=k.indexOf(':')<0?'6:'+k:k;const m=kk.split(':'),R=REMAP[m[0]];if(R&&R[m[1]])kk=m[0]+':'+R[m[1]];r[kk]=o[k]}return r}
 let CH=0,P={},DBR=null;
 try{P=JSON.parse(localStorage.getItem('khtn6')||'{}')}catch(e){}
 P=mig(P);
@@ -840,6 +892,14 @@ tl:[[3,'Lai Aa × aa (A trội hoàn toàn so với a). Viết tỉ lệ kiểu 
 };
 function cv(o){Object.values(o).forEach(e=>{e.mc=e.mc.map(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);return [q[0],x.map(i=>q[1][i]),x.indexOf(0),q[2]]})});return o}
 const EXALL={6:EX6,7:cv(EX7),8:cv(EX8),9:cv(EX9)};
+const SC={
+6:{'Giữa kỳ 1':'Phạm vi (gợi ý): Chương 1 Mở đầu về KHTN, Chương 2 Chất quanh ta.','Học kỳ 1':'Phạm vi (gợi ý): Chương 1–5, gồm vật liệu, nhiên liệu, hỗn hợp, tách chất và tế bào.','Giữa kỳ 2':'Phạm vi (gợi ý): Chương 5–7, gồm tế bào, từ tế bào đến cơ thể, đa dạng thế giới sống.','Học kỳ 2':'Phạm vi (gợi ý): Chương 7–10, gồm đa dạng thế giới sống, lực, năng lượng, Trái Đất và bầu trời.'},
+7:{'Giữa kỳ 1':'Phạm vi (gợi ý): Chương 1 Nguyên tử và bảng tuần hoàn các nguyên tố hóa học.','Học kỳ 1':'Phạm vi (gợi ý): Chương 1–3, gồm phân tử, liên kết hóa học, hóa trị và tốc độ.','Giữa kỳ 2':'Phạm vi (gợi ý): Chương 4–6, gồm âm thanh, ánh sáng, từ.','Học kỳ 2':'Phạm vi (gợi ý): Chương 7–10, gồm trao đổi chất, cảm ứng, sinh trưởng và phát triển, sinh sản.'},
+8:{'Giữa kỳ 1':'Phạm vi (gợi ý): Chương 1 Phản ứng hóa học, bắt đầu Chương 3 khối lượng riêng.','Học kỳ 1':'Phạm vi (gợi ý): Chương 1–3, gồm hợp chất thông dụng, khối lượng riêng và áp suất.','Giữa kỳ 2':'Phạm vi (gợi ý): Chương 3–6, gồm lực đẩy Archimedes, tác dụng làm quay của lực, điện, nhiệt.','Học kỳ 2':'Phạm vi (gợi ý): Chương 7–8, gồm sinh học cơ thể người, sinh vật và môi trường.'}};
+for(const gr in SC)for(const k in SC[gr])EXALL[gr][k].sc=SC[gr][k];
+D[6].ov=[['Chương 1. Mở đầu về KHTN','Giới thiệu KHTN, quy tắc an toàn, dụng cụ đo, đo chiều dài, khối lượng, thời gian, nhiệt độ.'],['Chương 2. Chất quanh ta','Ba thể của chất, sự chuyển thể, oxygen và không khí.'],['Chương 3. Vật liệu, nguyên liệu, nhiên liệu, lương thực, thực phẩm','Tính chất và ứng dụng, sử dụng an toàn và tiết kiệm.'],['Chương 4. Hỗn hợp, tách chất','Hỗn hợp, chất tinh khiết, dung dịch, huyền phù, các phương pháp tách chất.'],['Chương 5. Tế bào','Cấu tạo và chức năng các thành phần tế bào, sự lớn lên và phân chia tế bào.'],['Chương 6. Từ tế bào đến cơ thể','Cơ thể đơn bào, đa bào, các cấp độ tổ chức của cơ thể.'],['Chương 7. Đa dạng thế giới sống','Phân loại, khóa lưỡng phân, virus, vi khuẩn, nguyên sinh vật, nấm, thực vật, động vật.'],['Chương 8. Lực trong đời sống','Lực, tác dụng của lực, ma sát, trọng lượng, biến dạng lò xo.'],['Chương 9. Năng lượng','Các dạng năng lượng, chuyển hóa, bảo toàn, năng lượng tái tạo, tiết kiệm năng lượng.'],['Chương 10. Trái Đất và bầu trời','Chuyển động nhìn thấy của Mặt Trời, các pha của Mặt Trăng, hệ Mặt Trời, Ngân Hà.']];
+D[7].ov=[['Chương 1. Nguyên tử và bảng tuần hoàn các nguyên tố hóa học','Mô hình nguyên tử, nguyên tố hóa học, sơ lược bảng tuần hoàn.'],['Chương 2. Phân tử và liên kết hóa học','Phân tử, đơn chất, hợp chất, liên kết ion, liên kết cộng hóa trị, hóa trị, công thức hóa học.'],['Chương 3. Tốc độ','Tốc độ chuyển động, đo tốc độ, đồ thị quãng đường–thời gian.'],['Chương 4. Âm thanh','Sóng âm, độ cao, độ to, phản xạ âm, chống ô nhiễm tiếng ồn.'],['Chương 5. Ánh sáng','Tia sáng, phản xạ ánh sáng, ảnh qua gương phẳng.'],['Chương 6. Từ','Nam châm, từ trường, từ trường Trái Đất.'],['Chương 7. Trao đổi chất và chuyển hóa năng lượng ở sinh vật','Quang hợp, hô hấp tế bào, trao đổi nước và khí.'],['Chương 8. Cảm ứng ở sinh vật','Cảm ứng và tập tính ở thực vật và động vật.'],['Chương 9. Sinh trưởng và phát triển ở sinh vật','Sinh trưởng, phát triển và các nhân tố ảnh hưởng.'],['Chương 10. Sinh sản ở sinh vật','Sinh sản vô tính, hữu tính, thụ phấn, thụ tinh.']];
+D[8].ov=[['Chương 1. Phản ứng hóa học','Biến đổi vật lí và hóa học, phương trình hóa học, bảo toàn khối lượng, mol, tỉ khối, nồng độ dung dịch.'],['Chương 2. Một số hợp chất thông dụng','Acid, base, thang pH, oxide, muối, phân bón.'],['Chương 3. Khối lượng riêng và áp suất','Khối lượng riêng, áp suất, lực đẩy Archimedes.'],['Chương 4. Tác dụng làm quay của lực','Moment lực, đòn bẩy.'],['Chương 5. Điện','Dòng điện, hiệu điện thế, điện trở, định luật Ohm, mạch nối tiếp và song song.'],['Chương 6. Nhiệt','Năng lượng nhiệt, truyền nhiệt.'],['Chương 7. Sinh học cơ thể người','Các hệ cơ quan: tiêu hóa, hô hấp, tuần hoàn, bài tiết, thần kinh, nội tiết.'],['Chương 8. Sinh vật và môi trường','Nhân tố sinh thái, quần thể, quần xã, hệ sinh thái.']];
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){const e=EXALL[g][E6],pm=e.mc.length/2;
