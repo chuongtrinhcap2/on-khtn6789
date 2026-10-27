@@ -493,6 +493,77 @@ Phân biệt quang hợp và hô hấp tế bào.|Quang hợp tạo chất hữu
 `Nêu một ví dụ cảm ứng ở thực vật và ý nghĩa của nó.|Ngọn cây hướng sáng giúp nhận nhiều ánh sáng để quang hợp, rễ hướng nước giúp hút nước.
 Phân biệt sinh trưởng và phát triển.|Sinh trưởng là tăng kích thước và khối lượng. Phát triển là biến đổi về cấu tạo và chức năng qua các giai đoạn.`
 ].map(t=>t.trim().split('\n').map(l=>l.split('|')));
+const EXTRA8=[
+`Dấu hiệu nào thường cho biết có phản ứng hóa học?|Sủi bọt khí, đổi màu, tạo kết tủa|Chất đổi hình dạng|Chất bị nghiền nhỏ|Chất bị pha loãng|Các dấu hiệu cho thấy có chất mới.
+Quá trình nào là biến đổi vật lí?|Nước bay hơi|Sắt bị gỉ|Gỗ cháy|Sữa lên men|Không tạo ra chất mới.
+Hệ số đứng trước công thức trong phương trình hóa học cho biết gì?|Số phân tử hoặc nguyên tử|Khối lượng chất|Màu sắc|Nhiệt độ|Hệ số dùng để cân bằng phương trình.
+Chất xúc tác có vai trò gì?|Làm tăng tốc độ phản ứng, không bị tiêu hao|Làm giảm khối lượng|Làm đổi màu|Bị tiêu hao hết|Xúc tác không bị mất đi sau phản ứng.`,
+`Khối lượng mol của H₂O là bao nhiêu (H = 1, O = 16)?|18 g/mol|16 g/mol|10 g/mol|34 g/mol|2 × 1 + 16.
+Số mol của 11,2 g Fe là bao nhiêu (Fe = 56)?|0,2 mol|2 mol|0,02 mol|11,2 mol|n = m / M.
+Thể tích của 0,5 mol khí ở 25 °C, 1 bar là bao nhiêu?|12,395 L|11,2 L|22,4 L|24,79 L|0,5 × 24,79.
+Khí A có tỉ khối so với H₂ bằng 16. Khối lượng mol của A là bao nhiêu?|32 g/mol|16 g/mol|8 g/mol|18 g/mol|M = 16 × 2.`,
+`Hòa tan 20 g đường vào 80 g nước. Nồng độ phần trăm là bao nhiêu?|20%|25%|80%|16%|20 / 100 × 100%.
+Dung dịch H₂SO₄ 0,5 M có nghĩa là gì?|Có 0,5 mol H₂SO₄ trong 1 lít dung dịch|Có 0,5 g H₂SO₄ trong 1 lít|Có 0,5 L dung môi|Có 50% chất tan|Đó là định nghĩa nồng độ mol.
+Cần bao nhiêu gam NaCl để pha 500 g dung dịch NaCl 10%?|50 g|10 g|5 g|100 g|500 × 10%.
+Làm thế nào để pha loãng một dung dịch?|Thêm dung môi|Thêm chất tan|Đun cạn|Lọc|Thêm nước làm giảm nồng độ.`,
+`Chất chỉ thị nào chuyển xanh trong dung dịch base?|Quỳ tím|Nước cất|Đường|Muối ăn|Quỳ tím hóa xanh trong base.
+Dung dịch nào có tính acid?|Giấm ăn|Nước vôi trong|Xà phòng|Nước muối|Giấm chứa acetic acid.
+pH nhỏ hơn 7 chứng tỏ dung dịch có tính chất nào?|Acid|Base|Trung tính|Muối|pH < 7 là acid.
+Acid HCl tác dụng với Zn tạo ra khí nào?|Hydrogen|Oxygen|Carbon dioxide|Chlorine|Zn + 2HCl → ZnCl₂ + H₂.`,
+`Oxide nào tác dụng với nước tạo ra base?|CaO|CO₂|SO₂|P₂O₅|CaO + H₂O → Ca(OH)₂.
+Muối nào chứa gốc carbonate?|CaCO₃|NaCl|KNO₃|CuSO₄|CO₃ là gốc carbonate.
+Phân bón nào cung cấp nguyên tố phosphorus?|Superphosphate|Urea|Potassium chloride|Vôi bột|Đó là phân lân.
+Lạm dụng phân bón hóa học gây hậu quả gì?|Ô nhiễm đất và nước|Đất tốt mãi mãi|Cây không cần nước|Không ảnh hưởng gì|Cần bón đúng liều lượng.`,
+`Công thức tính khối lượng riêng là gì?|D = m / V|D = m × V|D = V / m|D = F / S|Khối lượng chia thể tích.
+Vật có D = 2700 kg/m³ và V = 0,01 m³. Khối lượng là bao nhiêu?|27 kg|270 kg|0,27 kg|2,7 kg|m = D × V.
+Áp suất chất lỏng lên đáy bình tăng khi nào?|Độ sâu tăng|Độ sâu giảm|Không phụ thuộc gì|Bình nhỏ lại|p = d × h.
+Lực ép 60 N lên diện tích 0,03 m². Áp suất là bao nhiêu?|2000 Pa|1,8 Pa|0,0005 Pa|180 Pa|p = F / S.`,
+`Vật chìm hoàn toàn trong nước có thể tích 0,001 m³ (d = 10000 N/m³). Lực đẩy Archimedes là bao nhiêu?|10 N|1 N|100 N|0,1 N|F(A) = d × V.
+Thả vật vào nước thấy vật chìm. Lực đẩy so với trọng lượng như thế nào?|Nhỏ hơn|Lớn hơn|Bằng nhau|Bằng 0|Vật chìm khi F(A) < P.
+Đòn bẩy cân bằng khi nào?|Tổng moment hai bên bằng nhau|Hai lực bằng nhau|Hai cánh tay đòn bằng nhau|Không có lực|M₁ = M₂.
+Lực 30 N có cánh tay đòn 0,2 m. Moment lực là bao nhiêu?|6 N·m|150 N·m|0,0067 N·m|30,2 N·m|M = F × d.`,
+`Hiệu điện thế được đo bằng đơn vị nào?|Vôn (V)|Ampe (A)|Ôm (Ω)|Oát (W)|U đo bằng vôn.
+Dòng điện chạy qua dây tóc bóng đèn gây tác dụng nào?|Nhiệt và phát sáng|Chỉ tác dụng hóa học|Không có tác dụng|Chỉ tác dụng sinh lí|Dây tóc nóng lên và phát sáng.
+Tăng chiều dài dây dẫn thì điện trở thay đổi thế nào?|Tăng|Giảm|Không đổi|Bằng 0|R tỉ lệ thuận với chiều dài.
+Biết I = 0,5 A, R = 24 Ω. Hiệu điện thế là bao nhiêu?|12 V|48 V|0,02 V|24,5 V|U = I × R.`,
+`Nhiệt năng của vật là gì?|Tổng động năng của các hạt cấu tạo nên vật|Thế năng của vật|Khối lượng của vật|Thể tích của vật|Các hạt chuyển động hỗn loạn.
+Hình thức truyền nhiệt nào xảy ra trong chân không?|Bức xạ nhiệt|Dẫn nhiệt|Đối lưu|Không hình thức nào|Mặt Trời truyền nhiệt đến Trái Đất.
+Vì sao nồi nấu thường làm bằng kim loại?|Dẫn nhiệt tốt|Nhẹ|Dễ vỡ|Cách nhiệt|Kim loại dẫn nhiệt tốt.
+Vật nhận nhiệt thì nhiệt độ thường thay đổi thế nào?|Tăng|Luôn giảm|Luôn không đổi|Bằng 0|Nhận nhiệt thường làm tăng nhiệt độ.`,
+`Cơ quan nào bơm máu đi khắp cơ thể?|Tim|Phổi|Thận|Gan|Tim co bóp đẩy máu.
+Hồng cầu có chức năng chính là gì?|Vận chuyển oxygen|Tiêu diệt vi khuẩn|Đông máu|Tiêu hóa thức ăn|Hemoglobin gắn với oxygen.
+Thận có vai trò gì?|Lọc máu, tạo nước tiểu|Bơm máu|Hấp thụ chất dinh dưỡng|Tạo mật|Thận thuộc hệ bài tiết.
+Tuyến tụy tiết hormone nào điều hòa đường huyết?|Insulin|Adrenaline|Thyroxine|Testosterone|Insulin làm giảm đường huyết.`,
+`Nhân tố nào là nhân tố sinh thái vô sinh?|Nhiệt độ|Cây cỏ|Con người|Vi khuẩn|Vô sinh là yếu tố không sống.
+Chuỗi thức ăn nào viết đúng?|Cỏ → châu chấu → ếch|Ếch → châu chấu → cỏ|Châu chấu → cỏ → ếch|Ếch → cỏ → châu chấu|Chuỗi bắt đầu từ sinh vật sản xuất.
+Sinh vật phân giải có vai trò gì?|Phân giải xác sinh vật thành chất vô cơ|Tạo chất hữu cơ từ ánh sáng|Chỉ ăn thịt|Không có vai trò|Vi khuẩn và nấm là sinh vật phân giải.
+Biện pháp nào bảo vệ môi trường?|Trồng cây, giảm rác thải|Chặt phá rừng|Xả rác bừa bãi|Đốt rác ngoài trời|Bảo vệ hệ sinh thái.`
+];
+BANK8.forEach((c,i)=>EXTRA8[i].trim().split('\n').forEach(l=>{const a=l.split('|');c.q.push([a[0],a.slice(1,5),a[5]])}));
+TLB[8]=[
+`Nêu dấu hiệu nhận biết phản ứng hóa học và cho một ví dụ.|Có chất mới tạo thành: sủi bọt khí, đổi màu, kết tủa, tỏa nhiệt hoặc phát sáng. Ví dụ: đốt cháy gỗ.
+Cân bằng phương trình: Fe + Cl₂ → FeCl₃.|2Fe + 3Cl₂ → 2FeCl₃.`,
+`Tính khối lượng của 0,25 mol CaCO₃ (Ca = 40, C = 12, O = 16).|M = 100 g/mol. m = 0,25 × 100 = 25 g.
+Tính tỉ khối của khí SO₂ so với không khí (S = 32, O = 16).|M(SO₂) = 64. d = 64 / 29 ≈ 2,2 nên SO₂ nặng hơn không khí.`,
+`Hòa tan 15 g NaCl vào 135 g nước. Tính nồng độ phần trăm.|m dung dịch = 150 g. C% = 15 / 150 × 100% = 10%.
+Tính nồng độ mol của dung dịch chứa 0,3 mol HCl trong 600 mL dung dịch.|V = 0,6 L. CM = 0,3 / 0,6 = 0,5 M.`,
+`Trình bày cách nhận biết dung dịch acid và base bằng quỳ tím.|Nhúng giấy quỳ tím vào dung dịch: hóa đỏ là acid, hóa xanh là base, không đổi màu là trung tính.
+Viết phương trình HCl + NaOH và cho biết tên loại phản ứng.|HCl + NaOH → NaCl + H₂O. Đây là phản ứng trung hòa.`,
+`Phân loại các chất sau: CaO, SO₂, NaCl, KNO₃.|CaO là oxide base, SO₂ là oxide acid, NaCl và KNO₃ là muối.
+Nêu vai trò của phân đạm, lân, kali đối với cây trồng.|Đạm giúp thân lá phát triển, lân giúp rễ, hoa và quả, kali giúp cây cứng cáp và chống chịu tốt.`,
+`Một vật 540 g có thể tích 200 cm³. Tính khối lượng riêng theo g/cm³ và kg/m³.|D = 540 / 200 = 2,7 g/cm³ = 2700 kg/m³.
+Vì sao dao có lưỡi sắc cắt dễ hơn dao cùn?|Cùng một lực nhưng lưỡi sắc có diện tích tiếp xúc nhỏ hơn nên áp suất lớn hơn.`,
+`Vật có trọng lượng 5 N, khi nhúng chìm vào nước lực kế chỉ 3 N. Tính lực đẩy Archimedes.|F(A) = 5 − 3 = 2 N.
+Tính moment lực khi dùng cờ lê dài 0,25 m với lực 40 N.|M = F × d = 40 × 0,25 = 10 N·m.`,
+`Tính cường độ dòng điện qua điện trở 15 Ω khi hiệu điện thế 6 V.|I = U / R = 6 / 15 = 0,4 A.
+Hai điện trở 6 Ω và 12 Ω mắc nối tiếp. Tính điện trở tương đương.|R = 6 + 12 = 18 Ω.`,
+`Phân biệt dẫn nhiệt, đối lưu và bức xạ nhiệt.|Dẫn nhiệt chủ yếu trong chất rắn, đối lưu trong chất lỏng và chất khí, bức xạ nhiệt truyền được cả trong chân không.
+Nêu hai cách giảm hao phí nhiệt khi nấu ăn.|Đậy nắp nồi, dùng nồi và bếp có kích thước phù hợp.`,
+`Nêu đường đi của thức ăn trong ống tiêu hóa.|Miệng, thực quản, dạ dày, ruột non, ruột già, hậu môn.
+Nêu chức năng của hồng cầu, bạch cầu và tiểu cầu.|Hồng cầu vận chuyển oxygen, bạch cầu bảo vệ cơ thể, tiểu cầu giúp đông máu.`,
+`Viết một chuỗi thức ăn có 4 mắt xích ở đồng cỏ.|Cỏ → châu chấu → ếch → rắn.
+Nêu vai trò của rừng đối với môi trường.|Điều hòa khí hậu, giữ đất chống xói mòn, hấp thụ CO₂ và thải O₂, là nơi sống của nhiều sinh vật.`
+].map(t=>t.trim().split('\n').map(l=>l.split('|')));
 const BANKS={6:BANK6,7:BANK7,8:BANK8,9:BANK9};
 Object.values(BANKS).forEach(B=>B.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)})));
 function mig(o){const r={};for(const k in o)r[k.indexOf(':')<0?'6:'+k:k]=o[k];return r}
