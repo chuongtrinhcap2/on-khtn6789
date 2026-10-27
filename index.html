@@ -691,7 +691,14 @@ Muốn mở cửa dễ hơn nên đẩy ở vị trí nào?|Xa bản lề|Gần 
 Dùng đòn bẩy có tác dụng gì?|Dùng lực nhỏ nâng vật nặng|Làm vật nhẹ đi|Giảm khối lượng vật|Tăng tốc độ vật|Cánh tay đòn dài làm giảm lực cần dùng.
 Hai bạn ngồi bập bênh cân bằng khi nào?|Moment hai bên bằng nhau|Hai bạn cao bằng nhau|Hai bạn cùng tuổi|Bập bênh không có trục|Đó là điều kiện cân bằng của đòn bẩy.`,
 addtl:`Đòn bẩy cân bằng với F₁ = 20 N, d₁ = 0,3 m. Tính F₂ biết d₂ = 0,6 m.|F₁ × d₁ = F₂ × d₂ nên F₂ = 20 × 0,3 / 0,6 = 10 N.`},
-{s:'Điện',n:'Điện',from:[[7]],tl:[[7]]},
+{s:'Điện',n:'Điện',from:[[7,[0,1,2,4,5]]],tl:[],
+add:`Nguồn điện có vai trò gì?|Duy trì dòng điện trong mạch|Tiêu thụ điện|Làm lạnh mạch|Làm tăng điện trở|Pin và ắc quy là nguồn điện.
+Mạch điện đơn giản gồm những bộ phận nào?|Nguồn điện, dây dẫn, công tắc, thiết bị điện|Chỉ có dây dẫn|Chỉ có bóng đèn|Chỉ có công tắc|Các bộ phận nối thành mạch kín.
+Dòng điện chạy qua dung dịch muối đồng gây tác dụng nào?|Tác dụng hóa học|Tác dụng từ|Tác dụng sinh lí|Không có tác dụng|Dòng điện làm đồng bám vào điện cực.
+Đơn vị của cường độ dòng điện là gì?|Ampe (A)|Vôn (V)|Oát (W)|Ôm (Ω)|Ampe kế đo cường độ dòng điện.
+Chuông điện hoạt động dựa vào tác dụng nào của dòng điện?|Tác dụng từ|Tác dụng nhiệt|Tác dụng hóa học|Tác dụng sinh lí|Dòng điện tạo từ trường hút lá sắt.`,
+addtl:`Nêu các tác dụng của dòng điện, mỗi tác dụng cho một ví dụ.|Tác dụng nhiệt (bàn là), phát sáng (đèn LED), từ (chuông điện), hóa học (mạ điện), sinh lí (điện giật gây co cơ).
+Mô tả cách mắc ampe kế và vôn kế để đo dòng điện qua đèn và hiệu điện thế hai đầu đèn.|Ampe kế mắc nối tiếp với đèn. Vôn kế mắc song song với hai đầu đèn.`},
 {s:'Nhiệt',n:'Nhiệt',from:[[8]],tl:[[8]]},
 {s:'Cơ thể người',n:'Sinh học cơ thể người',from:[[9]],tl:[[9]]},
 {s:'Môi trường',n:'Sinh vật và môi trường',from:[[10]],tl:[[10]]}];
@@ -768,8 +775,43 @@ Sự thích nghi của sinh vật với môi trường là kết quả của gì
 addtl:`Nêu một ví dụ về thích nghi của sinh vật với môi trường và giải thích.|Gấu Bắc Cực có lông trắng để ngụy trang và lớp mỡ dày giữ ấm, do cá thể thích nghi được chọn lọc qua nhiều thế hệ.`}];
 const BANK9n=regroup(9,BANK9,S9);TLB[9]=regroupTL(TLB[9],S9);
 const BANKS={6:BANK6,7:BANK7n,8:BANK8n,9:BANK9n};
+const addQ=(g,c,t)=>t.trim().split('\n').forEach(l=>{const a=l.split('|');BANKS[g][c].q.push([a[0],a.slice(1,5),a[5]])});
+addQ(6,0,`Kính lúp dùng để làm gì?|Quan sát vật nhỏ rõ hơn|Đo nhiệt độ|Đo khối lượng|Đo thể tích|Kính lúp là thấu kính hội tụ cho ảnh lớn hơn vật.`);
+addQ(6,3,`Nhũ tương như sữa, nước sốt là hỗn hợp của những chất nào?|Hai chất lỏng không tan vào nhau|Chất rắn và chất khí|Hai chất khí|Chất rắn tan trong nước|Các giọt chất lỏng phân tán trong chất lỏng khác.
+Dùng phễu chiết để tách hai chất lỏng nào?|Dầu ăn và nước|Nước và muối|Nước và đường|Cát và nước|Hai chất lỏng không hòa tan tách thành hai lớp.`);
+addQ(6,6,`Biện pháp nào giúp bảo vệ đa dạng sinh học?|Bảo vệ rừng, cấm săn bắt động vật hoang dã|Đốt rừng làm nương|Săn bắt thú quý|Xả rác xuống sông|Giữ gìn môi trường sống của sinh vật.`);
+addQ(6,7,`Lực đàn hồi xuất hiện khi nào?|Khi lò xo bị nén hoặc giãn|Khi vật rơi|Khi vật đứng yên|Khi vật nổi|Lực đàn hồi chống lại sự biến dạng.
+Mũi tên biểu diễn lực cho biết điều gì về lực?|Phương, chiều và độ lớn của lực|Khối lượng vật|Nhiệt độ|Thời gian|Gốc mũi tên là điểm đặt, độ dài thể hiện độ lớn.
+Lực cản của không khí có tác dụng gì với vật chuyển động?|Cản trở chuyển động|Làm vật chạy nhanh hơn|Không có tác dụng|Làm vật nặng thêm|Lực cản ngược chiều chuyển động.`);
+addQ(6,8,`Năng lượng hao phí là gì?|Phần năng lượng không có ích bị tỏa ra môi trường|Năng lượng được tạo thêm|Năng lượng có ích|Năng lượng tái tạo|Thường là nhiệt năng tỏa ra.`);
+addQ(6,9,`Ngân Hà là gì?|Tập hợp rất nhiều ngôi sao, trong đó có Mặt Trời|Một hành tinh|Một vệ tinh|Một sao chổi|Hệ Mặt Trời nằm trong Ngân Hà.`);
+addQ(7,2,`Vì sao cần giữ khoảng cách an toàn giữa các xe khi tham gia giao thông?|Để có đủ thời gian và quãng đường phanh|Để xe chạy nhanh hơn|Để tiết kiệm xăng|Để xe nhẹ hơn|Tốc độ càng lớn thì quãng đường phanh càng dài.`);
+addQ(7,4,`Vùng tối là vùng như thế nào?|Không nhận được ánh sáng từ nguồn sáng|Nhận toàn bộ ánh sáng|Nhận một phần ánh sáng|Luôn có màu đen|Do vật cản chặn hết ánh sáng.`);
+addQ(7,5,`Nam châm điện gồm những bộ phận nào?|Cuộn dây có dòng điện chạy qua và lõi sắt non|Một thanh nam châm vĩnh cửu|Một thanh nhựa|Một sợi dây đồng thẳng|Ngắt điện thì không còn từ tính.`);
+addQ(7,6,`Rễ cây hấp thụ nước và muối khoáng nhờ bộ phận nào?|Lông hút|Khí khổng|Lục lạp|Mạch rây|Lông hút ở đầu rễ.
+Ở động vật, thức ăn được biến đổi thành chất dinh dưỡng nhờ quá trình nào?|Tiêu hóa|Quang hợp|Cảm ứng|Sinh sản|Tiêu hóa giúp cơ thể hấp thụ chất dinh dưỡng.`);
+addQ(8,0,`Yếu tố nào làm tăng tốc độ phản ứng?|Tăng nhiệt độ|Giảm nhiệt độ|Giảm nồng độ chất phản ứng|Giảm diện tích tiếp xúc|Nhiệt độ cao thì phản ứng thường xảy ra nhanh hơn.
+Than dạng bột cháy nhanh hơn than cục vì sao?|Diện tích tiếp xúc lớn hơn|Nhiệt độ thấp hơn|Ít oxygen hơn|Nồng độ giảm|Chất rắn càng nhỏ thì tiếp xúc càng nhiều.`);
+addQ(8,2,`Áp suất khí quyển là gì?|Áp suất do không khí gây ra lên mọi vật|Áp suất của nước biển|Áp suất của chất rắn|Áp suất của chân không|Càng lên cao áp suất khí quyển càng giảm.`);
+addQ(8,5,`Nội năng của vật là gì?|Tổng động năng và thế năng của các hạt cấu tạo nên vật|Động năng của cả vật|Thế năng của cả vật|Khối lượng vật|Nội năng thay đổi khi nhiệt độ thay đổi.`);
+addQ(8,6,`Hệ vận động gồm những bộ phận nào?|Xương và cơ|Tim và mạch máu|Dạ dày và ruột|Phổi và khí quản|Xương làm khung, cơ co giãn giúp cơ thể vận động.
+Da có chức năng nào?|Bảo vệ cơ thể và điều hòa thân nhiệt|Tiêu hóa thức ăn|Bơm máu|Trao đổi khí|Da là cơ quan bảo vệ cơ thể.
+Cơ quan nào của hệ sinh sản nữ sản sinh trứng?|Buồng trứng|Tử cung|Âm đạo|Ống dẫn trứng|Buồng trứng tạo trứng.`);
+addQ(9,1,`Thấu kính phân kì có phần giữa như thế nào?|Mỏng hơn phần rìa|Dày hơn phần rìa|Bằng phần rìa|Rỗng|Chùm tia tới song song cho chùm tia ló phân kì.
+Phản xạ toàn phần xảy ra khi nào?|Ánh sáng đi từ môi trường chiết quang hơn sang môi trường kém hơn với góc tới đủ lớn|Ánh sáng đi từ không khí vào nước|Ánh sáng truyền trong chân không|Ánh sáng bị hấp thụ|Ứng dụng: cáp quang.`);
+addQ(9,4,`Khi sử dụng điện cần chú ý điều gì để an toàn?|Không chạm vào dây điện hở, dùng thiết bị đúng quy cách|Dùng tay ướt cắm phích|Sửa điện khi đang có điện|Cắm nhiều thiết bị vào một ổ|Đảm bảo an toàn điện.`);
+addQ(9,5,`Sự ăn mòn kim loại là gì?|Kim loại bị phá hủy do tác dụng hóa học với môi trường|Kim loại bị cắt|Kim loại bị nung nóng|Kim loại bị sơn|Ví dụ: sắt bị gỉ.`);
+addQ(9,8,`Saccharose có nhiều trong thực phẩm nào?|Mía, củ cải đường|Dầu ăn|Thịt|Muối|Saccharose là đường ăn thông dụng.
+Cellulose là thành phần chính của bộ phận nào?|Thành tế bào thực vật, gỗ, bông|Mỡ động vật|Lòng trắng trứng|Mật ong|Cellulose là carbohydrate cấu tạo thành tế bào thực vật.
+Cao su thiên nhiên thuộc loại chất nào?|Polymer|Kim loại|Muối|Oxide|Cao su là polymer.`);
+addQ(9,9,`Dầu mỏ được tách thành các sản phẩm bằng phương pháp nào?|Chưng cất phân đoạn|Lọc|Chiết|Dùng nam châm|Mỗi phân đoạn có nhiệt độ sôi khác nhau.
+Đất sét dùng làm nguyên liệu để sản xuất gì?|Gạch, ngói, gốm|Xăng|Dây điện|Phân đạm|Đất sét là nguyên liệu gốm sứ.
+Thành phần chính của khí thiên nhiên là chất nào?|Methane|Ethanol|Acetic acid|Glucose|Dùng làm nhiên liệu và nguyên liệu hóa học.`);
+addQ(9,10,`Nhiễm sắc thể gồm những thành phần nào?|DNA và protein|Chỉ lipid|Chỉ nước|Chỉ muối khoáng|Nhiễm sắc thể mang gene.
+Ứng dụng nào là công nghệ sinh học trong y học?|Sản xuất insulin nhờ vi khuẩn biến đổi gene|Chế tạo xi măng|Luyện gang|Làm gạch|Công nghệ gene tạo vi khuẩn sản xuất insulin.`);
+addQ(9,11,`Theo thuyết tiến hóa, người và vượn người hiện đại có điểm chung nào?|Có chung tổ tiên|Người sinh ra từ vượn người hiện nay|Hoàn toàn không liên quan|Người sinh ra từ cá|Hai nhóm cùng tiến hóa từ tổ tiên chung.`);
 Object.values(BANKS).forEach(B=>B.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)})));
-function mig(o){const v=(o&&o._v)||0;if(v>=3)return o;const r={_v:3};for(const k in o){if(k=='_v')continue;let kk=k.indexOf(':')<0?'6:'+k:k;const m=kk.split(':'),R=REMAP[m[0]];if(R&&R[m[1]]&&v<({7:2,8:2,9:3}[m[0]]))kk=m[0]+':'+R[m[1]];r[kk]=o[k]}return r}
+function mig(o){const v=(o&&o._v)||0;if(v>=4)return o;const r={_v:4};for(const k in o){if(k=='_v')continue;let kk=k.indexOf(':')<0?'6:'+k:k;const m=kk.split(':'),R=REMAP[m[0]];if(R&&R[m[1]]&&v<({7:2,8:2,9:3}[m[0]]))kk=m[0]+':'+R[m[1]];if(v>=2&&v<4&&kk.indexOf('8:4-')==0){const i=+kk.split('-')[1];if(i==3||i>=6)continue;if(i>=4)kk='8:4-'+(i-1)}r[kk]=o[k]}return r}
 let CH=0,P={},DBR=null;
 try{P=JSON.parse(localStorage.getItem('khtn6')||'{}')}catch(e){}
 P=mig(P);
@@ -973,6 +1015,40 @@ D[8].ov=[['Chương 1. Phản ứng hóa học','Biến đổi vật lí và hó
 const SC9={'Giữa kỳ 1':'Phạm vi (gợi ý): Chương 1 Năng lượng cơ học, Chương 2 Ánh sáng.','Học kỳ 1':'Phạm vi (gợi ý): Chương 1–3, gồm mắt và kính lúp, điện, năng lượng điện.','Giữa kỳ 2':'Phạm vi (gợi ý): Chương 4–6, gồm điện từ, năng lượng với cuộc sống, kim loại và phi kim.','Học kỳ 2':'Phạm vi (gợi ý): Chương 7–14, gồm chất hữu cơ, di truyền học, tiến hóa; ôn tập thi vào lớp 10.'};
 for(const k in SC9)EXALL[9][k].sc=SC9[k];
 D[9].ov=[['Chương 1. Năng lượng cơ học','Động năng, thế năng, cơ năng, bảo toàn cơ năng, công và công suất.'],['Chương 2. Ánh sáng','Khúc xạ ánh sáng, thấu kính hội tụ, mắt, kính lúp.'],['Chương 3. Điện','Điện trở, định luật Ohm, đoạn mạch nối tiếp và song song, năng lượng và công suất điện.'],['Chương 4. Điện từ','Từ trường, cảm ứng điện từ, máy phát điện, máy biến thế.'],['Chương 5. Năng lượng với cuộc sống','Nguồn năng lượng, năng lượng tái tạo, hiệu suất, sử dụng hiệu quả.'],['Chương 6. Kim loại','Tính chất kim loại, dãy hoạt động, hợp kim, phi kim và sự khác nhau với kim loại.'],['Chương 7. Chất hữu cơ. Hydrocarbon','Hợp chất hữu cơ, methane, ethylene.'],['Chương 8. Ethylic alcohol. Acetic acid','Tính chất, ứng dụng, phản ứng của ethanol và acetic acid.'],['Chương 9. Lipid – Carbohydrate – Protein – Polymer','Vai trò, tính chất cơ bản, polymer và ô nhiễm chất dẻo.'],['Chương 10. Khai thác tài nguyên vỏ Trái Đất','Quặng, luyện kim, khai thác và sử dụng hợp lí tài nguyên.'],['Chương 11–13. Di truyền học','Gene, DNA, nhiễm sắc thể, quy luật Mendel, đột biến.'],['Chương 14. Tiến hóa','Bằng chứng tiến hóa, chọn lọc tự nhiên, thích nghi.']];
+const cvq=q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);return [q[0],x.map(i=>q[1][i]),x.indexOf(0),q[2]]};
+EXALL[8]['Giữa kỳ 2'].mc[4]=cvq(['Đơn vị của cường độ dòng điện là gì?',['Ampe (A)','Vôn (V)','Oát (W)','Newton (N)'],'Cường độ dòng điện đo bằng ampe kế.']);
+EXALL[8]['Giữa kỳ 2'].tl[1]=[4,'Nêu các tác dụng của dòng điện, mỗi tác dụng cho một ví dụ.','Tác dụng nhiệt (bàn là), phát sáng (đèn LED), từ (chuông điện), hóa học (mạ điện), sinh lí (điện giật gây co cơ).'];
+D[8].fm=D[8].fm.filter(r=>r[0]!='Định luật Ohm');D[8].kn=D[8].kn.filter(r=>r[0]!='Định luật Ohm');
+const OV=(g,i,t)=>{D[g].ov[i][1]=t};
+OV(6,0,'Giới thiệu môn học, quy tắc an toàn phòng thực hành, đo chiều dài, khối lượng, thời gian, nhiệt độ, dùng kính lúp và kính hiển vi.');OV(6,3,'Hỗn hợp đồng nhất và không đồng nhất, dung dịch, huyền phù, nhũ tương; tách chất bằng lọc, cô cạn, chiết.');OV(6,6,'Khóa lưỡng phân; virus, vi khuẩn, nguyên sinh vật, nấm, thực vật, động vật; bảo vệ đa dạng sinh học.');OV(6,7,'Khái niệm lực, biểu diễn lực, trọng lực, lực đàn hồi, lực ma sát, lực cản.');OV(6,8,'Các dạng năng lượng, chuyển hóa năng lượng, năng lượng hao phí, năng lượng tái tạo, tiết kiệm năng lượng.');
+OV(7,2,'Công thức tính tốc độ, đồ thị quãng đường–thời gian, đo tốc độ và an toàn giao thông.');OV(7,4,'Năng lượng ánh sáng, tia sáng, vùng tối, định luật phản xạ ánh sáng, ảnh qua gương phẳng.');OV(7,5,'Nam châm, từ trường, từ trường Trái Đất, nam châm điện.');OV(7,6,'Quang hợp, hô hấp tế bào, trao đổi nước và dinh dưỡng ở thực vật và động vật.');
+OV(8,0,'Phản ứng hóa học, bảo toàn khối lượng, mol, tỉ khối chất khí, dung dịch, nồng độ, tốc độ phản ứng.');OV(8,2,'Khối lượng riêng, áp suất chất rắn, chất lỏng, khí quyển, lực đẩy Archimedes.');OV(8,4,'Dòng điện, nguồn điện, mạch điện, đo cường độ dòng điện và hiệu điện thế, các tác dụng của dòng điện.');OV(8,5,'Năng lượng nhiệt, nội năng, các hình thức truyền nhiệt, nhiệt lượng.');OV(8,6,'Hệ vận động, tiêu hóa, tuần hoàn, hô hấp, bài tiết, thần kinh và giác quan, nội tiết, da, sinh sản.');
+OV(9,1,'Khúc xạ ánh sáng, phản xạ toàn phần, thấu kính hội tụ, thấu kính phân kì, kính lúp.');OV(9,3,'Cảm ứng điện từ và dòng điện xoay chiều.');OV(9,4,'Khai thác và sử dụng năng lượng hóa thạch, năng lượng tái tạo, an toàn năng lượng.');OV(9,5,'Tính chất kim loại, dãy hoạt động hóa học, tách kim loại, hợp kim gang, thép, ăn mòn kim loại.');OV(9,8,'Chất béo, glucose, saccharose, tinh bột, cellulose, protein, chất dẻo và cao su (polymer).');OV(9,9,'Khai thác đá vôi, đất sét, dầu mỏ, khí thiên nhiên và khoáng sản.');OV(9,10,'Quy luật Mendel, nhiễm sắc thể, DNA, gene, đột biến và công nghệ sinh học.');OV(9,11,'Bằng chứng tiến hóa, thuyết tiến hóa của Darwin, quá trình phát sinh loài người.');
+const addE=(g,k,mc,tl)=>{const e=EXALL[g][k];mc.trim().split('\n').forEach(l=>{const a=l.split('|');e.mc.push(cvq([a[0],a.slice(1,5),a[5]]))});tl.trim().split('\n').forEach(l=>{const a=l.split('|');e.tl.push([2,a[0],a[1]])});e.tl.forEach(t=>{t[0]=2})};
+addE(7,'Giữa kỳ 1',`Nguyên tử gồm những phần nào?|Hạt nhân và lớp vỏ electron|Chỉ hạt nhân|Chỉ electron|Chỉ proton|Nguyên tử gồm hạt nhân và lớp vỏ.
+Nguyên tố hóa học nào có số hiệu nguyên tử là 1?|Hydrogen|Helium|Lithium|Carbon|Hydrogen có 1 proton.`,`Nguyên tử nitrogen có số hiệu nguyên tử 7 và 7 neutron. Tính số electron và khối lượng nguyên tử gần đúng.|Số electron = 7. Khối lượng nguyên tử xấp xỉ 7 + 7 = 14 amu.`);
+addE(7,'Học kỳ 1',`Liên kết cộng hóa trị được hình thành như thế nào?|Các nguyên tử dùng chung electron|Một nguyên tử nhường hẳn electron|Dùng chung proton|Dùng chung neutron|Thường gặp giữa các nguyên tử phi kim.
+Xe đi 150 km trong 3 giờ. Tốc độ là bao nhiêu?|50 km/h|450 km/h|153 km/h|0,02 km/h|v = s / t.`,`Tính phân tử khối của H₂O và phần trăm khối lượng của H trong H₂O (H = 1, O = 16).|M = 18. %H = 2 / 18 × 100% ≈ 11,1%.`);
+addE(7,'Giữa kỳ 2',`Độ cao của âm phụ thuộc vào yếu tố nào?|Tần số|Biên độ|Màu sắc|Khối lượng|Tần số càng lớn âm càng cao.
+Muốn tăng lực từ của nam châm điện ta có thể làm gì?|Tăng số vòng dây hoặc cường độ dòng điện|Giảm số vòng dây|Bỏ lõi sắt|Ngắt dòng điện|Dòng điện lớn hơn và nhiều vòng dây hơn thì lực từ mạnh hơn.`,`Giải thích vì sao ta nhìn thấy ảnh của mình trong gương phẳng.|Ánh sáng từ người ta chiếu tới gương bị phản xạ vào mắt. Mắt thấy ảnh ảo bằng vật, nằm sau gương và cách gương một khoảng bằng khoảng cách từ vật đến gương.`);
+addE(7,'Học kỳ 2',`Khí khổng giúp lá thực hiện việc gì?|Trao đổi khí và thoát hơi nước|Hút nước từ đất|Dự trữ tinh bột|Giữ lá luôn khô|Khí khổng đóng mở để điều tiết.
+Tập tính nào của động vật là tập tính bẩm sinh?|Nhện giăng tơ|Chó biết ngồi theo lệnh|Khỉ đi xe đạp|Chim học hót|Tập tính bẩm sinh sinh ra đã có.`,`Nêu hai biện pháp ứng dụng sinh sản vô tính trong trồng trọt.|Giâm cành, chiết cành, ghép cành, nuôi cấy mô để tạo nhiều cây giống giống cây mẹ.`);
+addE(8,'Giữa kỳ 1',`Định luật bảo toàn khối lượng áp dụng cho phản ứng nào?|Mọi phản ứng hóa học|Chỉ phản ứng cháy|Chỉ phản ứng tạo khí|Chỉ phản ứng ở nhiệt độ cao|Mọi phản ứng đều bảo toàn khối lượng.
+Khối lượng riêng của nước xấp xỉ bao nhiêu?|1000 kg/m³|100 kg/m³|10 kg/m³|10000 kg/m³|Nước có D = 1000 kg/m³.`,`Tính thể tích của 4 mol khí ở 25 °C, 1 bar.|V = 4 × 24,79 = 99,16 L.`);
+addE(8,'Học kỳ 1',`Áp suất chất lỏng tại một điểm phụ thuộc vào yếu tố nào?|Độ sâu và trọng lượng riêng của chất lỏng|Màu của chất lỏng|Hình dạng bình|Khối lượng bình|p = d × h.
+Dung dịch HCl có tính chất nào?|Làm quỳ tím hóa đỏ|Làm quỳ tím hóa xanh|Không đổi màu quỳ tím|Có pH lớn hơn 7|HCl là acid.`,`Một bể cao 2 m chứa đầy nước (d = 10000 N/m³). Tính áp suất ở đáy bể.|p = d × h = 10000 × 2 = 20000 Pa.`);
+addE(8,'Giữa kỳ 2',`Khi nào vật nổi trên mặt nước?|Lực đẩy Archimedes cân bằng với trọng lượng|Trọng lượng lớn hơn lực đẩy|Vật không có thể tích|Nước đứng yên|Vật nổi khi lực đẩy bằng trọng lượng.
+Hình thức truyền nhiệt chủ yếu trong chất rắn là gì?|Dẫn nhiệt|Đối lưu|Bức xạ nhiệt|Không truyền nhiệt|Chất rắn truyền nhiệt chủ yếu bằng dẫn nhiệt.`,`Giải thích vì sao khi đun nước, nước nóng ở đáy ấm đi lên còn nước lạnh đi xuống.|Nước nóng giãn nở, khối lượng riêng giảm nên đi lên. Nước lạnh nặng hơn đi xuống, tạo thành dòng đối lưu.`);
+addE(8,'Học kỳ 2',`Cơ quan nào là nơi diễn ra sự trao đổi khí ở người?|Phổi (phế nang)|Dạ dày|Thận|Gan|Phế nang trao đổi O₂ và CO₂.
+Nhóm sinh vật nào là sinh vật sản xuất trong hệ sinh thái?|Cây xanh|Động vật ăn cỏ|Động vật ăn thịt|Vi khuẩn phân giải|Cây xanh tổng hợp chất hữu cơ.`,`Nêu vai trò của hệ tuần hoàn trong cơ thể người.|Vận chuyển oxygen và chất dinh dưỡng đến tế bào, mang CO₂ và chất thải đi, góp phần bảo vệ cơ thể.`);
+addE(9,'Giữa kỳ 1',`Cơ năng của vật là gì?|Tổng động năng và thế năng|Hiệu của động năng và thế năng|Tích của khối lượng và tốc độ|Chỉ thế năng|Cơ năng = động năng + thế năng.
+Tia sáng truyền từ không khí vào nước thì góc khúc xạ so với góc tới như thế nào?|Nhỏ hơn|Lớn hơn|Bằng nhau|Luôn bằng 0|Tia khúc xạ lại gần pháp tuyến.`,`Công suất của một động cơ là 2 kW, hoạt động trong 30 giây. Tính công thực hiện.|P = 2000 W. A = P × t = 2000 × 30 = 60000 J.`);
+addE(9,'Học kỳ 1',`Hai điện trở 10 Ω và 15 Ω mắc nối tiếp có điện trở tương đương bao nhiêu?|25 Ω|6 Ω|150 Ω|5 Ω|R = R₁ + R₂.
+Đơn vị đo điện năng thường dùng trong đời sống là gì?|Kilowatt giờ (kWh)|Newton|Pascal|Ôm|Hóa đơn tiền điện tính bằng kWh.`,`Điện trở 20 Ω đặt vào hiệu điện thế 12 V. Tính cường độ dòng điện và công suất tiêu thụ.|I = 12 / 20 = 0,6 A. P = U × I = 12 × 0,6 = 7,2 W.`);
+addE(9,'Giữa kỳ 2',`Dòng điện xoay chiều có đặc điểm nào?|Chiều và cường độ thay đổi theo thời gian|Chỉ chảy một chiều|Không đổi|Bằng 0|Dòng xoay chiều đổi chiều liên tục.
+Gang và thép khác nhau ở điểm nào?|Hàm lượng carbon|Màu sắc|Khối lượng|Hình dạng|Gang có hơn 2% carbon, thép dưới 2%.`,`Nêu hai biện pháp chống ăn mòn kim loại và giải thích.|Sơn hoặc mạ phủ bề mặt để cách li kim loại với oxygen và nước. Dùng hợp kim không gỉ như inox.`);
+addE(9,'Học kỳ 2',`Ethylic alcohol có công thức nào?|C₂H₅OH|CH₃COOH|CH₄|C₂H₄|Ethanol là C₂H₅OH.
+Quy luật phân li của Mendel cho F2 tỉ lệ kiểu hình nào (trội hoàn toàn)?|3 trội : 1 lặn|1 trội : 1 lặn|1 : 2 : 1|9 : 3 : 3 : 1|Lai một cặp tính trạng.`,`Viết phương trình phản ứng giữa acetic acid và kẽm.|2CH₃COOH + Zn → (CH₃COO)₂Zn + H₂.`);
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){const e=EXALL[g][E6],pm=e.mc.length/2;
