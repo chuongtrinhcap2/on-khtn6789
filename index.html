@@ -160,7 +160,7 @@ const tabs=[['ov','Tổng quan'],['kn','Khái niệm'],['fm','Công thức'],['q
 const $=id=>document.getElementById(id);
 function pills(){$('pills').innerHTML=[6,7,8,9].map(n=>`<button class="${n==g?'on':''}" onclick="setG(${n})" aria-pressed="${n==g}">Lớp ${n}</button>`).join('');
 $('tabs').innerHTML=tabs.map(([k,l])=>`<button class="${k==t?'on':''}" onclick="setT('${k}')">${l}</button>`).join('')}
-function setG(n){g=n;CH=0;es=0;score=0;done=0;render()}
+function setG(n){g=n;CH=0;E6='Giữa kỳ 1';es=0;score=0;done=0;render()}
 function setT(k){t=k;es=0;render()}
 const BANK6=[
 {s:'Mở đầu',n:'Mở đầu: giới thiệu KHTN, an toàn, đo lường',q:[
@@ -359,6 +359,75 @@ Kiểu hình là gì?|Biểu hiện ra bên ngoài của kiểu gene|Tổ hợp 
 Đột biến là gì?|Biến đổi trong vật chất di truyền|Thay đổi do thời tiết|Sự lớn lên|Sự sinh sản|Có thể di truyền cho đời sau.
 Chọn lọc nhân tạo do yếu tố nào thực hiện?|Con người|Tự nhiên|Nước|Nhiệt độ|Con người chọn giống theo nhu cầu.`)
 ];
+const EXTRA6=[
+`Dụng cụ nào dùng để đo nhiệt độ?|Nhiệt kế|Cân|Ống đong|Lực kế|Nhiệt kế đo nhiệt độ của vật.
+Khi đo chiều dài bàn học bằng thước, bước đầu tiên là gì?|Ước lượng chiều dài và chọn thước phù hợp|Đọc kết quả ngay|Ghi kết quả|Cất thước đi|Cần chọn dụng cụ đo phù hợp trước.
+Bộ phận nào của kính hiển vi dùng để phóng đại hình ảnh?|Vật kính và thị kính|Chân kính|Gương|Ống đong|Hai thấu kính tạo ảnh phóng đại.
+Quy tắc nào đúng trong phòng thực hành?|Không ăn uống, không nếm hóa chất|Chạy nhảy tự do|Tự ý trộn hóa chất|Không cần đeo bảo hộ|Giữ an toàn cho mình và bạn bè.`,
+`Quá trình chất lỏng chuyển thành chất rắn gọi là gì?|Sự đông đặc|Sự nóng chảy|Sự bay hơi|Sự ngưng tụ|Lỏng sang rắn là đông đặc.
+Chất nào ở thể khí trong điều kiện thường?|Oxygen|Nước|Sắt|Dầu ăn|Oxygen là chất khí.
+Ở áp suất thường nước sôi ở bao nhiêu độ C?|100 °C|0 °C|50 °C|37 °C|Nước sôi ở 100 °C.
+Nước đá để ngoài không khí lâu ngày sẽ như thế nào?|Tan chảy thành nước|Bay hơi hết ngay|Đông đặc thêm|Thành khí ngay|Nóng chảy ở 0 °C.`,
+`Vật liệu nào dễ bị gỉ khi để ngoài trời ẩm?|Sắt|Nhựa|Thủy tinh|Gỗ đã sơn|Sắt tiếp xúc nước và oxygen bị gỉ.
+Nhiên liệu nào cháy tạo ít khí thải độc hại hơn?|Khí gas|Than đá thô|Củi ướt|Rác thải|Khí gas cháy sạch hơn.
+Lương thực nào cung cấp chủ yếu tinh bột?|Gạo|Dầu ăn|Cá|Rau xanh|Gạo giàu tinh bột.
+Thực phẩm nào giàu protein?|Thịt, cá, trứng|Đường|Muối|Nước ngọt|Protein giúp xây dựng cơ thể.`,
+`Hỗn hợp nào là huyền phù?|Nước và bột đất|Nước muối|Nước đường|Không khí|Chất rắn không tan lơ lửng trong chất lỏng.
+Vật liệu nào dùng để lọc nước đơn giản?|Bông, cát, than|Muối|Đường|Giấm|Lớp lọc giữ lại cặn bẩn.
+Muốn thu muối từ nước biển ta dùng cách nào?|Cô cạn (phơi nắng)|Lọc|Dùng nam châm|Chiết|Nước bay hơi, muối còn lại.
+Tách bột sắt khỏi hỗn hợp bột sắt và bột lưu huỳnh bằng cách nào?|Dùng nam châm|Lọc|Chưng cất|Chiết|Sắt bị nam châm hút.`,
+`Tế bào nào nhìn thấy được bằng mắt thường?|Tế bào trứng gà|Tế bào vi khuẩn|Tế bào hồng cầu|Tế bào niêm mạc miệng|Trứng gà là một tế bào rất lớn.
+Thành phần chính của màng tế bào là gì?|Lipid và protein|Chỉ nước|Chỉ muối|Chỉ DNA|Màng giúp kiểm soát chất ra vào.
+Diệp lục nằm ở bào quan nào?|Lục lạp|Nhân|Màng tế bào|Không bào|Lục lạp là nơi quang hợp.
+Tế bào nào không có thành tế bào?|Tế bào động vật|Tế bào thực vật|Tế bào vi khuẩn|Tế bào nấm|Động vật không có thành tế bào.`,
+`Hệ cơ quan nào tham gia vận chuyển máu?|Hệ tuần hoàn|Hệ tiêu hóa|Hệ thần kinh|Hệ bài tiết|Gồm tim và mạch máu.
+Ví dụ nào là một cơ quan của người?|Tim|Tế bào máu|Mô cơ|Vi khuẩn|Tim là cơ quan.
+Sinh vật nào là sinh vật đa bào?|Cây bàng|Vi khuẩn|Amip|Trùng giày|Đa bào gồm nhiều tế bào.
+Mô là gì?|Nhóm tế bào giống nhau cùng thực hiện một chức năng|Một cơ quan|Một hệ cơ quan|Một sinh vật|Mô nằm giữa tế bào và cơ quan.`,
+`Vi khuẩn lactic dùng để làm gì?|Muối chua, làm sữa chua|Chế tạo thuốc nổ|Tạo khí oxygen|Phát sáng|Vi khuẩn có lợi trong chế biến thực phẩm.
+Khóa lưỡng phân dùng để làm gì?|Phân loại sinh vật|Đo chiều dài|Đo nhiệt độ|Đo khối lượng|Chia thành từng cặp đặc điểm đối lập.
+Sinh vật nào thuộc giới Thực vật?|Cây bàng|Nấm rơm|Vi khuẩn|Trùng roi|Thực vật có lục lạp.
+Phân loại sinh vật theo thứ tự nào?|Từ bậc lớn đến bậc nhỏ|Ngẫu nhiên|Theo màu sắc|Theo tên gọi|Giới đến loài.`,
+`Lực hấp dẫn của Trái Đất hướng nào?|Về tâm Trái Đất|Ra ngoài|Nằm ngang|Lên trời|Làm vật rơi xuống.
+Đơn vị nào dùng để đo trọng lượng?|Newton|Kilôgam|Mét|Giây|Trọng lượng là một lực.
+Lực ma sát nghỉ có đặc điểm nào?|Giữ vật đứng yên so với bề mặt|Làm vật chạy nhanh|Không tồn tại|Làm vật bay|Xuất hiện khi vật có xu hướng chuyển động.
+Lực tác dụng lên vật có thể gây ra điều gì?|Biến dạng hoặc thay đổi chuyển động|Chỉ đổi màu|Chỉ đổi khối lượng|Không gây thay đổi gì|Hai tác dụng cơ bản của lực.`,
+`Nhiên liệu nào chứa năng lượng hóa học?|Xăng|Mặt Trời|Gió|Nước chảy|Năng lượng dự trữ trong liên kết hóa học.
+Pin Mặt Trời biến năng lượng nào thành điện năng?|Ánh sáng|Gió|Nhiệt|Hóa học|Quang năng chuyển thành điện năng.
+Nước chảy từ trên cao có những dạng năng lượng nào?|Thế năng và động năng|Chỉ nhiệt năng|Chỉ quang năng|Chỉ hóa năng|Ở cao có thế năng, chảy có động năng.
+Cách nào giúp tiết kiệm năng lượng?|Tắt thiết bị khi không dùng|Mở đèn cả ngày|Để máy chạy liên tục|Dùng thiết bị hỏng|Giảm lãng phí.`,
+`Trái Đất tự quay một vòng quanh trục mất bao lâu?|Khoảng 24 giờ|Khoảng 1 giờ|Khoảng 1 năm|Khoảng 1 tuần|Gây ra ngày và đêm.
+Trái Đất quay một vòng quanh Mặt Trời mất bao lâu?|Khoảng 365 ngày|Khoảng 24 giờ|Khoảng 30 ngày|Khoảng 7 ngày|Đó là một năm.
+Hành tinh nào gần Mặt Trời nhất?|Thủy tinh|Hỏa tinh|Kim tinh|Mộc tinh|Thủy tinh (Mercury).
+Vì sao ta thấy các pha của Mặt Trăng?|Phần sáng nhìn thấy từ Trái Đất thay đổi|Mặt Trăng tự đổi màu|Mây che Mặt Trăng|Trái Đất tối đi|Mặt Trăng chỉ phản chiếu ánh sáng Mặt Trời.`
+];
+BANK6.forEach((c,i)=>EXTRA6[i].trim().split('\n').forEach(l=>{const a=l.split('|');c.q.push([a[0],a.slice(1,5),a[5]])}));
+const TLB={6:[
+`Nêu 3 quy tắc an toàn trong phòng thực hành.|Không ăn uống, không nếm hóa chất; đọc kĩ hướng dẫn và dùng đồ bảo hộ; không tự ý làm thí nghiệm, báo giáo viên khi có sự cố.
+Nêu các lưu ý khi đo nhiệt độ cơ thể bằng nhiệt kế y tế.|Vẩy nhiệt kế trước khi đo, đặt đúng vị trí, chờ đủ thời gian, đọc kết quả khi mắt nhìn vuông góc với vạch chia, rửa sạch sau khi dùng.`,
+`Giải thích vì sao quần áo phơi nắng khô nhanh hơn phơi trong bóng râm.|Nhiệt độ cao làm nước bay hơi nhanh hơn. Nơi có nắng, gió, diện tích thoáng lớn thì nước càng bay hơi nhanh.
+Nêu tên bốn sự chuyển thể của chất và một ví dụ cho mỗi sự chuyển thể.|Nóng chảy (đá tan), đông đặc (nước thành đá), bay hơi (nước phơi nắng), ngưng tụ (sương đọng trên lá).`,
+`Vì sao cần sử dụng nhiên liệu an toàn và tiết kiệm?|Nhiên liệu dễ cháy nổ gây nguy hiểm. Nhiên liệu hóa thạch có hạn và khi cháy gây ô nhiễm. Tiết kiệm giúp bảo vệ môi trường và tài nguyên.
+Nêu ba vật liệu thông dụng và một ứng dụng của mỗi loại.|Kim loại làm dụng cụ nấu ăn; nhựa làm đồ dùng học tập; thủy tinh làm cửa kính.`,
+`Nêu cách làm sạch nước đục bằng phương pháp lọc đơn giản.|Dùng phễu với giấy lọc hoặc lớp bông, cát, than. Đổ nước đục qua, cặn bị giữ lại và nước trong chảy xuống.
+Phân biệt dung dịch và huyền phù, mỗi loại cho một ví dụ.|Dung dịch: chất tan phân tán đều, trong suốt (nước muối). Huyền phù: chất rắn không tan lơ lửng, nước đục (nước và bột đất).`,
+`Nêu chức năng của nhân tế bào.|Nhân chứa vật chất di truyền và điều khiển mọi hoạt động sống của tế bào.
+Vì sao tế bào cần phân chia?|Giúp cơ thể lớn lên, thay thế tế bào già hoặc chết, và tăng số lượng tế bào.`,
+`Nêu thứ tự các cấp độ tổ chức của cơ thể đa bào và cho ví dụ ở người.|Tế bào, mô, cơ quan, hệ cơ quan, cơ thể. Ví dụ: tế bào cơ tim, mô cơ tim, tim, hệ tuần hoàn, cơ thể người.
+Phân biệt cơ quan và hệ cơ quan.|Cơ quan gồm nhiều mô cùng thực hiện một chức năng (dạ dày). Hệ cơ quan gồm nhiều cơ quan phối hợp thực hiện một chức năng chung (hệ tiêu hóa).`,
+`Nêu hai lợi ích và hai tác hại của nấm.|Lợi ích: nấm rơm làm thực phẩm, nấm men làm bánh mì. Tác hại: nấm mốc làm hỏng thức ăn, một số nấm gây bệnh ngoài da.
+Trình bày cách xây dựng khóa lưỡng phân để phân loại sinh vật.|Chọn một cặp đặc điểm đối lập, chia sinh vật thành hai nhóm. Lặp lại với từng nhóm cho đến khi tách được từng sinh vật.`,
+`Nêu hai ví dụ lực ma sát có lợi và hai ví dụ có hại.|Có lợi: đế giày bám mặt đường, phanh xe. Có hại: làm mòn trục xe, làm nóng và hao tốn năng lượng của máy.
+Một học sinh có khối lượng 40 kg. Tính trọng lượng và giải thích.|P = 10 × m = 10 × 40 = 400 N, vì trọng lượng bằng 10 lần khối lượng.`,
+`Kể tên ba dạng năng lượng và một ví dụ cho mỗi dạng.|Quang năng (bóng đèn), nhiệt năng (bếp lửa), điện năng (pin), cơ năng (xe đang chạy).
+Nêu ba cách tiết kiệm năng lượng ở gia đình.|Tắt đèn, quạt khi không dùng; dùng thiết bị tiết kiệm điện; tận dụng ánh sáng tự nhiên ban ngày.`,
+`Trình bày nguyên nhân gây ra hiện tượng ngày và đêm.|Trái Đất tự quay quanh trục. Nửa hướng về Mặt Trời là ban ngày, nửa còn lại là ban đêm.
+Mô tả các pha của Mặt Trăng.|Trăng non, thượng huyền, trăng tròn, hạ huyền, rồi trăng tàn. Do phần sáng nhìn thấy từ Trái Đất thay đổi khi Mặt Trăng quay quanh Trái Đất.`
+].map(t=>t.trim().split('\n').map(l=>l.split('|')))};
+function tlbank(){const T=TLB[g]&&TLB[g][CH];if(!T)return '';return '<h3>Tự luận chương</h3>'+T.map((q,i)=>`<div class="card"><div>${q[0]}</div><button id="b${i}" onclick="tog(${i})" style="margin-top:8px">Xem đáp án</button><div class="ans" id="a${i}">${q[1]}</div></div>`).join('')}
+function genEx(){const pool=[];BANKS[g].forEach(c=>c.q.forEach(q=>pool.push(q)));pool.sort(()=>Math.random()-.5);
+const tp=[];Object.entries(EXALL[g]).forEach(([k,e])=>{if(k!='Đề ngẫu nhiên')e.tl.forEach(q=>tp.push([q[1],q[2]]))});(TLB[g]||[]).forEach(c=>c.forEach(q=>tp.push(q)));tp.sort(()=>Math.random()-.5);
+EXALL[g]['Đề ngẫu nhiên']={sc:'Đề tạo ngẫu nhiên từ ngân hàng câu hỏi lớp '+g+', phạm vi toàn bộ chương trình.',mc:pool.slice(0,8).map(q=>[q[0],q.o,q.a,q[2]]),tl:tp.slice(0,3).map(q=>[2,q[0],q[1]])};E6='Đề ngẫu nhiên';es=0;render()}
 const BANKS={6:BANK6,7:BANK7,8:BANK8,9:BANK9};
 Object.values(BANKS).forEach(B=>B.forEach(c=>c.q.forEach(q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)})));
 function mig(o){const r={};for(const k in o)r[k.indexOf(':')<0?'6:'+k:k]=o[k];return r}
@@ -385,7 +454,7 @@ function prog(){let a=0,b=0,c=0;BANKS[g].forEach((x,i)=>x.q.forEach((_,j)=>{b++;
 function setC(i){CH=i;render()}
 function resetC(){BANKS[g][CH].q.forEach((_,j)=>delete P[g+':'+CH+'-'+j]);sv();render()}
 function bank6(){const c=BANKS[g][CH];
-return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+`<p class="note">${USER?'Tiến độ được lưu theo tài khoản của bạn.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
+return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+tlbank()+`<p class="note">${USER?'Tiến độ được lưu theo tài khoản của bạn.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
 function ansC(i,j){const q=BANKS[g][CH].q[i],b=document.getElementById('c'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q.a].classList.add('ok');if(j!=q.a)o[j].classList.add('bad');P[g+':'+CH+'-'+i]=j==q.a?1:0;sv();document.getElementById('ce'+i).textContent=(j==q.a?'Chính xác. ':'Chưa đúng. ')+q[2];document.getElementById('pg').textContent=prog()}
 const EX6={
 'Giữa kỳ 1':{sc:'Phạm vi: mở đầu (an toàn, đo lường), chất quanh ta, sự chuyển thể, oxygen và không khí.',
@@ -557,7 +626,7 @@ const EXALL={6:EX6,7:cv(EX7),8:cv(EX8),9:cv(EX9)};
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){const e=EXALL[g][E6],pm=e.mc.length/2;
-return `<div class="pills">${Object.keys(EXALL[g]).map(k=>`<button class="${k==E6?'on':''}" onclick="setE('${k}')">${k}</button>`).join('')}</div>`+card('Đề '+E6+' lớp '+g+' (Kết nối tri thức)','<ul><li>'+e.sc+'</li><li>Thời gian gợi ý: 45 phút. Phần I trắc nghiệm '+e.mc.length+' câu ('+String(pm).replace('.',',')+' điểm), phần II tự luận '+e.tl.length+' câu ('+(10-pm)+' điểm).</li></ul>')+`<div class="score"><span id="es">Trắc nghiệm: ${es}/${e.mc.length}</span></div>`+e.mc.map((q,i)=>`<div class="card q" id="x${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ansE(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="xe${i}"></div></div>`).join('')+'<div class="card"><h3>Phần II. Tự luận ('+(10-pm)+' điểm)</h3></div>'+e.tl.map((q,i)=>`<div class="card"><h3>Câu ${i+1} (${q[0]} điểm)</h3><div>${q[1]}</div><button id="b${i}" onclick="tog(${i})" style="margin-top:8px">Xem đáp án</button><div class="ans" id="a${i}">${q[2]}</div></div>`).join('')}
+return `<div class="pills">${Object.keys(EXALL[g]).map(k=>`<button class="${k==E6?'on':''}" onclick="setE('${k}')">${k}</button>`).join('')}<button onclick="genEx()">+ Tạo đề ngẫu nhiên</button></div>`+card('Đề '+E6+' lớp '+g+' (Kết nối tri thức)','<ul><li>'+e.sc+'</li><li>Thời gian gợi ý: 45 phút. Phần I trắc nghiệm '+e.mc.length+' câu ('+String(pm).replace('.',',')+' điểm), phần II tự luận '+e.tl.length+' câu ('+(10-pm)+' điểm).</li></ul>')+`<div class="score"><span id="es">Trắc nghiệm: ${es}/${e.mc.length}</span></div>`+e.mc.map((q,i)=>`<div class="card q" id="x${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ansE(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="xe${i}"></div></div>`).join('')+'<div class="card"><h3>Phần II. Tự luận ('+(10-pm)+' điểm)</h3></div>'+e.tl.map((q,i)=>`<div class="card"><h3>Câu ${i+1} (${q[0]} điểm)</h3><div>${q[1]}</div><button id="b${i}" onclick="tog(${i})" style="margin-top:8px">Xem đáp án</button><div class="ans" id="a${i}">${q[2]}</div></div>`).join('')}
 function ansE(i,j){const q=EXALL[g][E6].mc[i],b=document.getElementById('x'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q[2]].classList.add('ok');if(j==q[2])es++;else o[j].classList.add('bad');document.getElementById('xe'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];document.getElementById('es').textContent='Trắc nghiệm: '+es+'/'+EXALL[g][E6].mc.length}
 function tog(i){const e=document.getElementById('a'+i),b=document.getElementById('b'+i),s=e.classList.toggle('show');b.textContent=s?'Ẩn đáp án':'Xem đáp án'}
 function card(h,b){return `<div class="card"><h3>${h}</h3><div>${b}</div></div>`}
