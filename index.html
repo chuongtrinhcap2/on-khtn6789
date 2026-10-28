@@ -1080,6 +1080,199 @@ Bệnh nào là bệnh di truyền ở người?|Bệnh máu khó đông|Cúm m�
 Việc lai và chọn lọc giống cây trồng, vật nuôi là ứng dụng của lĩnh vực nào?|Di truyền học|Quang hợp|Hô hấp|Trao đổi chất|Chọn giống dựa trên quy luật di truyền.`);
 TLB[9][10].push(['Phân biệt nguyên phân và giảm phân.','Nguyên phân: một tế bào mẹ tạo hai tế bào con giống mẹ, giúp cơ thể lớn lên và thay thế tế bào. Giảm phân: tạo giao tử có bộ nhiễm sắc thể giảm đi một nửa.']);
 D[9].ov[10][1]='Chương 11: Mendel và cơ sở phân tử (DNA, RNA, gene, nhân đôi, đột biến). Chương 12: nhiễm sắc thể, nguyên phân, giảm phân. Chương 13: di truyền học với con người và đời sống (bệnh di truyền, chọn giống).';
+const addX=(g,base,mc,tl,vd)=>{const b=EXALL[g][base];EXALL[g][base+' (đề 2)']={sc:b.sc,mc:mc.trim().split('\n').map(l=>{const a=l.split('|');return cvq([a[0],a.slice(1,5),a[5]])}),tl:tl.trim().split('\n').map(l=>{const a=l.split('|');return [2,a[0],a[1]]}),vd:vd.split('|')}};
+addX(6,'Giữa kỳ 1',`Lĩnh vực nào thuộc khoa học tự nhiên?|Vật lí, Hóa học, Sinh học|Lịch sử, Địa lí|Văn học, Mĩ thuật|Âm nhạc, Thể dục|KHTN gồm vật lí, hóa học, sinh học, khoa học Trái Đất và thiên văn học.
+Đơn vị đo khối lượng trong hệ SI là gì?|Kilôgam (kg)|Gam (g)|Tạ|Tấn|Đơn vị chuẩn SI của khối lượng là kilôgam.
+Nhiệt kế y tế dùng để đo nhiệt độ của đối tượng nào?|Cơ thể người|Nước đang sôi|Lò nung|Băng ở Bắc Cực|Nhiệt kế y tế đo trong khoảng 35 đến 42 °C.
+Khi hóa chất dính vào da, em cần làm gì đầu tiên?|Rửa ngay bằng nhiều nước và báo giáo viên|Lau bằng khăn khô|Giấu không nói|Tiếp tục làm thí nghiệm|Cần xử lí nhanh và báo cho người lớn.
+Chất nào sau đây ở thể lỏng ở nhiệt độ phòng?|Nước|Sắt|Oxygen|Muối ăn|Nước là chất lỏng ở nhiệt độ phòng.
+Sự chuyển từ thể khí sang thể lỏng gọi là gì?|Sự ngưng tụ|Sự bay hơi|Sự nóng chảy|Sự đông đặc|Hơi nước gặp lạnh ngưng tụ thành nước.
+Không khí là gì?|Hỗn hợp nhiều chất khí|Một chất tinh khiết|Một chất rắn|Một chất lỏng|Không khí gồm nitrogen, oxygen, carbon dioxide và các khí khác.
+Khí nào chiếm tỉ lệ lớn nhất trong không khí?|Nitrogen|Oxygen|Carbon dioxide|Hơi nước|Nitrogen chiếm khoảng 78% thể tích.`,
+`Nêu vai trò của việc đọc kĩ thông tin trên nhãn hóa chất trước khi sử dụng.|Giúp biết tính chất, mức độ nguy hiểm và cách dùng an toàn, tránh nhầm lẫn và tai nạn.
+Một học sinh đo chiều dài quyển sách bằng thước có GHĐ 30 cm và ĐCNN 1 mm. Nêu ý nghĩa của GHĐ và ĐCNN.|GHĐ là độ dài lớn nhất ghi trên thước (30 cm). ĐCNN là độ dài giữa hai vạch chia liên tiếp (1 mm), cho biết độ chính xác của phép đo.
+Giải thích hiện tượng nước đọng thành giọt ở mặt ngoài cốc nước đá.|Hơi nước trong không khí gặp mặt ngoài cốc lạnh nên ngưng tụ thành những giọt nước.`,
+'Một bình kín chứa 5 lít không khí. Ước tính thể tích oxygen trong bình (oxygen chiếm khoảng 21%). Nếu oxygen bị dùng hết thì thể tích khí còn lại là bao nhiêu?|V(O₂) ≈ 5 × 21% = 1,05 lít. Thể tích khí còn lại ≈ 5 − 1,05 = 3,95 lít (chủ yếu là nitrogen).');
+addX(6,'Học kỳ 1',`Vật liệu nào dẫn nhiệt tốt?|Đồng|Gỗ|Nhựa|Cao su|Kim loại dẫn nhiệt tốt.
+Nhiên liệu nào là nhiên liệu rắn?|Than đá|Xăng|Khí gas|Dầu hỏa|Than đá ở thể rắn.
+Hỗn hợp nào là hỗn hợp đồng nhất?|Nước đường|Nước và dầu ăn|Đất và nước|Cát và nước|Hỗn hợp đồng nhất không phân biệt được ranh giới giữa các chất.
+Phương pháp nào dùng để tách dầu ăn ra khỏi nước?|Chiết|Lọc|Cô cạn|Dùng nam châm|Hai chất lỏng không tan vào nhau.
+Hầu hết các tế bào có kích thước như thế nào?|Rất nhỏ, cần kính hiển vi để quan sát|Rất lớn|Bằng hạt gạo|Bằng quả bóng|Phần lớn tế bào rất nhỏ.
+Từ một tế bào phân chia 2 lần liên tiếp tạo ra mấy tế bào?|4|2|6|8|1 → 2 → 4.
+Nhân tế bào chứa thành phần nào?|Vật chất di truyền|Chất diệp lục|Nước|Chất béo|Nhân chứa vật chất di truyền.
+Tế bào nào sau đây có lục lạp?|Tế bào lá cây|Tế bào cơ người|Tế bào máu|Tế bào thần kinh|Lục lạp có ở tế bào thực vật.`,
+`Nêu hai biện pháp sử dụng nhiên liệu tiết kiệm và hiệu quả.|Dùng đúng mục đích, tắt bếp khi không cần; dùng thiết bị hiệu suất cao và bảo dưỡng định kì.
+Trình bày cách tách riêng cát và muối ăn ra khỏi hỗn hợp cát và muối ăn.|Hòa tan hỗn hợp vào nước, lọc để giữ cát lại, cô cạn dung dịch muối để thu muối ăn.
+Nêu chức năng của màng tế bào và tế bào chất.|Màng tế bào bao bọc và kiểm soát sự trao đổi chất với môi trường. Tế bào chất là nơi diễn ra các hoạt động sống của tế bào.`,
+'Một tế bào phân chia liên tiếp, mỗi lần mất 20 phút. Sau 100 phút có bao nhiêu tế bào và số tế bào tăng thêm là bao nhiêu?|100 / 20 = 5 lần phân chia nên có 2⁵ = 32 tế bào. Số tế bào tăng thêm = 32 − 1 = 31.');
+addX(6,'Giữa kỳ 2',`Cơ thể đơn bào có đặc điểm nào?|Chỉ gồm một tế bào đảm nhiệm mọi chức năng|Gồm nhiều tế bào khác nhau|Có nhiều cơ quan|Có hệ cơ quan|Ví dụ: trùng giày, vi khuẩn.
+Hệ cơ quan nào giúp cơ thể trao đổi khí?|Hệ hô hấp|Hệ tiêu hóa|Hệ bài tiết|Hệ vận động|Phổi thuộc hệ hô hấp.
+Bậc phân loại nào lớn hơn bậc "bộ"?|Lớp|Họ|Chi|Loài|Thứ tự: loài, chi, họ, bộ, lớp, ngành, giới.
+Virus sống kí sinh trong đối tượng nào?|Tế bào sống|Nước|Không khí|Đất khô|Virus chỉ nhân lên trong tế bào vật chủ.
+Bệnh nào do vi khuẩn gây ra?|Bệnh lao|Bệnh cúm|Bệnh sốt xuất huyết|Bệnh thủy đậu|Lao do vi khuẩn lao gây ra, các bệnh còn lại do virus.
+Nấm nào được dùng làm thức ăn?|Nấm rơm|Nấm gây bệnh hắc lào|Nấm mốc làm hỏng thức ăn|Nấm gây bệnh ngoài da|Nấm rơm ăn được.
+Cây nào thuộc nhóm thực vật có hoa?|Cây bưởi|Cây rêu|Cây dương xỉ|Cây thông|Cây bưởi có hoa và quả.
+Động vật nào thuộc nhóm không xương sống?|Con tôm|Con cá|Con ếch|Con chim|Tôm không có xương sống.`,
+`Nêu hai đặc điểm của virus và một cách phòng tránh bệnh do virus.|Virus chưa có cấu tạo tế bào, chỉ nhân lên trong tế bào sống. Phòng bệnh: tiêm vắc xin, giữ vệ sinh, đeo khẩu trang khi cần.
+Trình bày vai trò của thực vật đối với đời sống.|Cung cấp oxygen, thức ăn và nguyên liệu; giữ đất, điều hòa khí hậu; là nơi sống của nhiều sinh vật.
+Phân biệt thực vật không có hạt và thực vật có hạt, mỗi nhóm cho một ví dụ.|Không có hạt: sinh sản bằng bào tử (dương xỉ). Có hạt: sinh sản bằng hạt (cây bưởi).`,
+'Cho ba sinh vật: nấm mốc, cây rêu, vi khuẩn lactic. Đề xuất hai bước của khóa lưỡng phân để phân biệt ba sinh vật này.|Bước 1: có lục lạp, quang hợp được không? Có: cây rêu. Không: sang bước 2. Bước 2: cơ thể đơn bào hay đa bào? Đơn bào: vi khuẩn lactic. Đa bào: nấm mốc.');
+addX(6,'Học kỳ 2',`Nhóm động vật có xương sống gồm những lớp nào?|Cá, lưỡng cư, bò sát, chim, thú|Tôm, cua|Giun, sán|Ốc, mực|Đây là năm lớp động vật có xương sống.
+Chim thuộc nhóm động vật nào?|Có xương sống|Không xương sống|Ruột khoang|Thân mềm|Chim có xương sống.
+Độ lớn của lực được đo bằng dụng cụ nào?|Lực kế|Nhiệt kế|Cân|Thước dây|Lực kế đo lực.
+Khi đạp xe, lực ma sát ở phanh xe có tác dụng gì?|Làm xe giảm tốc độ|Làm xe chạy nhanh hơn|Làm xe nhẹ hơn|Làm xe biến dạng|Ma sát ở phanh có ích.
+Trọng lượng của vật có khối lượng 5 kg khoảng bao nhiêu (P = 10m)?|50 N|5 N|0,5 N|500 N|P = 10 × 5 = 50 N.
+Bếp lửa đang cháy tỏa ra những dạng năng lượng nào?|Nhiệt năng và quang năng|Chỉ điện năng|Chỉ thế năng|Chỉ động năng|Bếp lửa tỏa nhiệt và phát sáng.
+Nguồn năng lượng nào là năng lượng tái tạo?|Năng lượng Mặt Trời|Dầu mỏ|Than đá|Khí đốt|Mặt Trời không bị cạn kiệt.
+Mặt Trời nhìn thấy mọc ở hướng nào?|Hướng đông|Hướng tây|Hướng bắc|Hướng nam|Do Trái Đất tự quay từ tây sang đông.`,
+`Nêu hai lợi ích của động vật đối với con người.|Cung cấp thực phẩm và nguyên liệu; hỗ trợ lao động; thụ phấn, diệt sâu hại; giải trí.
+Lực nào làm lò xo trở về độ dài ban đầu? Nêu đặc điểm của lực đó.|Đó là lực đàn hồi. Lực xuất hiện khi lò xo biến dạng, chống lại sự biến dạng và có chiều ngược với chiều biến dạng.
+Giải thích vì sao ta thấy Mặt Trăng khi tròn, khi khuyết.|Mặt Trăng chỉ phản chiếu ánh sáng Mặt Trời. Vị trí của Mặt Trăng so với Trái Đất và Mặt Trời thay đổi nên phần sáng nhìn thấy từ Trái Đất khác nhau; nhìn thấy trọn phần sáng là trăng tròn.`,
+'Ô tô phanh gấp trên đường khô dừng nhanh hơn trên đường ướt. Giải thích bằng lực ma sát và đề xuất một biện pháp an toàn.|Đường ướt làm lực ma sát giữa lốp xe và mặt đường nhỏ hơn nên quãng đường phanh dài hơn. Biện pháp: giảm tốc độ khi trời mưa, giữ khoảng cách an toàn, dùng lốp còn rãnh tốt.');
+addX(7,'Giữa kỳ 1',`Hạt nhân nguyên tử mang điện tích gì?|Dương|Âm|Không mang điện|Lúc dương lúc âm|Hạt nhân chứa proton mang điện dương và neutron không mang điện.
+Khối lượng nguyên tử thường được tính bằng đơn vị nào?|amu (đơn vị khối lượng nguyên tử)|Kilômét|Giây|Newton|Khối lượng nguyên tử rất nhỏ nên dùng amu.
+Nguyên tử aluminium (Al) có 13 proton. Số electron của nó là bao nhiêu?|13|27|14|26|Số electron bằng số proton.
+Trong bảng tuần hoàn, các nguyên tố nằm cùng một hàng ngang thuộc cùng gì?|Chu kì|Nhóm|Họ|Bộ|Hàng ngang là chu kì.
+Nguyên tố nào sau đây là phi kim?|Carbon|Sodium|Magnesium|Aluminium|Carbon là phi kim, ba nguyên tố còn lại là kim loại.
+Kí hiệu hóa học của calcium là gì?|Ca|C|Cl|Co|Calcium có kí hiệu Ca.
+Hai nguyên tố hóa học khác nhau thì khác nhau ở điểm nào?|Số proton|Màu sắc|Hình dạng|Nhiệt độ|Mỗi nguyên tố có số proton riêng.
+Nhóm trong bảng tuần hoàn là gì?|Cột dọc gồm các nguyên tố có tính chất hóa học tương tự|Một hàng ngang|Một ô nguyên tố|Một nguyên tử|Các nguyên tố cùng nhóm có tính chất gần giống nhau.`,
+`Nguyên tử magnesium có 12 proton và 12 neutron. Tính số electron và khối lượng nguyên tử gần đúng.|Số electron = 12. Khối lượng nguyên tử xấp xỉ 12 + 12 = 24 amu.
+Vì sao nói nguyên tử trung hòa về điện?|Tổng điện tích dương của proton bằng tổng điện tích âm của electron nên điện tích toàn nguyên tử bằng 0.
+Cho các nguyên tố Na, Mg, Cl, O. Gọi tên và phân loại kim loại, phi kim.|Na (sodium) và Mg (magnesium) là kim loại. Cl (chlorine) và O (oxygen) là phi kim.`,
+'Nguyên tử Y có tổng số hạt là 40, trong đó số hạt mang điện nhiều hơn số hạt không mang điện là 12. Tìm số proton, số neutron và tên nguyên tố.|Hạt mang điện là proton và electron: 2p + n = 40 và 2p − n = 12 nên 4p = 52, p = 13, n = 14. Đó là aluminium (Al).');
+addX(7,'Học kỳ 1',`Chất nào là đơn chất?|Khí nitrogen N₂|Nước H₂O|Muối ăn NaCl|Khí CO₂|Đơn chất do một nguyên tố hóa học tạo nên.
+Công thức hóa học của hydrogen chloride gồm H (I) và Cl (I) là gì?|HCl|H₂Cl|HCl₂|H₂Cl₂|1 × I = 1 × I nên tỉ lệ 1 : 1.
+Phân tử khối của NaCl là bao nhiêu (Na = 23, Cl = 35,5)?|58,5|23|35,5|81|23 + 35,5 = 58,5.
+Liên kết nào được hình thành khi nguyên tử nhường electron cho nguyên tử khác?|Liên kết ion|Liên kết cộng hóa trị|Liên kết hydrogen|Liên kết kim loại|Hai ion trái dấu hút nhau.
+Tốc độ 54 km/h bằng bao nhiêu m/s?|15 m/s|54 m/s|194,4 m/s|5,4 m/s|54 ÷ 3,6 = 15.
+Quãng đường 200 m đi trong 40 s. Tốc độ là bao nhiêu?|5 m/s|8000 m/s|0,2 m/s|160 m/s|v = 200 / 40.
+Vì sao cần tuân thủ tốc độ giới hạn khi lái xe?|Tốc độ lớn làm tăng quãng đường phanh và nguy cơ tai nạn|Để xe nhẹ hơn|Để tiết kiệm lốp|Không có lí do|Tốc độ càng lớn càng khó dừng xe.
+Đồ thị quãng đường–thời gian càng dốc thì vật chuyển động như thế nào?|Càng nhanh|Càng chậm|Đứng yên|Chuyển động lùi|Độ dốc của đồ thị cho biết tốc độ.`,
+`Lập công thức hóa học của hợp chất tạo bởi Na (I) và O (II), rồi tính phân tử khối (Na = 23, O = 16).|2 × I = 1 × II nên công thức là Na₂O. Phân tử khối = 2 × 23 + 16 = 62.
+Phân biệt liên kết ion và liên kết cộng hóa trị.|Liên kết ion: nguyên tử nhường hoặc nhận electron tạo ion trái dấu hút nhau (NaCl). Liên kết cộng hóa trị: các nguyên tử dùng chung electron (H₂O).
+Ô tô chạy 120 km trong 2 giờ. Tính tốc độ theo km/h và m/s.|v = 120 / 2 = 60 km/h = 60 ÷ 3,6 ≈ 16,7 m/s.`,
+'Hai xe đi cùng chiều trên một đường thẳng, xe A với tốc độ 40 km/h, xe B với tốc độ 60 km/h, xuất phát cùng lúc từ cùng một điểm. Sau 1,5 giờ khoảng cách giữa hai xe là bao nhiêu?|Xe A đi được 40 × 1,5 = 60 km. Xe B đi được 60 × 1,5 = 90 km. Khoảng cách = 90 − 60 = 30 km.');
+addX(7,'Giữa kỳ 2',`Vật nào là nguồn âm?|Dây đàn đang rung|Cuốn sách|Hòn đá|Cái bàn|Nguồn âm là vật dao động phát ra âm.
+Âm thanh nào gây ô nhiễm tiếng ồn?|Tiếng máy khoan, loa quá to kéo dài|Tiếng chim hót nhẹ|Tiếng suối chảy|Tiếng gió nhẹ|Tiếng ồn to và kéo dài ảnh hưởng đến sức khỏe.
+Vì sao ta nghe thấy tiếng vang trong hang lớn?|Âm phản xạ trở lại tai sau âm gốc|Âm bị hấp thụ hoàn toàn|Âm không truyền được|Âm đổi tần số|Tiếng vang là âm phản xạ nghe tách biệt với âm gốc.
+Tia sáng tới gương phẳng với góc tới 30°. Góc phản xạ là bao nhiêu?|30°|60°|90°|0°|Góc phản xạ bằng góc tới.
+Vật nào là vật chắn sáng?|Tấm gỗ|Kính trong|Nước trong|Không khí|Tấm gỗ không cho ánh sáng đi qua.
+Ảnh của vật qua gương phẳng nằm ở đâu?|Sau gương, đối xứng với vật|Trước gương, cùng vị trí với vật|Trên mặt gương|Ở rất xa|Ảnh ảo đối xứng với vật qua gương.
+Hai nam châm hút nhau khi nào?|Hai cực khác tên đặt gần nhau|Hai cực cùng tên đặt gần nhau|Hai cực cùng màu|Không bao giờ|Khác tên hút nhau, cùng tên đẩy nhau.
+Kim nam châm đặt tự do luôn chỉ hướng nào?|Bắc–Nam (gần đúng)|Đông–Tây|Hướng Mặt Trời|Hướng ngẫu nhiên|Từ trường Trái Đất định hướng kim nam châm.`,
+`Nêu ba biện pháp chống ô nhiễm tiếng ồn ở trường học và gia đình.|Giữ trật tự, giảm âm lượng thiết bị, dùng vật liệu cách âm, trồng cây xanh xung quanh.
+Một tia sáng tới gương phẳng với góc tới 45°. Xác định góc phản xạ và góc giữa tia tới và tia phản xạ.|Góc phản xạ = 45°. Góc giữa tia tới và tia phản xạ = 45° + 45° = 90°.
+Nêu hai ứng dụng của nam châm điện.|Cần cẩu nâng vật bằng sắt thép, chuông điện, rơ-le, loa điện.`,
+'Một người đứng trước gương phẳng cách gương 2 m, rồi đi lại gần gương thêm 0,5 m. Sau khi di chuyển, khoảng cách giữa người và ảnh của mình là bao nhiêu?|Sau khi đi lại gần, người cách gương 1,5 m. Ảnh cách gương 1,5 m nên khoảng cách giữa người và ảnh = 1,5 + 1,5 = 3 m.');
+addX(7,'Học kỳ 2',`Quang hợp diễn ra tốt nhất khi có đủ điều kiện nào?|Ánh sáng, nước, carbon dioxide|Bóng tối|Thiếu nước|Thiếu carbon dioxide|Quang hợp cần ánh sáng, nước và CO₂.
+Mạch gỗ vận chuyển chất nào trong cây?|Nước và muối khoáng|Chất hữu cơ từ lá|Oxygen|Carbon dioxide|Mạch gỗ vận chuyển nước và muối khoáng từ rễ lên.
+Hô hấp tế bào giải phóng gì?|Năng lượng|Ánh sáng|Chất diệp lục|Tinh bột|Năng lượng dùng cho các hoạt động sống.
+Hiện tượng ngọn cây cong về phía ánh sáng là loại cảm ứng nào?|Hướng động|Tập tính bẩm sinh|Phản xạ|Sinh sản|Cây phản ứng với ánh sáng bằng hướng động.
+Giai đoạn nhộng của sâu bướm là giai đoạn nào?|Giai đoạn biến đổi từ sâu thành bướm|Giai đoạn trứng|Sâu non đang ăn lá|Bướm trưởng thành|Nhộng là giai đoạn biến đổi cơ thể.
+Nhân tố nào ảnh hưởng đến sinh trưởng của động vật?|Thức ăn, nhiệt độ, bệnh tật|Chỉ màu lông|Chỉ tên gọi|Không có nhân tố nào|Điều kiện sống tác động đến sinh trưởng.
+Sinh sản hữu tính ở động vật cần điều gì?|Giao tử đực và giao tử cái kết hợp|Nảy chồi|Phân đôi cơ thể|Tạo bào tử|Thụ tinh tạo thành hợp tử.
+Cây con mọc từ củ khoai tây là hình thức sinh sản nào?|Sinh sản sinh dưỡng (vô tính)|Sinh sản hữu tính|Thụ phấn|Thụ tinh|Cây mới mọc từ cơ quan sinh dưỡng.`,
+`Nêu vai trò của quang hợp đối với sinh vật và môi trường.|Tạo chất hữu cơ nuôi sống sinh vật, giải phóng oxygen, hấp thụ CO₂ góp phần điều hòa khí quyển, chuyển năng lượng ánh sáng thành hóa năng.
+Nêu hai ví dụ về tập tính của động vật và cho biết tập tính bẩm sinh hay học được.|Nhện giăng tơ là tập tính bẩm sinh. Chó biết bắt tay theo lệnh là tập tính học được.
+Nêu hai biện pháp kích thích sinh trưởng và phát triển của cây trồng.|Cung cấp đủ nước, phân bón, ánh sáng; tỉa cành, phòng trừ sâu bệnh, dùng chất kích thích sinh trưởng đúng cách.`,
+'Một nhà vườn muốn cây ra hoa đúng dịp Tết. Hãy giải thích cơ sở khoa học và nêu một biện pháp điều khiển sự ra hoa.|Sự ra hoa chịu ảnh hưởng của ánh sáng, nhiệt độ và dinh dưỡng. Có thể điều khiển bằng cách che sáng hoặc chiếu sáng thêm cho cây (như cây cúc), bón phân phù hợp và tưới nước đúng thời điểm.');
+addX(8,'Giữa kỳ 1',`Trong phản ứng hóa học, điều nào không thay đổi?|Số nguyên tử của mỗi nguyên tố|Tên các chất|Màu sắc các chất|Thể của các chất|Nguyên tử được bảo toàn.
+Phương trình hóa học cho biết điều gì?|Chất phản ứng, sản phẩm và tỉ lệ giữa chúng|Chỉ tên chất|Chỉ màu sắc|Chỉ giá thành|Biểu diễn ngắn gọn phản ứng.
+Khối lượng mol của CO₂ là bao nhiêu (C = 12, O = 16)?|44 g/mol|28 g/mol|32 g/mol|12 g/mol|12 + 2 × 16.
+Số mol của 9 g nước (M = 18 g/mol) là bao nhiêu?|0,5 mol|2 mol|162 mol|9 mol|n = m / M.
+Khí nào nặng hơn không khí?|Cl₂|H₂|CH₄|NH₃|M(Cl₂) = 71 lớn hơn 29.
+Phản ứng nào là phản ứng tỏa nhiệt?|Đốt cháy xăng|Nung đá vôi|Nước đá tan chảy|Hòa tan muối vào nước|Cháy giải phóng nhiệt.
+Khối lượng riêng của một chất cho biết điều gì?|Khối lượng của một đơn vị thể tích chất đó|Thể tích của 1 kg chất|Lực hút Trái Đất|Nhiệt độ của chất|D = m / V.
+Vật có D = 7800 kg/m³ và V = 0,002 m³ có khối lượng bao nhiêu?|15,6 kg|3900 kg|0,26 kg|7802 kg|m = D × V.`,
+`Cân bằng phương trình: CH₄ + O₂ → CO₂ + H₂O.|CH₄ + 2O₂ → CO₂ + 2H₂O.
+Tính thể tích của 0,2 mol khí H₂ ở 25 °C, 1 bar và khối lượng lượng khí đó (H = 1).|V = 0,2 × 24,79 = 4,958 L. m = 0,2 × 2 = 0,4 g.
+Cục đồng có khối lượng 89 g và thể tích 10 cm³. Tính khối lượng riêng theo g/cm³ và kg/m³.|D = 89 / 10 = 8,9 g/cm³ = 8900 kg/m³.`,
+'Nung 10 g CaCO₃ theo phản ứng CaCO₃ → CaO + CO₂. Tính khối lượng CaO và thể tích CO₂ (25 °C, 1 bar) khi phản ứng hoàn toàn (Ca = 40, C = 12, O = 16).|n(CaCO₃) = 10 / 100 = 0,1 mol nên n(CaO) = n(CO₂) = 0,1 mol. m(CaO) = 0,1 × 56 = 5,6 g. V(CO₂) = 0,1 × 24,79 = 2,479 L.');
+addX(8,'Học kỳ 1',`Hòa tan 10 g muối vào 40 g nước. Nồng độ phần trăm là bao nhiêu?|20%|25%|10%|80%|10 / 50 × 100%.
+Dung dịch NaOH 2 M có nghĩa là gì?|1 lít dung dịch chứa 2 mol NaOH|1 lít dung dịch chứa 2 g NaOH|2 lít dung dịch chứa 1 mol NaOH|Dung dịch chứa 2% NaOH|CM = n / V.
+Acid nào có trong dịch vị dạ dày người?|HCl|H₂SO₄|HNO₃|CH₃COOH|Dạ dày có hydrochloric acid loãng.
+Dung dịch có pH = 3 có tính chất nào?|Acid|Base|Trung tính|Muối|pH nhỏ hơn 7 là acid.
+Oxide nào là oxide acid?|SO₂|CaO|Na₂O|MgO|SO₂ tạo acid khi tan trong nước.
+Muối nào được dùng làm gia vị?|NaCl|CaCO₃|CuSO₄|KMnO₄|Muối ăn là NaCl.
+Nén cùng một lực lên hai diện tích khác nhau, diện tích nhỏ hơn có áp suất như thế nào?|Lớn hơn|Nhỏ hơn|Bằng nhau|Bằng 0|p = F / S.
+Áp suất khí quyển thay đổi thế nào khi lên cao?|Giảm|Tăng|Không đổi|Bằng 0|Không khí loãng dần.`,
+`Hòa tan 20 g đường vào nước thành 250 g dung dịch. Tính nồng độ phần trăm.|C% = 20 / 250 × 100% = 8%.
+Viết phương trình phản ứng đã cân bằng giữa NaOH và H₂SO₄ tạo Na₂SO₄ và nước.|2NaOH + H₂SO₄ → Na₂SO₄ + 2H₂O.
+Vật có trọng lượng 600 N đặt trên sàn, diện tích tiếp xúc 0,03 m². Tính áp suất lên sàn.|p = F / S = 600 / 0,03 = 20000 Pa.`,
+'Trộn 100 mL dung dịch HCl 1 M với 100 mL dung dịch NaOH 0,5 M. Tính số mol mỗi chất và cho biết dung dịch sau phản ứng có tính acid hay base.|n(HCl) = 0,1 × 1 = 0,1 mol. n(NaOH) = 0,1 × 0,5 = 0,05 mol. NaOH hết, HCl dư 0,05 mol nên dung dịch có tính acid.');
+addX(8,'Giữa kỳ 2',`Vật nhúng chìm hoàn toàn trong nước có thể tích 0,003 m³ (d = 10000 N/m³). Lực đẩy Archimedes là bao nhiêu?|30 N|3 N|300 N|0,3 N|F = d × V.
+Tàu thép nổi được trên nước vì sao?|Trọng lượng riêng trung bình của tàu nhỏ hơn của nước|Thép nhẹ hơn nước|Do có động cơ|Do nước đứng yên|Thân tàu rỗng làm trọng lượng riêng trung bình nhỏ.
+Dùng búa nhổ đinh, đặt lực ở đầu cán dài thì sao?|Moment lớn hơn nên nhổ dễ hơn|Moment nhỏ hơn|Không có moment|Búa nhẹ hơn|Cánh tay đòn dài làm moment lớn.
+Bộ phận nào của mạch điện dùng để đóng và ngắt dòng điện?|Công tắc|Dây dẫn|Bóng đèn|Pin|Công tắc đóng ngắt mạch.
+Dụng cụ nào dùng để đo hiệu điện thế?|Vôn kế|Ampe kế|Nhiệt kế|Lực kế|Vôn kế mắc song song với đoạn cần đo.
+Đứng gần lò sưởi ta thấy nóng chủ yếu nhờ hình thức truyền nhiệt nào?|Bức xạ nhiệt|Dẫn nhiệt|Đối lưu|Không truyền nhiệt|Nhiệt truyền qua không khí bằng bức xạ.
+Vật nào là vật cách nhiệt tốt?|Xốp, len|Đồng|Nhôm|Sắt|Chất dẫn nhiệt kém dùng để cách nhiệt.
+Nhiệt lượng có đơn vị là gì?|Joule (J)|Ampe (A)|Newton (N)|Pascal (Pa)|Nhiệt lượng đo bằng joule.`,
+`Vật nặng 8 N nhúng chìm vào nước, lực kế chỉ 5 N. Tính lực đẩy Archimedes và thể tích vật (d = 10000 N/m³).|F(A) = 8 − 5 = 3 N. V = F / d = 3 / 10000 = 0,0003 m³.
+Bạn A nặng 300 N ngồi cách trục bập bênh 1,5 m. Bạn B ngồi cách trục 1 m. Tìm lực do bạn B tác dụng để bập bênh cân bằng.|F₁ × d₁ = F₂ × d₂ nên F₂ = 300 × 1,5 / 1 = 450 N.
+Mô tả sơ đồ mạch điện gồm pin, công tắc và một bóng đèn.|Pin, công tắc và bóng đèn mắc nối tiếp thành mạch kín bằng dây dẫn. Khi đóng công tắc, đèn sáng.`,
+'Quả cầu đặc có thể tích 200 cm³ và khối lượng 150 g được thả vào nước (khối lượng riêng nước 1000 kg/m³, P = 10m). Vật nổi hay chìm? Tính lực đẩy Archimedes khi vật nằm cân bằng.|D vật = 150 / 200 = 0,75 g/cm³ nhỏ hơn 1 g/cm³ nên vật nổi. Khi cân bằng F(A) = P = 10 × 0,15 = 1,5 N.');
+addX(8,'Học kỳ 2',`Cơ quan nào tiết mật giúp tiêu hóa chất béo?|Gan|Dạ dày|Thận|Phổi|Gan tạo ra mật.
+Nhóm chất nào là nguồn năng lượng chính của cơ thể?|Carbohydrate|Nước|Muối khoáng|Vitamin|Tinh bột cung cấp nhiều năng lượng.
+Bộ phận nào của mắt nhận ánh sáng và tạo ảnh?|Võng mạc|Giác mạc|Con ngươi|Thủy tinh thể|Võng mạc có các tế bào thụ cảm ánh sáng.
+Hormone nào do tuyến giáp tiết ra?|Thyroxine|Insulin|Adrenaline|Testosterone|Tuyến giáp tiết thyroxine.
+Sự thụ tinh ở người thường xảy ra ở đâu?|Ống dẫn trứng|Tử cung|Âm đạo|Buồng trứng|Tinh trùng gặp trứng ở ống dẫn trứng.
+Sinh vật tiêu thụ bậc 1 là nhóm nào?|Động vật ăn thực vật|Cây xanh|Động vật ăn thịt|Vi khuẩn phân giải|Ăn trực tiếp sinh vật sản xuất.
+Nhân tố sinh thái nào là nhân tố hữu sinh?|Sinh vật khác (kẻ thù, con mồi)|Ánh sáng|Nhiệt độ|Độ ẩm|Hữu sinh là các sinh vật.
+Xả rác thải nhựa xuống sông gây hậu quả gì?|Ô nhiễm nước, hại sinh vật|Làm nước sạch hơn|Tăng oxygen|Không ảnh hưởng|Cần bảo vệ môi trường.`,
+`Nêu ba biện pháp giữ gìn vệ sinh hệ hô hấp.|Tránh bụi bẩn và khói thuốc, đeo khẩu trang khi cần, trồng cây xanh, luyện tập thể thao, giữ không khí trong lành.
+Trình bày ngắn gọn vai trò của hệ thần kinh trong cơ thể.|Tiếp nhận kích thích, điều khiển và điều hòa hoạt động của các cơ quan để cơ thể phản ứng phù hợp với môi trường.
+Nêu hai biện pháp bảo vệ môi trường ở địa phương em.|Phân loại rác, hạn chế rác thải nhựa, trồng cây xanh, tiết kiệm điện nước, không xả rác bừa bãi.`,
+'Trong một ao, người ta thả quá nhiều cá. Giải thích hậu quả đối với quần thể cá và hệ sinh thái ao.|Mật độ cao làm thiếu thức ăn và oxygen, cạnh tranh gay gắt nên cá chậm lớn hoặc chết. Chất thải nhiều gây ô nhiễm nước, ảnh hưởng đến các sinh vật khác trong ao.');
+addX(9,'Giữa kỳ 1',`Khi vật rơi tự do (bỏ qua ma sát), thế năng chuyển hóa thành dạng nào?|Động năng|Hóa năng|Điện năng|Quang năng|Thế năng giảm, động năng tăng.
+Công của một lực bằng 0 khi nào?|Vật không dịch chuyển theo hướng của lực|Lực rất lớn|Vật rất nặng|Lực rất nhỏ|A = F × s.
+Vật 3 kg ở độ cao 2 m có thế năng bao nhiêu (P = 10m)?|60 J|6 J|30 J|15 J|10 × 3 × 2.
+Máy A thực hiện công 600 J trong 10 s, máy B thực hiện 600 J trong 5 s. Máy nào có công suất lớn hơn?|Máy B|Máy A|Bằng nhau|Không so sánh được|P = A / t.
+Tia sáng truyền xiên góc từ nước sang không khí thì tia khúc xạ như thế nào?|Lệch xa pháp tuyến|Lệch lại gần pháp tuyến|Không bị lệch|Bị hấp thụ hoàn toàn|Góc khúc xạ lớn hơn góc tới.
+Thấu kính hội tụ có thể cho ảnh nào của vật?|Ảnh thật hoặc ảnh ảo|Chỉ ảnh thật|Chỉ ảnh ảo|Không cho ảnh|Tùy vị trí đặt vật.
+Kính lúp là loại thấu kính nào?|Hội tụ có tiêu cự ngắn|Phân kì|Gương phẳng|Lăng kính|Cho ảnh ảo lớn hơn vật.
+Phản xạ toàn phần được ứng dụng trong thiết bị nào?|Cáp quang|Bóng đèn|Nồi cơm điện|Máy giặt|Ánh sáng truyền trong sợi quang.`,
+`Vật 2 kg ở độ cao 10 m. Tính thế năng; khi vật rơi đến độ cao 5 m, tính động năng (bỏ qua ma sát, P = 10m).|W(t) ban đầu = 10 × 2 × 10 = 200 J. Ở độ cao 5 m: W(t) = 100 J nên động năng = 200 − 100 = 100 J.
+Người kéo thùng hàng bằng lực 80 N đi 15 m trong 30 s. Tính công và công suất.|A = 80 × 15 = 1200 J. P = 1200 / 30 = 40 W.
+Nêu đặc điểm ảnh của vật qua thấu kính hội tụ khi vật đặt ngoài khoảng tiêu cự.|Ảnh thật, ngược chiều với vật (lớn hơn, nhỏ hơn hoặc bằng vật tùy vị trí đặt vật).`,
+'Từ độ cao 20 m, vật 1 kg được ném thẳng đứng xuống dưới với tốc độ 10 m/s (bỏ qua ma sát, P = 10m). Tính tốc độ của vật khi chạm đất.|Cơ năng ban đầu = ½ × 1 × 10² + 10 × 1 × 20 = 50 + 200 = 250 J. Khi chạm đất: ½ × 1 × v² = 250 nên v² = 500, v ≈ 22,4 m/s.');
+addX(9,'Học kỳ 1',`Đơn vị của hiệu điện thế là gì?|Vôn (V)|Ampe (A)|Ôm (Ω)|Oát (W)|U đo bằng vôn.
+Dòng điện qua điện trở 10 Ω khi hiệu điện thế 5 V là bao nhiêu?|0,5 A|50 A|2 A|15 A|I = U / R.
+Trong mạch nối tiếp, hiệu điện thế hai đầu đoạn mạch bằng gì?|Tổng hiệu điện thế trên các điện trở|Hiệu các hiệu điện thế|Bằng hiệu điện thế một điện trở|Bằng 0|U = U₁ + U₂.
+Hai điện trở bằng nhau 20 Ω mắc song song. Điện trở tương đương là bao nhiêu?|10 Ω|40 Ω|20 Ω|5 Ω|20 / 2 = 10.
+Mắt cận thị cần đeo kính nào?|Phân kì|Hội tụ|Phẳng|Không cần đeo|Kính phân kì đưa ảnh về võng mạc.
+Thiết bị 1500 W dùng 2 giờ tiêu thụ bao nhiêu điện năng?|3 kWh|0,75 kWh|1500 kWh|3000 kWh|1,5 kW × 2 h.
+Ảnh của vật thật qua thấu kính phân kì có tính chất nào?|Ảnh ảo, nhỏ hơn vật|Ảnh thật, lớn hơn vật|Ảnh thật, ngược chiều|Không có ảnh|Thấu kính phân kì luôn cho ảnh ảo nhỏ hơn vật.
+Biện pháp nào giúp tiết kiệm điện?|Dùng đèn LED, tắt thiết bị khi không dùng|Bật đèn suốt ngày|Để tivi chạy khi vắng người|Dùng thiết bị hỏng|Giảm lãng phí điện.`,
+`Mắc R₁ = 8 Ω nối tiếp R₂ = 12 Ω vào nguồn 10 V. Tính điện trở tương đương, dòng điện và hiệu điện thế hai đầu R₁.|R = 8 + 12 = 20 Ω. I = 10 / 20 = 0,5 A. U₁ = 0,5 × 8 = 4 V.
+Bóng đèn ghi 220 V – 100 W hoạt động đúng định mức trong 5 giờ. Tính điện năng tiêu thụ theo kWh.|A = P × t = 0,1 kW × 5 h = 0,5 kWh.
+Nêu hai tật của mắt và cách khắc phục.|Cận thị: đeo kính phân kì. Viễn thị: đeo kính hội tụ.`,
+'Hai điện trở R₁ = 30 Ω và R₂ = 60 Ω mắc song song vào nguồn 12 V. Tính điện trở tương đương và công suất tỏa nhiệt trên mỗi điện trở.|R = 30 × 60 / 90 = 20 Ω. I₁ = 12 / 30 = 0,4 A nên P₁ = 12 × 0,4 = 4,8 W. I₂ = 12 / 60 = 0,2 A nên P₂ = 12 × 0,2 = 2,4 W.');
+addX(9,'Giữa kỳ 2',`Dòng điện xoay chiều được tạo ra bởi thiết bị nào?|Máy phát điện xoay chiều|Pin|Ắc quy|Đèn pin|Máy phát biến cơ năng thành điện năng.
+Điều kiện để có dòng điện cảm ứng trong cuộn dây kín là gì?|Từ thông qua cuộn dây biến thiên|Cuộn dây đứng yên trong từ trường đều|Không có nam châm|Cuộn dây bị hở|Đây là hiện tượng cảm ứng điện từ.
+Nguồn năng lượng nào là năng lượng hóa thạch?|Dầu mỏ|Gió|Mặt Trời|Thủy điện|Dầu mỏ, than đá, khí tự nhiên.
+Kim loại nào thường dùng làm dây dẫn điện vì dẫn điện tốt?|Đồng|Chì|Thủy ngân|Thiếc|Đồng dẫn điện tốt, giá phù hợp.
+Trong dãy hoạt động hóa học, kim loại nào hoạt động mạnh hơn?|Mg mạnh hơn Cu|Cu mạnh hơn Mg|Ag mạnh hơn Zn|Au mạnh hơn Fe|Mg đứng trước Cu.
+Gang là hợp kim chứa lượng carbon như thế nào?|Từ 2% đến 5%|Dưới 2%|Trên 50%|Bằng 0|Gang chứa 2–5% carbon.
+Cách nào giúp bảo vệ đồ sắt khỏi gỉ?|Sơn phủ bề mặt|Để ngoài trời ẩm|Ngâm trong nước muối|Cọ xát mạnh|Cách li sắt với không khí ẩm.
+Năng lượng tái tạo nào dựa vào chuyển động của không khí?|Năng lượng gió|Năng lượng than đá|Năng lượng dầu mỏ|Năng lượng hạt nhân|Gió làm quay tuabin phát điện.`,
+`Nêu hai điều cần chú ý để sử dụng điện an toàn trong gia đình.|Không chạm vào dây điện hở, dùng thiết bị có cầu dao hoặc aptomat, tay khô khi cắm phích, ngắt nguồn trước khi sửa chữa.
+Viết phương trình Zn tác dụng dung dịch HCl và nêu hiện tượng.|Zn + 2HCl → ZnCl₂ + H₂. Có bọt khí hydrogen thoát ra, kẽm tan dần.
+Nêu một ưu điểm và một hạn chế của năng lượng gió.|Ưu điểm: sạch, tái tạo được. Hạn chế: phụ thuộc thời tiết, cần diện tích lớn và chi phí đầu tư cao.`,
+'Cho 13 g Zn tác dụng với dung dịch HCl dư. Tính thể tích khí H₂ thu được (25 °C, 1 bar), Zn = 65.|n(Zn) = 13 / 65 = 0,2 mol nên n(H₂) = 0,2 mol. V = 0,2 × 24,79 = 4,958 L.');
+addX(9,'Học kỳ 2',`Sản phẩm khi đốt cháy hoàn toàn hydrocarbon là gì?|CO₂ và H₂O|Chỉ H₂|Chỉ O₂|N₂|Cháy hoàn toàn tạo carbon dioxide và nước.
+Ethanol có tan trong nước không?|Tan vô hạn|Không tan|Tan rất ít|Chỉ tan khi lạnh|Ethanol tan vô hạn trong nước.
+Thủy phân tinh bột hoàn toàn thu được chất nào?|Glucose|Ethanol|Chất béo|Protein|Tinh bột phân hủy thành glucose.
+Thực phẩm nào giàu protein?|Thịt, cá, trứng, đậu|Đường|Muối|Nước|Protein là chất dinh dưỡng quan trọng.
+Quặng nào chứa sắt?|Hematite|Bauxite|Đá vôi|Muối mỏ|Hematite chứa Fe₂O₃.
+Tế bào người bình thường có bao nhiêu nhiễm sắc thể?|46|23|44|92|Bộ nhiễm sắc thể 2n = 46.
+Kiểu gene nào là đồng hợp lặn?|aa|Aa|AA|AA hoặc Aa|Hai allele giống nhau và đều lặn.
+Chọn lọc tự nhiên giúp sinh vật như thế nào?|Giữ lại các cá thể thích nghi|Loại bỏ mọi cá thể|Tăng đột biến có hại|Làm mọi cá thể giống nhau|Cá thể thích nghi sống sót và sinh sản.`,
+`Viết phương trình đốt cháy hoàn toàn ethylene.|C₂H₄ + 3O₂ → 2CO₂ + 2H₂O.
+Nêu hai tác hại của việc dùng nhiều chất dẻo dùng một lần.|Khó phân hủy gây ô nhiễm đất và nước, ảnh hưởng đến sinh vật, tốn tài nguyên, đốt gây khí độc.
+Ở đậu Hà Lan, hoa tím (A) trội so với hoa trắng (a). Cho Aa × Aa. Tính xác suất đời con có hoa trắng.|Đời con: 1 AA : 2 Aa : 1 aa nên xác suất hoa trắng (aa) là 1/4 = 25%.`,
+'Cho 4,6 g ethanol tác dụng hoàn toàn với Na dư theo phản ứng 2C₂H₅OH + 2Na → 2C₂H₅ONa + H₂. Tính thể tích H₂ (25 °C, 1 bar), C = 12, H = 1, O = 16.|M(C₂H₅OH) = 46 nên n = 4,6 / 46 = 0,1 mol. n(H₂) = 0,05 mol. V = 0,05 × 24,79 ≈ 1,24 L.');
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){return ex6b()+vdc()}
