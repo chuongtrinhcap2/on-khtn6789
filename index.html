@@ -40,6 +40,7 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .auth input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;flex:1 1 150px}.arow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}.row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;margin:12px 0}
 .mx{border-collapse:collapse;width:100%}.mx th,.mx td{border:1px solid var(--line);padding:6px 8px;text-align:left;font-size:.9rem}.mx th{background:var(--hi)}
+details.card summary{cursor:pointer}details.card ul{margin-top:8px}
 </style>
 </head>
 <body>
@@ -1273,6 +1274,144 @@ Chọn lọc tự nhiên giúp sinh vật như thế nào?|Giữ lại các cá 
 Nêu hai tác hại của việc dùng nhiều chất dẻo dùng một lần.|Khó phân hủy gây ô nhiễm đất và nước, ảnh hưởng đến sinh vật, tốn tài nguyên, đốt gây khí độc.
 Ở đậu Hà Lan, hoa tím (A) trội so với hoa trắng (a). Cho Aa × Aa. Tính xác suất đời con có hoa trắng.|Đời con: 1 AA : 2 Aa : 1 aa nên xác suất hoa trắng (aa) là 1/4 = 25%.`,
 'Cho 4,6 g ethanol tác dụng hoàn toàn với Na dư theo phản ứng 2C₂H₅OH + 2Na → 2C₂H₅ONa + H₂. Tính thể tích H₂ (25 °C, 1 bar), C = 12, H = 1, O = 16.|M(C₂H₅OH) = 46 nên n = 4,6 / 46 = 0,1 mol. n(H₂) = 0,05 mol. V = 0,05 × 24,79 ≈ 1,24 L.');
+const mkS=t=>t.trim().split('\n##').map(b=>{const L=b.replace(/^##/,'').trim().split('\n');return {t:L[0],p:L.slice(1)}});
+const mkK=t=>t.trim().split('\n##').map(b=>{const L=b.replace(/^##/,'').trim().split('\n');return {t:L[0],c:L.slice(1).map(l=>l.split('::'))}});
+const SUM={6:mkS(`Chương 1. Mở đầu về KHTN
+KHTN nghiên cứu các sự vật, hiện tượng, quy luật tự nhiên và tác động của con người lên tự nhiên. Gồm vật lí, hóa học, sinh học, khoa học Trái Đất, thiên văn học.
+Vật sống có trao đổi chất, lớn lên, sinh sản, cảm ứng. Vật không sống không có các dấu hiệu này.
+An toàn phòng thực hành: đọc nội quy, không ăn uống, không nếm hóa chất, dùng đồ bảo hộ, báo giáo viên khi có sự cố, nhận biết kí hiệu cảnh báo.
+Đo chiều dài (m), khối lượng (kg), thời gian (s), nhiệt độ (°C): ước lượng, chọn dụng cụ có GHĐ và ĐCNN phù hợp, đặt mắt đúng cách, ghi kết quả kèm đơn vị.
+Kính lúp quan sát vật nhỏ, kính hiển vi quan sát vật rất nhỏ như tế bào.
+##Chương 2. Chất quanh ta
+Mỗi chất có tính chất vật lí (thể, màu, mùi, nhiệt độ sôi, nóng chảy, tính tan...) và tính chất hóa học.
+Ba thể của chất: rắn (hình dạng và thể tích xác định, khó nén), lỏng (thể tích xác định, theo hình bình chứa, khó nén), khí (dễ nén, lan ra mọi hướng).
+Sự chuyển thể: nóng chảy, đông đặc, bay hơi, sôi, ngưng tụ.
+Oxygen duy trì sự cháy và sự sống, cần cho hô hấp.
+Không khí là hỗn hợp khí: nitrogen khoảng 78%, oxygen khoảng 21%, còn lại là khí khác. Cần giữ không khí trong lành.
+##Chương 3. Vật liệu, nguyên liệu, nhiên liệu, lương thực, thực phẩm
+Vật liệu (kim loại, nhựa, gỗ, thủy tinh, cao su, gốm) có tính chất khác nhau nên được chọn theo công dụng.
+Nhiên liệu cháy tỏa nhiệt (than, xăng, gas); cần sử dụng an toàn, tiết kiệm. Nhiên liệu hóa thạch không tái tạo.
+Nguyên liệu là vật liệu thô để sản xuất (quặng, dầu mỏ, đá vôi).
+Lương thực, thực phẩm cung cấp chất dinh dưỡng; cần bảo quản đúng cách.
+Sử dụng hợp lí để tiết kiệm và bảo vệ môi trường.
+##Chương 4. Hỗn hợp, tách chất
+Hỗn hợp gồm hai hay nhiều chất trộn lẫn; chất tinh khiết chỉ gồm một chất.
+Hỗn hợp đồng nhất (nước muối) và không đồng nhất (nước đất, nước và dầu).
+Dung dịch gồm chất tan và dung môi; huyền phù có chất rắn lơ lửng; nhũ tương có giọt chất lỏng phân tán trong chất lỏng khác.
+Tách chất dựa vào khác biệt tính chất: lọc, cô cạn, chiết, chưng cất, dùng nam châm.
+##Chương 5. Tế bào
+Tế bào là đơn vị cơ sở của sự sống, rất nhỏ, quan sát bằng kính hiển vi.
+Cấu tạo: màng tế bào, tế bào chất, nhân (hoặc vùng nhân). Tế bào thực vật còn có thành tế bào và lục lạp.
+Tế bào lớn lên rồi phân chia: 1 → 2 → 4 → 8, giúp cơ thể lớn lên và thay thế tế bào già, chết.
+Tế bào có nhiều hình dạng và kích thước khác nhau, tùy chức năng.
+##Chương 6. Từ tế bào đến cơ thể
+Cơ thể đơn bào gồm một tế bào; cơ thể đa bào gồm nhiều tế bào.
+Các cấp độ tổ chức: tế bào, mô, cơ quan, hệ cơ quan, cơ thể.
+Cơ thể người có các hệ cơ quan (tiêu hóa, hô hấp, tuần hoàn, thần kinh...) phối hợp hoạt động.
+Thực vật có cơ quan sinh dưỡng (rễ, thân, lá) và cơ quan sinh sản (hoa, quả, hạt).
+##Chương 7. Đa dạng thế giới sống
+Phân loại theo thang: loài, chi, họ, bộ, lớp, ngành, giới. Tên khoa học gồm tên chi và tên loài.
+Khóa lưỡng phân chia sinh vật bằng các cặp đặc điểm đối lập.
+Virus chưa có cấu tạo tế bào, kí sinh trong tế bào sống. Vi khuẩn là sinh vật đơn bào nhỏ, có lợi và có hại. Nguyên sinh vật chủ yếu đơn bào, sống ở nước. Nấm dị dưỡng, có lợi và có hại.
+Thực vật gồm không có hạt (rêu, dương xỉ) và có hạt (hạt trần, hạt kín). Động vật gồm không xương sống và có xương sống (cá, lưỡng cư, bò sát, chim, thú).
+Cần bảo vệ đa dạng sinh học.
+##Chương 8. Lực trong đời sống
+Lực là sự đẩy hoặc kéo, đơn vị newton (N), đo bằng lực kế. Lực làm vật biến dạng hoặc thay đổi chuyển động.
+Lực tiếp xúc và lực không tiếp xúc (hấp dẫn, từ, điện).
+Biểu diễn lực bằng mũi tên: gốc là điểm đặt, hướng là phương và chiều, độ dài thể hiện độ lớn.
+Trọng lực là lực hút của Trái Đất; trọng lượng P = 10 × m.
+Lực đàn hồi của lò xo chống lại biến dạng. Lực ma sát và lực cản cản trở chuyển động; ma sát có lợi và có hại.
+##Chương 9. Năng lượng
+Năng lượng làm vật chuyển động, nóng lên, phát sáng...; đơn vị joule (J).
+Các dạng: cơ năng (động năng, thế năng), nhiệt năng, điện năng, quang năng, hóa năng, âm năng.
+Năng lượng chuyển hóa từ dạng này sang dạng khác, không tự mất đi hay sinh ra; một phần hao phí tỏa ra môi trường.
+Năng lượng tái tạo (Mặt Trời, gió, nước) không cạn kiệt; nhiên liệu hóa thạch thì có hạn. Cần tiết kiệm năng lượng.
+##Chương 10. Trái Đất và bầu trời
+Trái Đất tự quay một vòng khoảng 24 giờ gây ra ngày và đêm; ta thấy Mặt Trời mọc đông, lặn tây.
+Mặt Trăng là vệ tinh tự nhiên, phản chiếu ánh sáng Mặt Trời; có các pha trăng khác nhau do phần sáng nhìn thấy thay đổi.
+Hệ Mặt Trời gồm Mặt Trời và các thiên thể quay quanh (8 hành tinh, vệ tinh...). Ngân Hà là tập hợp hàng trăm tỉ ngôi sao.
+Trái Đất quay quanh Mặt Trời một vòng khoảng 365 ngày (một năm).`)};
+const KN={6:mkK(`Chương 1. Mở đầu về KHTN
+Khoa học tự nhiên::ngành khoa học nghiên cứu các sự vật, hiện tượng, quy luật tự nhiên và ảnh hưởng của chúng đến đời sống.
+Vật sống::vật có trao đổi chất, lớn lên, sinh sản, cảm ứng (cây, con vật).
+Vật không sống::vật không có các dấu hiệu của sự sống (hòn đá, cái bàn).
+Giới hạn đo (GHĐ)::giá trị lớn nhất ghi trên dụng cụ đo.
+Độ chia nhỏ nhất (ĐCNN)::giá trị giữa hai vạch chia liên tiếp trên dụng cụ đo.
+Kính hiển vi::dụng cụ quan sát vật rất nhỏ, gồm vật kính, thị kính và bộ phận chiếu sáng.
+##Chương 2. Chất quanh ta
+Chất::những gì tạo nên vật thể.
+Tính chất vật lí::thể, màu, mùi, vị, nhiệt độ nóng chảy, nhiệt độ sôi, tính tan, khả năng dẫn điện, dẫn nhiệt.
+Tính chất hóa học::khả năng biến đổi thành chất khác (cháy, gỉ, phân hủy).
+Sự nóng chảy, sự đông đặc::rắn thành lỏng và lỏng thành rắn.
+Sự bay hơi::lỏng thành khí ở bề mặt, xảy ra ở mọi nhiệt độ.
+Sự sôi::bay hơi cả trong lòng chất lỏng ở nhiệt độ xác định.
+Sự ngưng tụ::khí thành lỏng.
+Không khí::hỗn hợp các khí, chủ yếu nitrogen (khoảng 78%) và oxygen (khoảng 21%).
+##Chương 3. Vật liệu, nguyên liệu, nhiên liệu, lương thực, thực phẩm
+Vật liệu::chất dùng để làm ra các vật dụng (kim loại, nhựa, gỗ, thủy tinh, cao su, gốm).
+Nhiên liệu::chất cháy tỏa nhiệt và ánh sáng, dùng làm năng lượng (than, xăng, gas).
+Nhiên liệu hóa thạch::than đá, dầu mỏ, khí tự nhiên; hình thành từ xác sinh vật và không tái tạo.
+Nguyên liệu::vật liệu thô dùng để sản xuất ra sản phẩm (quặng, đá vôi, dầu mỏ).
+Lương thực::thức ăn chủ yếu cung cấp tinh bột (gạo, ngô, khoai).
+Thực phẩm::thức ăn, đồ uống cung cấp chất dinh dưỡng cho cơ thể.
+##Chương 4. Hỗn hợp, tách chất
+Hỗn hợp::gồm hai hay nhiều chất trộn lẫn, mỗi chất giữ nguyên tính chất.
+Chất tinh khiết::chỉ gồm một chất.
+Hỗn hợp đồng nhất::không phân biệt được các thành phần bằng mắt (nước muối).
+Hỗn hợp không đồng nhất::phân biệt được các thành phần (nước và dầu ăn).
+Dung dịch::hỗn hợp đồng nhất của chất tan và dung môi.
+Huyền phù::chất rắn không tan lơ lửng trong chất lỏng (nước đất).
+Nhũ tương::các giọt chất lỏng lơ lửng trong chất lỏng khác không tan vào nhau (sữa).
+Lọc, cô cạn, chiết, chưng cất::các cách tách chất dựa vào khác biệt tính chất.
+##Chương 5. Tế bào
+Tế bào::đơn vị cấu tạo và chức năng của sự sống.
+Màng tế bào::bao bọc tế bào, kiểm soát chất ra vào.
+Tế bào chất::nơi diễn ra các hoạt động sống, chứa các bào quan.
+Nhân (vùng nhân)::chứa vật chất di truyền, điều khiển hoạt động của tế bào.
+Thành tế bào, lục lạp::chỉ có ở tế bào thực vật; lục lạp chứa diệp lục để quang hợp.
+Sự phân chia tế bào::một tế bào mẹ tạo hai tế bào con, giúp cơ thể lớn lên và thay thế tế bào.
+##Chương 6. Từ tế bào đến cơ thể
+Cơ thể đơn bào::cơ thể chỉ gồm một tế bào đảm nhiệm mọi chức năng.
+Cơ thể đa bào::cơ thể gồm nhiều tế bào.
+Mô::nhóm tế bào giống nhau cùng thực hiện một chức năng.
+Cơ quan::nhiều mô cùng thực hiện một chức năng.
+Hệ cơ quan::nhiều cơ quan phối hợp thực hiện một chức năng chung.
+Cơ thể::sinh vật hoàn chỉnh gồm các hệ cơ quan phối hợp hoạt động.
+##Chương 7. Đa dạng thế giới sống
+Loài::nhóm cá thể giống nhau về đặc điểm, giao phối sinh con hữu thụ.
+Thang phân loại::loài, chi, họ, bộ, lớp, ngành, giới (từ nhỏ đến lớn).
+Tên khoa học::tên chi và tên loài (cách đặt tên kép).
+Khóa lưỡng phân::cách phân loại bằng các cặp đặc điểm đối lập.
+Virus::chưa có cấu tạo tế bào, kí sinh bắt buộc trong tế bào sống.
+Vi khuẩn::sinh vật đơn bào, kích thước rất nhỏ.
+Nguyên sinh vật::sinh vật chủ yếu đơn bào, sống ở nước hoặc nơi ẩm.
+Nấm::sinh vật dị dưỡng, có thành tế bào, đơn bào hoặc đa bào.
+Thực vật không có hạt và có hạt::không có hạt (rêu, dương xỉ) sinh sản bằng bào tử; có hạt gồm hạt trần và hạt kín.
+Động vật có xương sống và không xương sống::có xương sống gồm cá, lưỡng cư, bò sát, chim, thú.
+Đa dạng sinh học::sự phong phú của các loài sinh vật và môi trường sống của chúng.
+##Chương 8. Lực trong đời sống
+Lực::sự đẩy hoặc kéo của vật này lên vật khác, đơn vị newton (N).
+Lực tiếp xúc, lực không tiếp xúc::tiếp xúc khi hai vật chạm nhau; không tiếp xúc như lực hấp dẫn, lực từ.
+Biểu diễn lực::mũi tên có gốc là điểm đặt, hướng là hướng của lực, độ dài tỉ lệ với độ lớn.
+Trọng lực::lực hút của Trái Đất; trọng lượng P = 10 × m.
+Lực đàn hồi::lực lò xo sinh ra khi bị biến dạng, chống lại sự biến dạng.
+Lực ma sát::lực cản trở chuyển động giữa hai bề mặt tiếp xúc (trượt, lăn, nghỉ).
+Lực cản::lực của không khí hoặc nước cản trở chuyển động của vật.
+##Chương 9. Năng lượng
+Năng lượng::khả năng thực hiện công hoặc gây ra sự thay đổi, đơn vị joule (J).
+Động năng, thế năng::năng lượng do chuyển động; năng lượng do vị trí hoặc biến dạng.
+Nhiệt năng, quang năng, điện năng, hóa năng::các dạng năng lượng khác nhau.
+Sự chuyển hóa năng lượng::năng lượng chuyển từ dạng này sang dạng khác.
+Bảo toàn năng lượng::năng lượng không tự sinh ra hay mất đi.
+Năng lượng hao phí::phần năng lượng không có ích tỏa ra môi trường, thường là nhiệt.
+Năng lượng tái tạo::nguồn năng lượng không cạn kiệt (Mặt Trời, gió, nước).
+##Chương 10. Trái Đất và bầu trời
+Chuyển động nhìn thấy của Mặt Trời::do Trái Đất tự quay, ta thấy Mặt Trời mọc đông, lặn tây.
+Mặt Trăng::vệ tinh tự nhiên của Trái Đất, phản chiếu ánh sáng Mặt Trời.
+Các pha của Mặt Trăng::trăng non, thượng huyền, trăng tròn, hạ huyền... do phần sáng nhìn thấy thay đổi.
+Hệ Mặt Trời::Mặt Trời và các thiên thể chuyển động quanh nó (8 hành tinh, vệ tinh...).
+Ngân Hà::thiên hà chứa Hệ Mặt Trời, gồm hàng trăm tỉ ngôi sao.
+Năm::thời gian Trái Đất quay một vòng quanh Mặt Trời, khoảng 365 ngày.`)};
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){return ex6b()+vdc()}
@@ -1282,8 +1421,8 @@ function ansE(i,j){const q=EXALL[g][E6].mc[i],b=document.getElementById('x'+i);i
 function tog(i){const e=document.getElementById('a'+i),b=document.getElementById('b'+i),s=e.classList.toggle('show');b.textContent=s?'Ẩn đáp án':'Xem đáp án'}
 function card(h,b){return `<div class="card"><h3>${h}</h3><div>${b}</div></div>`}
 function render(){pills();const d=D[g];let h='';
-if(t=='ov')h=d.ov.map(([a,b])=>card(a,b)).join('');
-if(t=='kn')h=d.kn.map(([a,b])=>card(a,b)).join('');
+if(t=='ov')h=SUM[g]?SUM[g].map(c=>card(c.t,'<ul>'+c.p.map(x=>'<li>'+x+'</li>').join('')+'</ul>')).join(''):d.ov.map(([a,b])=>card(a,b)).join('');
+if(t=='kn')h=KN[g]?'<div class="ex">Bấm vào từng chương để xem các khái niệm.</div>'+KN[g].map(c=>'<details class="card"><summary><b>'+c.t+'</b> ('+c.c.length+' khái niệm)</summary><ul>'+c.c.map(([a,b])=>'<li><b>'+a+'</b>: '+b+'</li>').join('')+'</ul></details>').join(''):d.kn.map(([a,b])=>card(a,b)).join('');
 if(t=='fm')h='<div class="card">'+d.fm.map(([a,b])=>`<div class="f"><b>${a}</b><span>${b}</span></div>`).join('')+'</div>';
 if(t=='qz'&&BANKS[g])h=bank6();else if(t=='qz'){h=`<div class="score"><span id="sc">Điểm: ${score}/${d.qz.length}</span><button onclick="setG(g)">Làm lại</button></div>`+d.qz.map((q,i)=>`<div class="card q" id="q${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ans(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="e${i}"></div></div>`).join('')}
 if(t=='tl'){h=card('Đề mẫu tổng hợp lớp '+g,'<ul><li>Thời gian gợi ý: 45 phút.</li><li>Phần I, trắc nghiệm (3 điểm): làm ở tab Luyện tập.</li><li>Phần II, tự luận (7 điểm): các câu dưới đây. Tự làm trước, rồi mới bấm xem đáp án.</li></ul>')+TL[g].map((q,i)=>`<div class="card"><h3>Câu ${i+1} (${String(q[0]).replace('.',',')} điểm)</h3><div>${q[1]}</div><button id="b${i}" onclick="tog(${i})" style="margin-top:8px">Xem đáp án</button><div class="ans" id="a${i}">${q[2]}</div></div>`).join('')}
