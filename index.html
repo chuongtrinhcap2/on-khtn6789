@@ -37,7 +37,6 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .score button{padding:4px 10px;font-size:.85rem}
 .note{font-size:.85rem;color:var(--mute);margin-top:18px}
 .ans{display:none;margin-top:8px;padding:10px 12px;border-left:4px solid var(--accent);background:var(--hi);border-radius:6px;font-size:.95rem}.ans.show{display:block}
-.auth input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;flex:1 1 150px}.arow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}.row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;margin:12px 0}
 .mx{border-collapse:collapse;width:100%}.mx th,.mx td{border:1px solid var(--line);padding:6px 8px;text-align:left;font-size:.9rem}.mx th{background:var(--hi)}
 details.card summary{cursor:pointer}details.card ul{margin-top:8px}
@@ -47,14 +46,11 @@ details.card summary{cursor:pointer}details.card ul{margin-top:8px}
 <div class="wrap">
 <h1>Ôn Khoa học tự nhiên 6–9</h1>
 <p class="sub">Tổng quan chương trình, công thức cần nhớ, luyện tập và cấu trúc đề kiểm tra. Miễn phí, không cần đăng ký.</p>
-<div class="card auth" id="auth" style="display:none"></div>
 <div class="pills" id="pills" role="tablist" aria-label="Chọn lớp"></div>
 <div class="tabs" id="tabs"></div>
 <div id="main"></div>
 <p class="note">Nội dung bám khung chương trình GDPT 2018 và tên chủ đề của sách Kết nối tri thức với cuộc sống, mang tính tham khảo. Phân phối chương trình và đề thi thực tế tùy sách giáo khoa và nhà trường, hãy đối chiếu với đề cương của giáo viên.</p>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="config.js"></script>
 <script>
 const D={
 6:{
@@ -817,27 +813,12 @@ function mig(o){const v=(o&&o._v)||0;if(v>=4)return o;const r={_v:4};for(const k
 let CH=0,P={},DBR=null;
 try{P=JSON.parse(localStorage.getItem('khtn6')||'{}')}catch(e){}
 P=mig(P);
-let SB=null,USER=null,svT=null;
-function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}
-if(SB&&USER){clearTimeout(svT);svT=setTimeout(()=>{SB.from('progress').upsert({user_id:USER.id,data:P,updated_at:new Date().toISOString()}).then(r=>{if(r.error)console.warn(r.error.message)})},600)}}
-function esc(x){return String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function renderAuth(){const a=document.getElementById('auth');if(!SB){a.style.display='none';return}a.style.display='block';
-a.innerHTML=USER?'Đã đăng nhập: <b>'+esc(USER.email)+'</b> <button onclick="logout()">Đăng xuất</button>':'<b>Đăng nhập để lưu tiến độ trên mọi thiết bị</b><div class="arow"><input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="current-password"><button onclick="login()">Đăng nhập</button><button onclick="signup()">Đăng ký</button></div><div class="ex" id="am"></div>'}
-async function login(){const r=await SB.auth.signInWithPassword({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng nhập được: '+r.error.message:''}
-async function signup(){const r=await SB.auth.signUp({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng ký được: '+r.error.message:'Đã đăng ký. Nếu được yêu cầu, hãy xác nhận qua email rồi đăng nhập.'}
-async function logout(){await SB.auth.signOut();LK=null;VP=null}
-async function setUser(u){USER=u||null;renderAuth();
-if(USER){const r=await SB.from('progress').select('data').eq('user_id',USER.id).maybeSingle();if(r.data&&r.data.data)P=Object.assign({},mig(r.data.data),P);sv()}
-if(t=='qz'&&BANKS[g])render()}
-function initAuth(){renderAuth();const u=window.SUPABASE_URL,k=window.SUPABASE_ANON_KEY;
-if(!window.supabase||!u||!k||/YOUR_/.test(u+k))return;
-SB=window.supabase.createClient(u,k);renderAuth();
-SB.auth.onAuthStateChange((e,se)=>{setUser(se&&se.user)})}
+function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}if(DBR)DBR.set({p:P}).catch(()=>{})}
 function prog(){let a=0,b=0,c=0;BANKS[g].forEach((x,i)=>x.q.forEach((_,j)=>{b++;if(P[g+':'+i+'-'+j]==1){a++;if(i==CH)c++}}));return 'Đã đúng '+c+'/'+BANKS[g][CH].q.length+' câu của chương này, '+a+'/'+b+' câu toàn bộ.'}
 function setC(i){CH=i;render()}
 function resetC(){BANKS[g][CH].q.forEach((_,j)=>delete P[g+':'+CH+'-'+j]);sv();render()}
 function bank6(){const c=BANKS[g][CH];
-return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+tlbank()+`<p class="note">${USER?'Tiến độ được lưu theo tài khoản của bạn.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
+return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+tlbank()+`<p class="note">${DBR?'Tiến độ được lưu theo tài khoản của bạn và trên thiết bị này.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
 function ansC(i,j){const q=BANKS[g][CH].q[i],b=document.getElementById('c'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q.a].classList.add('ok');if(j!=q.a)o[j].classList.add('bad');P[g+':'+CH+'-'+i]=j==q.a?1:0;sv();document.getElementById('ce'+i).textContent=(j==q.a?'Chính xác. ':'Chưa đúng. ')+q[2];document.getElementById('pg').textContent=prog()}
 const EX6={
 'Giữa kỳ 1':{sc:'Phạm vi: mở đầu (an toàn, đo lường), chất quanh ta, sự chuyển thể, oxygen và không khí.',
@@ -1412,6 +1393,487 @@ Các pha của Mặt Trăng::trăng non, thượng huyền, trăng tròn, hạ h
 Hệ Mặt Trời::Mặt Trời và các thiên thể chuyển động quanh nó (8 hành tinh, vệ tinh...).
 Ngân Hà::thiên hà chứa Hệ Mặt Trời, gồm hàng trăm tỉ ngôi sao.
 Năm::thời gian Trái Đất quay một vòng quanh Mặt Trời, khoảng 365 ngày.`)};
+const mkF=t=>t.trim().split('\n').map(l=>l.split('::'));
+D[6].fm=mkF(`Trọng lượng::P = 10 × m (P: newton, m: kilôgam)
+Đổi chiều dài::1 km = 1000 m; 1 m = 100 cm = 1000 mm
+Đổi khối lượng::1 tấn = 1000 kg; 1 kg = 1000 g
+Đổi thời gian::1 giờ = 60 phút = 3600 giây
+Đổi thể tích::1 lít = 1000 mL = 1 dm³; 1 mL = 1 cm³
+Đổi năng lượng::1 kJ = 1000 J
+Đổi nhiệt độ::°F = °C × 1,8 + 32 và °C = (°F − 32) / 1,8
+Nhiệt độ đặc trưng của nước::nóng chảy 0 °C, sôi 100 °C (áp suất thường)
+Thành phần không khí::khoảng 78% nitrogen, 21% oxygen, 1% khí khác (theo thể tích)
+Số tế bào sau n lần phân chia::2ⁿ (từ 1 tế bào mẹ)
+Độ giãn lò xo::Δl = l − l₀; độ giãn tỉ lệ thuận với khối lượng vật treo
+Chuyển động của Trái Đất::tự quay một vòng khoảng 24 giờ; quay quanh Mặt Trời một vòng khoảng 365 ngày`);
+D[7].fm=mkF(`Tốc độ::v = s / t; s = v × t; t = s / v
+Đổi đơn vị tốc độ::1 m/s = 3,6 km/h
+Tốc độ trung bình::v(tb) = tổng quãng đường / tổng thời gian
+Tần số::f = số dao động / thời gian (đơn vị Hz)
+Tiếng vang, đo khoảng cách bằng âm::d = v(âm) × t / 2 (âm đi và về)
+Định luật phản xạ ánh sáng::góc phản xạ = góc tới (i' = i)
+Số hạt trong nguyên tử::số proton = số electron = số hiệu nguyên tử Z
+Khối lượng nguyên tử gần đúng::số proton + số neutron (đơn vị amu)
+Chu kì, nhóm::số lớp electron = số thứ tự chu kì; nhóm A: số electron lớp ngoài cùng = số thứ tự nhóm
+Quy tắc hóa trị::với AₓB(y) hóa trị a và b: x × a = y × b
+Phân tử khối::tổng khối lượng nguyên tử của các nguyên tử trong phân tử
+Phần trăm khối lượng nguyên tố::%X = (số nguyên tử X × khối lượng nguyên tử X) / phân tử khối × 100%
+Quang hợp::carbon dioxide + nước → (ánh sáng, diệp lục) → glucose + oxygen
+Hô hấp tế bào::glucose + oxygen → carbon dioxide + nước + năng lượng`);
+SUM[7]=mkS(`Chương 1. Nguyên tử và bảng tuần hoàn các nguyên tố hóa học
+Nguyên tử gồm hạt nhân (proton mang điện dương, neutron không mang điện) và lớp vỏ electron mang điện âm. Số proton bằng số electron nên nguyên tử trung hòa về điện.
+Khối lượng nguyên tử gần bằng tổng số proton và neutron, đo bằng amu. Electron xếp thành các lớp.
+Nguyên tố hóa học là các nguyên tử cùng loại có cùng số proton (số hiệu nguyên tử). Mỗi nguyên tố có tên và kí hiệu riêng.
+Bảng tuần hoàn xếp nguyên tố theo chiều tăng điện tích hạt nhân: ô nguyên tố, chu kì (hàng ngang), nhóm (cột dọc). Các nguyên tố cùng nhóm có tính chất gần giống nhau. Học 20 nguyên tố đầu.
+##Chương 2. Phân tử và liên kết hóa học
+Phân tử là hạt đại diện cho chất gồm hai hay nhiều nguyên tử liên kết. Đơn chất do một nguyên tố tạo nên, hợp chất do từ hai nguyên tố trở lên.
+Liên kết ion: nguyên tử kim loại nhường electron, phi kim nhận electron tạo ion trái dấu hút nhau (NaCl).
+Liên kết cộng hóa trị: các nguyên tử phi kim dùng chung electron (H₂, H₂O, CO₂).
+Hóa trị là khả năng liên kết của nguyên tử. Dùng quy tắc hóa trị để lập công thức hóa học và tính phân tử khối.
+##Chương 3. Tốc độ
+Tốc độ cho biết chuyển động nhanh hay chậm: v = s / t, đơn vị m/s hoặc km/h.
+Đo tốc độ bằng đồng hồ bấm giờ, cổng quang điện hoặc thiết bị bắn tốc độ.
+Đồ thị quãng đường–thời gian: đường thẳng nghiêng lên là chuyển động đều, đường nằm ngang là đứng yên, càng dốc vật càng nhanh.
+An toàn giao thông: tuân thủ tốc độ giới hạn, giữ khoảng cách an toàn, đội mũ bảo hiểm.
+##Chương 4. Âm thanh
+Âm do vật dao động phát ra, truyền qua chất rắn, lỏng, khí, không truyền qua chân không (sóng âm).
+Độ cao của âm phụ thuộc tần số (Hz); độ to phụ thuộc biên độ dao động (đo bằng dB).
+Âm gặp vật chắn bị phản xạ, tạo tiếng vang. Vật cứng, nhẵn phản xạ âm tốt; vật mềm, xốp hấp thụ âm.
+Ô nhiễm tiếng ồn làm hại sức khỏe. Biện pháp: cách âm, giảm âm lượng, trồng cây xanh.
+##Chương 5. Ánh sáng
+Ánh sáng là một dạng năng lượng. Nguồn sáng tự phát ra ánh sáng; ánh sáng truyền thẳng, biểu diễn bằng tia sáng.
+Ta nhìn thấy vật khi có ánh sáng từ vật đi vào mắt. Vật chắn sáng tạo ra vùng tối phía sau.
+Định luật phản xạ: tia phản xạ nằm trong mặt phẳng tới và góc phản xạ bằng góc tới.
+Ảnh của vật qua gương phẳng là ảnh ảo, bằng vật và đối xứng với vật qua gương.
+##Chương 6. Từ
+Nam châm có hai cực Bắc, Nam, hút sắt, nickel, cobalt. Hai cực cùng tên đẩy nhau, khác tên hút nhau.
+Từ trường là không gian xung quanh nam châm có tác dụng lực từ; mô tả bằng đường sức từ. Kim nam châm phát hiện được từ trường.
+Trái Đất giống một nam châm khổng lồ nên la bàn chỉ hướng Bắc–Nam.
+Nam châm điện gồm cuộn dây có lõi sắt non, có từ tính khi có dòng điện, mất từ tính khi ngắt điện; có nhiều ứng dụng.
+##Chương 7. Trao đổi chất và chuyển hóa năng lượng ở sinh vật
+Trao đổi chất là quá trình cơ thể lấy chất từ môi trường, biến đổi và thải ra ngoài, gắn với chuyển hóa năng lượng.
+Quang hợp ở lục lạp: CO₂ + nước → (ánh sáng, diệp lục) → glucose + O₂. Chịu ảnh hưởng của ánh sáng, CO₂, nước, nhiệt độ.
+Hô hấp tế bào ở ty thể: glucose + O₂ → CO₂ + nước + năng lượng.
+Thực vật: rễ (lông hút) hấp thụ nước, khoáng; mạch gỗ và mạch rây vận chuyển chất; khí khổng thoát hơi nước và trao đổi khí.
+Động vật: tiêu hóa, hô hấp, tuần hoàn, bài tiết giúp trao đổi chất.
+##Chương 8. Cảm ứng ở sinh vật
+Cảm ứng là khả năng nhận kích thích và phản ứng lại của sinh vật.
+Ở thực vật, cảm ứng chậm, thể hiện bằng hướng động (hướng sáng, hướng nước...).
+Ở động vật, cảm ứng nhanh nhờ hệ thần kinh, thể hiện qua tập tính bẩm sinh và học được.
+Hiểu cảm ứng và tập tính giúp huấn luyện vật nuôi, chăm sóc cây trồng.
+##Chương 9. Sinh trưởng và phát triển ở sinh vật
+Sinh trưởng là tăng kích thước và khối lượng; phát triển là biến đổi về cấu tạo và chức năng qua các giai đoạn.
+Vòng đời: thực vật (hạt nảy mầm, cây non, ra hoa, kết quả), động vật (có biến thái hoàn toàn hoặc không hoàn toàn).
+Nhân tố ảnh hưởng: nhiệt độ, ánh sáng, nước, dinh dưỡng, hormone.
+Ứng dụng trong trồng trọt và chăn nuôi.
+##Chương 10. Sinh sản ở sinh vật
+Sinh sản tạo ra cá thể mới, duy trì loài.
+Sinh sản vô tính không có kết hợp giao tử (nảy chồi, giâm cành, phân đôi); sinh sản hữu tính có thụ tinh giữa giao tử đực và cái.
+Hoa có nhị (hạt phấn) và nhụy (noãn). Thụ phấn rồi thụ tinh tạo hạt; bầu nhụy phát triển thành quả.
+Ở động vật và người, sinh sản hữu tính; ứng dụng: nhân giống, điều khiển sinh sản.`);
+KN[7]=mkK(`Chương 1. Nguyên tử và bảng tuần hoàn các nguyên tố hóa học
+Nguyên tử::hạt vô cùng nhỏ, trung hòa về điện, gồm hạt nhân và vỏ electron.
+Proton::hạt trong hạt nhân, mang điện tích dương.
+Neutron::hạt trong hạt nhân, không mang điện.
+Electron::hạt ở lớp vỏ, mang điện tích âm, chuyển động quanh hạt nhân.
+Khối lượng nguyên tử::gần bằng tổng khối lượng proton và neutron, đo bằng amu.
+Nguyên tố hóa học::tập hợp các nguyên tử cùng loại, có cùng số proton.
+Số hiệu nguyên tử::số proton trong hạt nhân, cũng là số thứ tự của ô nguyên tố.
+Kí hiệu hóa học::kí hiệu riêng của nguyên tố (H, O, Na, Ca...).
+Bảng tuần hoàn::bảng sắp xếp các nguyên tố theo chiều tăng điện tích hạt nhân.
+Chu kì::hàng ngang các nguyên tố, có cùng số lớp electron.
+Nhóm::cột dọc các nguyên tố, có tính chất hóa học tương tự.
+##Chương 2. Phân tử và liên kết hóa học
+Phân tử::hạt đại diện cho chất, gồm hai hay nhiều nguyên tử liên kết với nhau.
+Đơn chất::chất tạo nên từ một nguyên tố hóa học.
+Hợp chất::chất tạo nên từ hai nguyên tố hóa học trở lên.
+Ion::nguyên tử hoặc nhóm nguyên tử mang điện tích.
+Liên kết ion::liên kết giữa các ion trái dấu, do nguyên tử nhường và nhận electron.
+Liên kết cộng hóa trị::liên kết hình thành do các nguyên tử dùng chung electron.
+Hóa trị::khả năng liên kết của nguyên tử nguyên tố này với nguyên tử nguyên tố khác.
+Công thức hóa học::kí hiệu nguyên tố và chỉ số cho biết thành phần phân tử.
+Phân tử khối::tổng khối lượng nguyên tử của các nguyên tử trong phân tử (amu).
+##Chương 3. Tốc độ
+Tốc độ::đại lượng cho biết chuyển động nhanh hay chậm, v = s / t.
+Chuyển động đều::chuyển động có tốc độ không đổi.
+Tốc độ trung bình::tổng quãng đường chia tổng thời gian đi.
+Đồ thị quãng đường – thời gian::đồ thị biểu diễn quãng đường vật đi được theo thời gian.
+Khoảng cách an toàn::khoảng cách tối thiểu giữa các xe để kịp phanh khi cần.
+##Chương 4. Âm thanh
+Nguồn âm::vật dao động phát ra âm.
+Sóng âm::dao động truyền đi trong môi trường rắn, lỏng, khí.
+Biên độ dao động::độ lệch lớn nhất so với vị trí cân bằng; quyết định độ to của âm.
+Tần số::số dao động trong một giây (Hz); quyết định độ cao của âm.
+Phản xạ âm::âm gặp vật chắn bị dội lại.
+Tiếng vang::âm phản xạ nghe được tách biệt với âm phát ra.
+Ô nhiễm tiếng ồn::tiếng ồn to, kéo dài gây hại sức khỏe và ảnh hưởng sinh hoạt.
+##Chương 5. Ánh sáng
+Nguồn sáng::vật tự phát ra ánh sáng.
+Vật sáng::gồm nguồn sáng và vật hắt lại ánh sáng chiếu vào nó.
+Tia sáng::đường truyền của ánh sáng, vẽ bằng đường thẳng có mũi tên.
+Vùng tối::vùng không nhận được ánh sáng từ nguồn do bị vật chắn.
+Phản xạ ánh sáng::tia sáng gặp bề mặt bị hắt trở lại môi trường cũ.
+Pháp tuyến::đường vuông góc với mặt phản xạ tại điểm tới.
+Ảnh ảo::ảnh không hứng được trên màn, như ảnh trong gương phẳng.
+##Chương 6. Từ
+Nam châm::vật hút sắt, nickel, cobalt, có hai cực Bắc và Nam.
+Từ trường::không gian quanh nam châm hoặc dòng điện có khả năng tác dụng lực từ.
+Đường sức từ::đường mô tả hướng và độ mạnh của từ trường.
+La bàn::dụng cụ dùng kim nam châm để xác định phương hướng.
+Từ trường Trái Đất::Trái Đất như nam châm khổng lồ nên kim la bàn chỉ Bắc–Nam.
+Nam châm điện::cuộn dây có lõi sắt non, có từ tính khi có dòng điện chạy qua.
+##Chương 7. Trao đổi chất và chuyển hóa năng lượng ở sinh vật
+Trao đổi chất::quá trình cơ thể lấy chất từ môi trường, biến đổi và thải ra ngoài.
+Chuyển hóa năng lượng::sự biến đổi năng lượng đi kèm trao đổi chất.
+Quang hợp::lục lạp dùng ánh sáng, nước, CO₂ tạo chất hữu cơ và O₂.
+Hô hấp tế bào::phân giải chất hữu cơ cùng O₂ giải phóng năng lượng, tạo CO₂ và nước.
+Lông hút::cấu trúc ở rễ hấp thụ nước và muối khoáng.
+Mạch gỗ, mạch rây::mạch gỗ chuyển nước và muối khoáng lên; mạch rây chuyển chất hữu cơ.
+Khí khổng::lỗ ở lá để trao đổi khí và thoát hơi nước.
+Tiêu hóa::biến đổi thức ăn thành chất dinh dưỡng mà cơ thể hấp thụ được.
+##Chương 8. Cảm ứng ở sinh vật
+Cảm ứng::khả năng nhận kích thích và phản ứng lại của sinh vật.
+Hướng động::phản ứng của thực vật theo hướng kích thích (hướng sáng, hướng nước).
+Tập tính::chuỗi phản ứng của động vật đáp lại kích thích.
+Tập tính bẩm sinh::tập tính sinh ra đã có (nhện giăng tơ).
+Tập tính học được::tập tính hình thành qua học tập, rèn luyện (chó biết nghe lệnh).
+##Chương 9. Sinh trưởng và phát triển ở sinh vật
+Sinh trưởng::sự tăng lên về kích thước và khối lượng của cơ thể.
+Phát triển::biến đổi về cấu tạo và chức năng qua các giai đoạn.
+Vòng đời::các giai đoạn phát triển liên tiếp của sinh vật.
+Biến thái::sự biến đổi hình thái, cấu tạo qua các giai đoạn (ếch, bướm).
+Nhân tố ảnh hưởng::nhiệt độ, ánh sáng, nước, dinh dưỡng, hormone.
+##Chương 10. Sinh sản ở sinh vật
+Sinh sản::quá trình tạo ra cá thể mới để duy trì loài.
+Sinh sản vô tính::không có sự kết hợp giao tử (nảy chồi, giâm cành, phân đôi).
+Sinh sản hữu tính::có sự kết hợp giao tử đực và giao tử cái.
+Thụ phấn::hạt phấn tiếp xúc với đầu nhụy.
+Thụ tinh::giao tử đực kết hợp giao tử cái tạo hợp tử.
+Hợp tử::tế bào hình thành sau thụ tinh, phát triển thành phôi.
+Hạt và quả::noãn thụ tinh phát triển thành hạt; bầu nhụy phát triển thành quả.`);
+D[8].fm=mkF(`Khối lượng mol, số mol::M = m / n; n = m / M
+Bảo toàn khối lượng::A + B → C + D thì m(A) + m(B) = m(C) + m(D)
+Số hạt trong 1 mol::6,022 × 10²³ hạt
+Số mol chất khí::n = V / 24,79 (V: lít, ở 25 °C, 1 bar)
+Tỉ khối::d(A/B) = M(A) / M(B); d(A/KK) = M(A) / 29
+Khối lượng dung dịch::m(dd) = m(chất tan) + m(dung môi)
+Nồng độ phần trăm::C% = m(chất tan) / m(dung dịch) × 100%
+Nồng độ mol::CM = n / V (mol/L)
+Hiệu suất::H = lượng thực tế / lượng lí thuyết × 100%
+Thang pH::pH < 7 acid; pH = 7 trung tính; pH > 7 base
+Khối lượng riêng::D = m / V; trọng lượng riêng d = P / V = 10 × D
+Áp suất::p = F / S (đơn vị Pa = N/m²)
+Áp suất chất lỏng::p = d × h (h: độ sâu)
+Lực đẩy Archimedes::F(A) = d × V (V: thể tích phần chất lỏng bị chiếm chỗ)
+Nổi, chìm::P < F(A) nổi lên; P > F(A) chìm; P = F(A) lơ lửng
+Moment lực::M = F × d (N·m), d là cánh tay đòn
+Cân bằng đòn bẩy::F₁ × d₁ = F₂ × d₂
+Mạch nối tiếp::I = I₁ = I₂; U = U₁ + U₂
+Mạch song song::U = U₁ = U₂; I = I₁ + I₂
+Nhiệt lượng::Q = m × c × Δt (c: nhiệt dung riêng, Δt: độ thay đổi nhiệt độ)`);
+SUM[8]=mkS(`Chương 1. Phản ứng hóa học
+Phản ứng hóa học biến chất này thành chất khác. Dấu hiệu: đổi màu, sủi bọt khí, kết tủa, tỏa hoặc thu nhiệt, phát sáng. Biểu diễn bằng phương trình hóa học đã cân bằng.
+Định luật bảo toàn khối lượng: tổng khối lượng chất phản ứng bằng tổng khối lượng sản phẩm.
+Mol: 1 mol chứa 6,022 × 10²³ hạt; khối lượng mol M (g/mol); 1 mol khí ở 25 °C, 1 bar chiếm 24,79 L; tỉ khối cho biết khí nặng hay nhẹ hơn khí khác.
+Dung dịch gồm chất tan và dung môi; nồng độ phần trăm C% và nồng độ mol CM.
+Tốc độ phản ứng tăng khi tăng nhiệt độ, nồng độ, diện tích tiếp xúc hoặc dùng xúc tác. Phản ứng có thể tỏa nhiệt hoặc thu nhiệt.
+##Chương 2. Một số hợp chất thông dụng
+Acid làm quỳ tím hóa đỏ, tác dụng với kim loại (tạo H₂), base, oxide base, muối carbonate. Ví dụ HCl, H₂SO₄.
+Base (kiềm tan) làm quỳ tím hóa xanh, tác dụng với acid (phản ứng trung hòa) và oxide acid. Ví dụ NaOH, Ca(OH)₂.
+Thang pH từ 0 đến 14: nhỏ hơn 7 là acid, bằng 7 trung tính, lớn hơn 7 là base; đo bằng giấy pH hoặc chất chỉ thị.
+Oxide gồm oxide acid (SO₂, CO₂) và oxide base (CaO, Na₂O).
+Muối gồm ion kim loại và gốc acid (NaCl, CaCO₃). Phân bón hóa học cung cấp N, P, K cho cây; cần bón đúng liều để tránh ô nhiễm.
+##Chương 3. Khối lượng riêng và áp suất
+Khối lượng riêng D = m / V. Vật có D nhỏ hơn D của chất lỏng thì nổi trong chất lỏng đó.
+Áp suất p = F / S (Pa): cùng một áp lực, diện tích bị ép càng nhỏ thì áp suất càng lớn.
+Áp suất chất lỏng p = d × h, tăng theo độ sâu. Áp suất khí quyển do lớp không khí quanh Trái Đất gây ra, giảm khi lên cao.
+Lực đẩy Archimedes F(A) = d × V, hướng lên. So sánh F(A) với trọng lượng P để biết vật nổi, chìm hay lơ lửng.
+##Chương 4. Tác dụng làm quay của lực
+Lực có thể làm vật quay quanh một trục hoặc điểm tựa.
+Moment lực M = F × d (N·m), d là cánh tay đòn: khoảng cách vuông góc từ trục quay đến giá của lực.
+Đòn bẩy cân bằng khi moment theo hai chiều quay bằng nhau: F₁ × d₁ = F₂ × d₂. Dùng đòn bẩy để lợi lực (búa nhổ đinh, bập bênh).
+##Chương 5. Điện
+Dòng điện là dòng chuyển dời có hướng của các hạt mang điện. Nguồn điện (pin, ắc quy) duy trì dòng điện.
+Mạch điện gồm nguồn điện, dây dẫn, công tắc và thiết bị điện, vẽ bằng sơ đồ. Có mạch nối tiếp và mạch song song.
+Cường độ dòng điện (A) đo bằng ampe kế mắc nối tiếp; hiệu điện thế (V) đo bằng vôn kế mắc song song.
+Tác dụng của dòng điện: nhiệt, phát sáng, từ, hóa học, sinh lí. Cần sử dụng điện an toàn.
+##Chương 6. Nhiệt
+Nhiệt độ càng cao thì các hạt chuyển động càng nhanh. Nội năng là tổng động năng và thế năng của các hạt cấu tạo nên vật.
+Có ba hình thức truyền nhiệt: dẫn nhiệt (chủ yếu ở chất rắn), đối lưu (chất lỏng, khí), bức xạ nhiệt (cả trong chân không).
+Nhiệt lượng (J) là phần nội năng thay đổi khi truyền nhiệt: Q = m × c × Δt.
+Vật dẫn nhiệt tốt (kim loại) và vật cách nhiệt (xốp, len) có nhiều ứng dụng.
+##Chương 7. Sinh học cơ thể người
+Hệ vận động (xương, cơ) nâng đỡ, giúp cơ thể vận động. Hệ tiêu hóa biến đổi thức ăn thành chất dinh dưỡng; cần ăn uống khoa học và giữ vệ sinh.
+Hệ tuần hoàn (tim, mạch máu, máu gồm huyết tương và hồng cầu, bạch cầu, tiểu cầu) vận chuyển chất. Hệ hô hấp trao đổi khí ở phế nang. Hệ bài tiết (thận) lọc máu, thải chất thải.
+Hệ thần kinh (trung ương, ngoại biên) và các giác quan điều khiển, tiếp nhận kích thích. Hệ nội tiết tiết hormone (insulin...) điều hòa hoạt động cơ thể.
+Da bảo vệ và điều hòa thân nhiệt. Hệ sinh sản tạo giao tử, thụ tinh, thai nghén. Cần giữ vệ sinh và phòng bệnh.
+##Chương 8. Sinh vật và môi trường
+Môi trường sống gồm các nhân tố sinh thái vô sinh (ánh sáng, nhiệt độ, độ ẩm) và hữu sinh (các sinh vật khác). Mỗi loài có giới hạn sinh thái.
+Quần thể là các cá thể cùng loài trong cùng khu vực; quần xã gồm nhiều quần thể khác loài.
+Hệ sinh thái gồm quần xã và môi trường sống. Sinh vật gồm sản xuất, tiêu thụ, phân giải; liên hệ qua chuỗi và lưới thức ăn.
+Cần bảo vệ môi trường, giảm ô nhiễm và giữ cân bằng sinh thái.`);
+KN[8]=mkK(`Chương 1. Phản ứng hóa học
+Phản ứng hóa học::quá trình biến đổi chất này thành chất khác.
+Chất phản ứng::chất ban đầu bị biến đổi trong phản ứng.
+Sản phẩm::chất mới tạo thành sau phản ứng.
+Phương trình hóa học::biểu diễn phản ứng bằng công thức hóa học và hệ số.
+Định luật bảo toàn khối lượng::tổng khối lượng chất phản ứng bằng tổng khối lượng sản phẩm.
+Mol::lượng chất chứa 6,022 × 10²³ hạt (nguyên tử, phân tử).
+Khối lượng mol::khối lượng của 1 mol chất, đơn vị g/mol.
+Thể tích mol chất khí::24,79 L ở 25 °C, 1 bar.
+Tỉ khối chất khí::tỉ số khối lượng mol của khí A với khí B (hoặc với không khí, M = 29).
+Dung dịch::hỗn hợp đồng nhất của chất tan và dung môi.
+Nồng độ phần trăm::C% = m(chất tan) / m(dung dịch) × 100%.
+Nồng độ mol::CM = n / V (mol/L).
+Tốc độ phản ứng::mức độ nhanh chậm của phản ứng hóa học.
+Chất xúc tác::chất làm tăng tốc độ phản ứng, không bị tiêu hao.
+Phản ứng tỏa nhiệt, thu nhiệt::giải phóng nhiệt ra môi trường; hấp thụ nhiệt từ môi trường.
+Hiệu suất phản ứng::tỉ số giữa lượng thực tế và lượng lí thuyết, nhân 100%.
+##Chương 2. Một số hợp chất thông dụng
+Acid::hợp chất có hydrogen liên kết với gốc acid, làm quỳ tím hóa đỏ (HCl, H₂SO₄).
+Base (kiềm)::hợp chất có nhóm hydroxide OH; base tan gọi là kiềm, làm quỳ tím hóa xanh.
+Thang pH::thang đo độ acid hoặc base từ 0 đến 14.
+Chất chỉ thị::chất đổi màu theo môi trường (quỳ tím, giấy pH).
+Phản ứng trung hòa::acid tác dụng base tạo muối và nước.
+Oxide::hợp chất của oxygen với một nguyên tố khác.
+Oxide base::thường là oxide kim loại, tác dụng acid tạo muối và nước (CaO).
+Oxide acid::thường là oxide phi kim, tác dụng base tạo muối và nước (CO₂, SO₂).
+Muối::hợp chất gồm ion kim loại (hoặc NH₄⁺) và gốc acid.
+Phân bón hóa học::chất cung cấp nguyên tố dinh dưỡng (N, P, K) cho cây trồng.
+##Chương 3. Khối lượng riêng và áp suất
+Khối lượng riêng::khối lượng của một đơn vị thể tích chất, D = m / V.
+Trọng lượng riêng::trọng lượng của một đơn vị thể tích chất, d = P / V = 10 × D.
+Áp lực::lực ép vuông góc với mặt bị ép.
+Áp suất::độ lớn áp lực trên một đơn vị diện tích bị ép, p = F / S (Pa).
+Áp suất chất lỏng::áp suất do chất lỏng gây ra, p = d × h, tăng theo độ sâu.
+Áp suất khí quyển::áp suất do lớp không khí bao quanh Trái Đất gây ra, giảm khi lên cao.
+Lực đẩy Archimedes::lực chất lỏng đẩy lên vật nhúng trong nó, F(A) = d × V.
+Điều kiện nổi, chìm::F(A) lớn hơn P thì nổi; nhỏ hơn P thì chìm; bằng P thì lơ lửng.
+##Chương 4. Tác dụng làm quay của lực
+Moment lực::đại lượng đặc trưng cho tác dụng làm quay của lực, M = F × d.
+Cánh tay đòn::khoảng cách vuông góc từ trục quay đến giá của lực.
+Đòn bẩy::vật rắn quay quanh một điểm tựa dưới tác dụng của lực.
+Điều kiện cân bằng của đòn bẩy::moment theo hai chiều quay bằng nhau, F₁ × d₁ = F₂ × d₂.
+##Chương 5. Điện
+Dòng điện::dòng chuyển dời có hướng của các hạt mang điện.
+Nguồn điện::thiết bị duy trì dòng điện trong mạch (pin, ắc quy).
+Mạch điện::gồm nguồn điện, dây dẫn, công tắc và thiết bị điện nối kín.
+Cường độ dòng điện::cho biết độ mạnh yếu của dòng điện, đơn vị ampe (A), đo bằng ampe kế.
+Hiệu điện thế::đại lượng tạo ra dòng điện trong mạch, đơn vị vôn (V), đo bằng vôn kế.
+Mạch nối tiếp::các thiết bị mắc liên tiếp; cường độ dòng điện như nhau ở mọi điểm.
+Mạch song song::các thiết bị mắc vào hai điểm chung; hiệu điện thế giữa các nhánh bằng nhau.
+Tác dụng của dòng điện::nhiệt, phát sáng, từ, hóa học, sinh lí.
+##Chương 6. Nhiệt
+Nhiệt năng::năng lượng liên quan đến chuyển động nhiệt của các hạt cấu tạo nên vật.
+Nội năng::tổng động năng và thế năng của các hạt cấu tạo nên vật.
+Nhiệt lượng::phần nội năng vật nhận thêm hoặc mất bớt khi truyền nhiệt, đơn vị J.
+Dẫn nhiệt::truyền nhiệt từ phần nóng sang phần lạnh của vật, chủ yếu ở chất rắn.
+Đối lưu::truyền nhiệt nhờ dòng chất lỏng hoặc chất khí chuyển động.
+Bức xạ nhiệt::truyền nhiệt bằng tia nhiệt, xảy ra cả trong chân không.
+Vật dẫn nhiệt, vật cách nhiệt::kim loại dẫn nhiệt tốt; xốp, len, gỗ dẫn nhiệt kém.
+##Chương 7. Sinh học cơ thể người
+Hệ vận động::xương và cơ phối hợp, nâng đỡ và giúp cơ thể vận động.
+Tiêu hóa::biến đổi thức ăn thành chất đơn giản để cơ thể hấp thụ.
+Enzyme tiêu hóa::chất xúc tác sinh học giúp biến đổi thức ăn (amylase ở nước bọt).
+Máu::gồm huyết tương và các tế bào máu (hồng cầu, bạch cầu, tiểu cầu).
+Hệ tuần hoàn::tim và mạch máu vận chuyển máu đi khắp cơ thể.
+Hô hấp::lấy O₂, thải CO₂; trao đổi khí diễn ra ở phế nang.
+Bài tiết::loại chất thải ra khỏi cơ thể; thận lọc máu tạo nước tiểu.
+Neuron::tế bào thần kinh dẫn truyền xung thần kinh.
+Hệ thần kinh::gồm thần kinh trung ương (não, tủy sống) và thần kinh ngoại biên.
+Hormone::chất do tuyến nội tiết tiết ra điều hòa hoạt động cơ thể (insulin).
+Da::bảo vệ cơ thể, điều hòa thân nhiệt, tiếp nhận cảm giác.
+Sinh sản ở người::cơ quan sinh sản tạo giao tử; thụ tinh và thai nghén.
+##Chương 8. Sinh vật và môi trường
+Môi trường sống::tất cả những gì bao quanh và tác động lên sinh vật.
+Nhân tố sinh thái::yếu tố của môi trường tác động lên sinh vật; gồm vô sinh và hữu sinh.
+Giới hạn sinh thái::khoảng giá trị của nhân tố sinh thái mà sinh vật tồn tại được.
+Quần thể::tập hợp cá thể cùng loài, cùng sống trong một khu vực và thời gian.
+Quần xã::tập hợp các quần thể khác loài cùng sống trong một khu vực.
+Hệ sinh thái::quần xã sinh vật cùng môi trường sống của nó.
+Chuỗi thức ăn::dãy sinh vật có quan hệ dinh dưỡng, mắt xích trước là thức ăn của mắt xích sau.
+Sinh vật sản xuất, tiêu thụ, phân giải::tạo chất hữu cơ; sử dụng chất hữu cơ; phân giải xác sinh vật.
+Cân bằng sinh thái::trạng thái ổn định của hệ sinh thái.`);
+D[9].fm=mkF(`Động năng::W(đ) = ½ × m × v²
+Thế năng trọng trường::W(t) = P × h = 10 × m × h
+Cơ năng::W = W(đ) + W(t); chỉ có trọng lực tác dụng thì cơ năng bảo toàn
+Công cơ học::A = F × s (J)
+Công suất::P = A / t (W); 1 kW = 1000 W
+Điện năng đổi đơn vị::1 kWh = 3,6 × 10⁶ J
+Số bội giác kính lúp::G = 25 / f (f tính bằng cm)
+Định luật Ohm::I = U / R
+Điện trở dây dẫn::R = ρ × l / S
+Đoạn mạch nối tiếp::I = I₁ = I₂; U = U₁ + U₂; R = R₁ + R₂
+Đoạn mạch song song::U = U₁ = U₂; I = I₁ + I₂; 1/R = 1/R₁ + 1/R₂
+Công suất điện::P = U × I = I² × R = U² / R
+Điện năng::A = P × t = U × I × t
+Nhiệt lượng tỏa ra trên điện trở::Q = I² × R × t
+Máy biến thế::U₁ / U₂ = n₁ / n₂ (số vòng dây)
+Hiệu suất::H = A(có ích) / A(toàn phần) × 100%
+Dãy hoạt động hóa học::K, Na, Ca, Mg, Al, Zn, Fe, Pb, (H), Cu, Ag, Au
+Luyện gang::Fe₂O₃ + 3CO → (t°) 2Fe + 3CO₂
+Số mol, thể tích khí::n = m / M; n = V / 24,79 (L, 25 °C, 1 bar)
+Công thức chất hữu cơ::methane CH₄; ethylene C₂H₄; ethylic alcohol C₂H₅OH; acetic acid CH₃COOH
+Đốt cháy methane::CH₄ + 2O₂ → (t°) CO₂ + 2H₂O
+Đốt cháy ethanol::C₂H₅OH + 3O₂ → (t°) 2CO₂ + 3H₂O
+Phản ứng ester hóa::CH₃COOH + C₂H₅OH ⇌ CH₃COOC₂H₅ + H₂O (xúc tác H₂SO₄ đặc, t°)
+Quy luật Mendel::một cặp tính trạng: F2 có 3 trội : 1 lặn (kiểu gene 1 : 2 : 1); hai cặp: 9 : 3 : 3 : 1
+Bộ nhiễm sắc thể::người 2n = 46, giao tử n = 23
+Số tế bào sau n lần nguyên phân::2ⁿ`);
+SUM[9]=mkS(`Chương 1. Năng lượng cơ học
+Động năng do chuyển động, phụ thuộc khối lượng và tốc độ: W(đ) = ½mv². Thế năng trọng trường phụ thuộc khối lượng và độ cao: W(t) = 10mh. Cơ năng = động năng + thế năng.
+Khi chỉ có trọng lực tác dụng, cơ năng được bảo toàn: thế năng giảm thì động năng tăng và ngược lại.
+Công A = F × s (J); công suất P = A / t (W) cho biết tốc độ thực hiện công.
+##Chương 2. Ánh sáng
+Khúc xạ ánh sáng: tia sáng bị gãy khúc khi qua mặt phân cách hai môi trường trong suốt. Từ không khí vào nước thì góc khúc xạ nhỏ hơn góc tới. Phản xạ toàn phần xảy ra khi ánh sáng đi từ môi trường chiết quang hơn sang môi trường kém hơn với góc tới đủ lớn (ứng dụng cáp quang).
+Thấu kính hội tụ (giữa dày hơn rìa): tia song song trục chính cho tia ló qua tiêu điểm; cho ảnh thật ngược chiều hoặc ảnh ảo cùng chiều lớn hơn vật (khi vật trong tiêu cự).
+Thấu kính phân kì (giữa mỏng hơn rìa) luôn cho ảnh ảo nhỏ hơn vật.
+Kính lúp là thấu kính hội tụ tiêu cự ngắn, G = 25 / f. Mắt: thủy tinh thể như thấu kính hội tụ, ảnh hiện trên võng mạc; cận thị đeo kính phân kì, viễn thị đeo kính hội tụ.
+##Chương 3. Điện
+Điện trở cản trở dòng điện. Định luật Ohm: I = U / R. Điện trở dây dẫn R = ρ × l / S.
+Đoạn mạch nối tiếp: I như nhau, U = U₁ + U₂, R = R₁ + R₂. Đoạn mạch song song: U như nhau, I = I₁ + I₂, 1/R = 1/R₁ + 1/R₂.
+Công suất điện P = U × I; điện năng A = P × t (đo bằng kWh); nhiệt lượng Q = I²Rt. Cần sử dụng điện an toàn, tiết kiệm.
+##Chương 4. Điện từ
+Cảm ứng điện từ: khi số đường sức từ qua cuộn dây kín biến thiên thì trong cuộn dây xuất hiện dòng điện cảm ứng.
+Dòng điện xoay chiều đổi chiều liên tục. Máy phát điện xoay chiều gồm nam châm và cuộn dây, biến cơ năng thành điện năng.
+Máy biến thế thay đổi hiệu điện thế xoay chiều; truyền tải điện đi xa dùng hiệu điện thế cao để giảm hao phí. Nam châm điện có lõi sắt non.
+##Chương 5. Năng lượng với cuộc sống
+Năng lượng hóa thạch (than đá, dầu mỏ, khí tự nhiên) hình thành lâu đời, sẽ cạn kiệt, khi cháy gây ô nhiễm và khí nhà kính.
+Năng lượng tái tạo (Mặt Trời, gió, nước, sinh khối) sạch, không cạn kiệt nhưng phụ thuộc điều kiện tự nhiên.
+Hiệu suất H = A có ích / A toàn phần luôn nhỏ hơn 100%. Cần sử dụng năng lượng hiệu quả và đảm bảo an toàn năng lượng.
+##Chương 6. Kim loại
+Tính chất vật lí của kim loại: dẫn điện, dẫn nhiệt, dẻo, ánh kim. Tính chất hóa học: tác dụng với oxygen, phi kim, dung dịch acid, dung dịch muối.
+Dãy hoạt động hóa học: K, Na, Ca, Mg, Al, Zn, Fe, Pb, (H), Cu, Ag, Au. Kim loại đứng trước đẩy kim loại đứng sau ra khỏi dung dịch muối; kim loại đứng trước H đẩy H₂ khỏi acid loãng.
+Tách kim loại: luyện gang bằng CO khử oxide sắt; nhôm từ quặng bauxite. Hợp kim: gang (2–5% C), thép (dưới 2% C).
+Ăn mòn kim loại là sự phá hủy do tác dụng hóa học với môi trường; chống bằng sơn, mạ, bôi dầu mỡ, dùng hợp kim.
+Phi kim đa số dẫn điện kém, không có ánh kim, nhiều chất là khí (O₂, Cl₂) hoặc rắn (C, S).
+##Chương 7. Chất hữu cơ. Hydrocarbon
+Hợp chất hữu cơ là hợp chất của carbon (trừ CO, CO₂, muối carbonate...). Hydrocarbon chỉ gồm C và H.
+Methane CH₄ (khí thiên nhiên, biogas) cháy tỏa nhiều nhiệt, tham gia phản ứng thế với chlorine.
+Ethylene C₂H₄ có liên kết đôi C=C nên tham gia phản ứng cộng (làm mất màu dung dịch bromine) và trùng hợp tạo polyethylene.
+##Chương 8. Ethylic alcohol. Acetic acid
+Ethylic alcohol C₂H₅OH là chất lỏng, tan vô hạn trong nước, có nhóm –OH; cháy tỏa nhiệt, tác dụng với sodium; dùng làm nhiên liệu, cồn sát khuẩn.
+Acetic acid CH₃COOH là thành phần của giấm ăn, có tính acid yếu: làm quỳ tím hóa đỏ, tác dụng với kim loại, base, muối carbonate.
+Ethanol phản ứng với acetic acid (xúc tác H₂SO₄ đặc) tạo ethyl acetate (phản ứng ester hóa).
+##Chương 9. Lipid – Carbohydrate – Protein – Polymer
+Lipid (chất béo) là nguồn dự trữ và cung cấp năng lượng, không tan trong nước.
+Carbohydrate gồm glucose, saccharose (đường mía), tinh bột, cellulose: cung cấp năng lượng hoặc tạo cấu trúc tế bào thực vật.
+Protein cấu tạo từ các amino acid, xây dựng và sửa chữa tế bào; bị đông tụ khi đun nóng.
+Polymer có phân tử khối lớn do nhiều mắt xích liên kết (polyethylene, cao su). Chất dẻo khó phân hủy nên cần hạn chế, tái chế.
+##Chương 10. Khai thác tài nguyên vỏ Trái Đất
+Đá vôi (CaCO₃) dùng làm vôi, xi măng; đất sét dùng làm gạch, ngói, gốm.
+Dầu mỏ được chưng cất phân đoạn thành xăng, dầu hỏa, dầu diesel...; khí thiên nhiên có thành phần chính là methane.
+Khoáng sản kim loại (quặng) được khai thác và luyện kim; cần khai thác hợp lí, tái chế và bảo vệ môi trường.
+##Chương 11–13. Di truyền học
+Chương 11: tính trạng, allele trội và lặn; quy luật phân li (F2 tỉ lệ 3 trội : 1 lặn), phân li độc lập (9 : 3 : 3 : 1). DNA mang gene; DNA nhân đôi theo nguyên tắc bổ sung (A–T, G–C); đột biến là biến đổi trong vật chất di truyền.
+Chương 12: nhiễm sắc thể gồm DNA và protein, mang gene; bộ nhiễm sắc thể đặc trưng cho loài (người 2n = 46). Nguyên phân tạo tế bào con giống tế bào mẹ; giảm phân tạo giao tử (n); thụ tinh khôi phục 2n.
+Chương 13: bệnh di truyền ở người (hội chứng Down, bệnh máu khó đông); ứng dụng công nghệ sinh học trong y học, chọn giống; bảo vệ vốn gene.
+##Chương 14. Tiến hóa
+Tiến hóa là sự biến đổi của sinh vật qua nhiều thế hệ. Bằng chứng: hóa thạch, cơ quan tương đồng, sinh học phân tử.
+Thuyết tiến hóa của Darwin: biến dị, di truyền và chọn lọc tự nhiên giúp sinh vật thích nghi và hình thành loài mới.
+Người và vượn người có chung tổ tiên; loài người hình thành qua nhiều giai đoạn tiến hóa.`);
+KN[9]=mkK(`Chương 1. Năng lượng cơ học
+Động năng::năng lượng của vật do chuyển động, W(đ) = ½mv².
+Thế năng trọng trường::năng lượng của vật do độ cao so với mặt đất, W(t) = 10mh.
+Cơ năng::tổng động năng và thế năng của vật.
+Bảo toàn cơ năng::khi chỉ có trọng lực tác dụng, cơ năng không đổi.
+Công cơ học::A = F × s khi lực làm vật dịch chuyển theo hướng của lực, đơn vị joule.
+Công suất::công thực hiện trong một giây, P = A / t, đơn vị watt.
+##Chương 2. Ánh sáng
+Khúc xạ ánh sáng::hiện tượng tia sáng gãy khúc khi qua mặt phân cách hai môi trường trong suốt.
+Phản xạ toàn phần::ánh sáng bị phản xạ hoàn toàn khi đi từ môi trường chiết quang hơn sang môi trường kém hơn với góc tới đủ lớn.
+Thấu kính hội tụ::thấu kính có phần giữa dày hơn rìa, làm chùm tia song song hội tụ.
+Thấu kính phân kì::thấu kính có phần giữa mỏng hơn rìa, làm chùm tia song song phân kì.
+Quang tâm, tiêu điểm, tiêu cự::quang tâm là tâm thấu kính; tiêu điểm là điểm hội tụ của chùm tia song song; tiêu cự là khoảng cách từ quang tâm đến tiêu điểm.
+Ảnh thật, ảnh ảo::ảnh thật hứng được trên màn; ảnh ảo không hứng được.
+Kính lúp::thấu kính hội tụ tiêu cự ngắn, cho ảnh ảo lớn hơn vật; G = 25 / f.
+Cận thị, viễn thị::mắt cận nhìn xa kém, đeo kính phân kì; mắt viễn nhìn gần kém, đeo kính hội tụ.
+##Chương 3. Điện
+Điện trở::đại lượng đặc trưng cho mức cản trở dòng điện của vật dẫn, đơn vị ôm (Ω).
+Định luật Ohm::cường độ dòng điện tỉ lệ thuận với hiệu điện thế, tỉ lệ nghịch với điện trở: I = U / R.
+Điện trở suất::đại lượng đặc trưng cho khả năng cản trở dòng điện của vật liệu, ρ.
+Đoạn mạch nối tiếp::các điện trở mắc liên tiếp; R = R₁ + R₂, I như nhau.
+Đoạn mạch song song::các điện trở mắc vào hai điểm chung; U như nhau, điện trở tương đương nhỏ hơn mỗi điện trở thành phần.
+Công suất điện::P = U × I, đơn vị watt.
+Điện năng::A = P × t, thường tính bằng kilowatt giờ (kWh).
+Định luật Joule–Lenz::nhiệt lượng tỏa ra trên điện trở Q = I²Rt.
+##Chương 4. Điện từ
+Từ thông::số đường sức từ xuyên qua tiết diện cuộn dây.
+Cảm ứng điện từ::hiện tượng xuất hiện dòng điện cảm ứng khi từ thông qua cuộn dây kín biến thiên.
+Dòng điện xoay chiều::dòng điện có chiều và cường độ biến đổi theo thời gian.
+Máy phát điện xoay chiều::thiết bị biến cơ năng thành điện năng, gồm nam châm và cuộn dây.
+Máy biến thế::thiết bị tăng hoặc giảm hiệu điện thế xoay chiều.
+Nam châm điện::cuộn dây có lõi sắt non, có từ tính khi có dòng điện chạy qua.
+##Chương 5. Năng lượng với cuộc sống
+Năng lượng hóa thạch::năng lượng từ than đá, dầu mỏ, khí tự nhiên; không tái tạo, gây ô nhiễm.
+Năng lượng tái tạo::nguồn năng lượng không cạn kiệt như Mặt Trời, gió, nước, sinh khối.
+Hiệu suất::tỉ số giữa năng lượng có ích và năng lượng toàn phần, luôn nhỏ hơn 100%.
+An toàn năng lượng::sử dụng điện, nhiên liệu đúng cách để tránh cháy nổ, điện giật, ô nhiễm.
+##Chương 6. Kim loại
+Tính chất vật lí của kim loại::dẫn điện, dẫn nhiệt, dẻo, có ánh kim.
+Dãy hoạt động hóa học::dãy kim loại sắp theo mức độ hoạt động giảm dần (K, Na, Ca, Mg, Al, Zn, Fe, Pb, H, Cu, Ag, Au).
+Phản ứng thế của kim loại::kim loại mạnh đẩy kim loại yếu ra khỏi dung dịch muối.
+Tách kim loại::điều chế kim loại từ quặng, ví dụ luyện gang bằng CO.
+Hợp kim::vật liệu có kim loại và các nguyên tố khác.
+Gang, thép::hợp kim của sắt và carbon; gang 2–5% C, thép dưới 2% C.
+Ăn mòn kim loại::sự phá hủy kim loại do tác dụng hóa học với môi trường.
+Phi kim::nguyên tố thường dẫn điện kém, không có ánh kim (C, S, Cl₂, O₂).
+##Chương 7. Chất hữu cơ. Hydrocarbon
+Hợp chất hữu cơ::hợp chất của carbon (trừ CO, CO₂, muối carbonate...).
+Hydrocarbon::hợp chất hữu cơ chỉ gồm carbon và hydrogen.
+Methane::hydrocarbon CH₄, thành phần chính của khí thiên nhiên và biogas.
+Ethylene::hydrocarbon C₂H₄ có liên kết đôi C=C.
+Phản ứng thế::nguyên tử hoặc nhóm nguyên tử trong phân tử bị thay bằng nguyên tử khác (methane với Cl₂).
+Phản ứng cộng::phân tử khác cộng vào liên kết đôi (ethylene với bromine).
+Polyethylene::polymer tạo từ nhiều phân tử ethylene (phản ứng trùng hợp).
+##Chương 8. Ethylic alcohol. Acetic acid
+Ethylic alcohol (ethanol)::C₂H₅OH, chất lỏng, tan vô hạn trong nước, có nhóm –OH.
+Độ rượu::số mL ethanol nguyên chất có trong 100 mL dung dịch.
+Acetic acid::CH₃COOH, acid hữu cơ yếu, thành phần chính của giấm ăn.
+Tính chất của acetic acid::làm quỳ tím hóa đỏ, tác dụng với kim loại, base, muối carbonate.
+Phản ứng ester hóa::acetic acid tác dụng ethanol tạo ethyl acetate và nước.
+##Chương 9. Lipid – Carbohydrate – Protein – Polymer
+Lipid (chất béo)::hợp chất hữu cơ không tan trong nước, dự trữ và cung cấp năng lượng.
+Glucose::carbohydrate đơn giản C₆H₁₂O₆, nguồn năng lượng của tế bào.
+Saccharose::đường mía, đường củ cải.
+Tinh bột::carbohydrate dự trữ ở thực vật, bị thủy phân thành glucose.
+Cellulose::carbohydrate cấu tạo thành tế bào thực vật, có trong gỗ, bông.
+Protein::hợp chất cấu tạo từ nhiều amino acid, xây dựng và sửa chữa tế bào.
+Polymer::hợp chất có phân tử khối lớn do nhiều mắt xích liên kết.
+Chất dẻo, cao su::các loại polymer dùng trong đời sống; chất dẻo khó phân hủy.
+##Chương 10. Khai thác tài nguyên vỏ Trái Đất
+Tài nguyên khoáng sản::các chất có ích trong vỏ Trái Đất (quặng, than, dầu mỏ, đá vôi).
+Quặng::khoáng vật chứa kim loại với hàm lượng đáng kể (hematite, bauxite).
+Đá vôi::có thành phần chính là CaCO₃, dùng làm vôi, xi măng.
+Đất sét::nguyên liệu làm gạch, ngói, gốm sứ.
+Dầu mỏ::hỗn hợp hydrocarbon, chưng cất phân đoạn thu xăng, dầu hỏa, dầu diesel.
+Khí thiên nhiên::hỗn hợp khí có thành phần chính là methane.
+Khai thác hợp lí::khai thác có kế hoạch, tái chế, bảo vệ môi trường.
+##Chương 11–13. Di truyền học
+Tính trạng::đặc điểm hình thái, sinh lí của sinh vật.
+Allele::các dạng khác nhau của một gene; allele trội kí hiệu chữ hoa, allele lặn kí hiệu chữ thường.
+Kiểu gene, kiểu hình::tổ hợp allele của cơ thể; biểu hiện ra bên ngoài.
+Đồng hợp, dị hợp::hai allele giống nhau (AA, aa); hai allele khác nhau (Aa).
+Quy luật phân li::lai một cặp tính trạng thuần chủng, F1 đồng tính, F2 phân li 3 trội : 1 lặn.
+Quy luật phân li độc lập::các cặp tính trạng di truyền độc lập, F2 phân li 9 : 3 : 3 : 1.
+DNA::phân tử mang thông tin di truyền, hai mạch xoắn kép, bốn loại nucleotide A, T, G, C.
+Gene::đoạn DNA mang thông tin quy định một tính trạng.
+Nhân đôi DNA::DNA tạo ra hai phân tử giống nhau theo nguyên tắc bổ sung.
+Đột biến::biến đổi trong vật chất di truyền, có thể di truyền cho đời sau.
+Nhiễm sắc thể::cấu trúc gồm DNA và protein trong nhân tế bào, mang gene.
+Bộ nhiễm sắc thể::số lượng và hình dạng nhiễm sắc thể đặc trưng cho loài (người 2n = 46).
+Nguyên phân::một tế bào mẹ tạo hai tế bào con có bộ nhiễm sắc thể giống mẹ.
+Giảm phân::tạo giao tử có bộ nhiễm sắc thể giảm đi một nửa.
+Thụ tinh::giao tử đực kết hợp giao tử cái tạo hợp tử, khôi phục bộ nhiễm sắc thể 2n.
+Bệnh di truyền ở người::bệnh do biến đổi vật chất di truyền (hội chứng Down, máu khó đông).
+Công nghệ sinh học::ứng dụng sinh học để tạo sản phẩm có ích (sản xuất insulin, chọn giống).
+##Chương 14. Tiến hóa
+Tiến hóa::sự biến đổi của sinh vật qua nhiều thế hệ.
+Bằng chứng tiến hóa::hóa thạch, cơ quan tương đồng, bằng chứng sinh học phân tử.
+Biến dị::sự khác biệt giữa các cá thể, nguyên liệu của tiến hóa.
+Chọn lọc tự nhiên::giữ lại các cá thể có biến dị thích nghi với môi trường.
+Thích nghi::đặc điểm giúp sinh vật tồn tại và sinh sản trong môi trường.
+Phát sinh loài người::loài người và vượn người có chung tổ tiên, hình thành qua nhiều giai đoạn.`);
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){return ex6b()+vdc()}
@@ -1433,23 +1895,7 @@ const bs=box.querySelectorAll('.opt');bs[q[2]].classList.add('ok');
 if(j==q[2])score++;else bs[j].classList.add('bad');
 $('e'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];
 $('sc').textContent='Điểm: '+score+'/'+D[g].qz.length}
-let LK=null,LCODE='';
-function kidsHtml(){return LK&&LK.length?'<div>Các con đã liên kết:</div>'+LK.map((k,i)=>'<div class="row"><div>'+esc(k.child_label||'Học sinh')+'</div><button onclick="viewKid('+i+')">Xem tiến độ</button></div>').join(''):''}
-function linkUI(){if(!SB||!USER)return '';if(LK===null){LK=[];loadKids()}
-let h='<div class="card"><h3>Liên kết phụ huynh</h3>';
-if(VP){return h+'Đang xem tiến độ của <b>'+esc(VPN)+'</b>. <button onclick="closeV()">Quay lại tiến độ của tôi</button></div>'}
-h+='<div class="ex">Học sinh bấm tạo mã, phụ huynh nhập mã trong tài khoản của mình để xem tiến độ. Mã có hiệu lực 24 giờ.</div>';
-h+='<div class="arow"><button onclick="mkCode()">Tạo mã liên kết (học sinh)</button><b>'+esc(LCODE)+'</b></div>';
-h+='<div class="arow"><input id="pc" placeholder="Nhập mã của con"><button onclick="useCode()">Liên kết (phụ huynh)</button></div><div class="ex" id="lm"></div>';
-return h+kidsHtml()+'</div>'}
-async function loadKids(){const r=await SB.from('parent_links').select('child_id,child_label').eq('parent_id',USER.id);LK=r.data||[];if(t=='tt')render()}
-async function mkCode(){const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let c='';for(let i=0;i<6;i++)c+=ch[Math.floor(Math.random()*ch.length)];
-const r=await SB.from('link_codes').insert({code:c,child_id:USER.id,expires_at:new Date(Date.now()+864e5).toISOString()});
-LCODE=r.error?'':c;render();if(r.error)lm.textContent='Không tạo được mã: '+r.error.message}
-async function useCode(){const r=await SB.rpc('claim_link',{p_code:pc.value.trim()});if(r.error){lm.textContent='Không liên kết được: '+r.error.message;return}await loadKids()}
-async function viewKid(i){const k=LK[i],r=await SB.from('progress').select('data').eq('user_id',k.child_id).maybeSingle();VP=r.data&&r.data.data?mig(r.data.data):{};VPN=k.child_label||'học sinh';render()}
-function closeV(){VP=null;render()}
-initAuth();
+(async()=>{try{if(!window.claude)return;const db=await claude.use('db'),u=await claude.use('user');if(!db||!u)return;const id=await u.id();if(!id)return;DBR=db.collection('data/users/'+id).doc('khtn6');const s=await DBR.get();if(s.exists)P=Object.assign({},mig(s.data().p||{}),P);DBR.set({p:P}).catch(()=>{});if(t=='qz'&&BANKS[g])render()}catch(e){}})();
 render();
 </script>
 </body>
