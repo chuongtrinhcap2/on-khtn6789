@@ -37,20 +37,25 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .score button{padding:4px 10px;font-size:.85rem}
 .note{font-size:.85rem;color:var(--mute);margin-top:18px}
 .ans{display:none;margin-top:8px;padding:10px 12px;border-left:4px solid var(--accent);background:var(--hi);border-radius:6px;font-size:.95rem}.ans.show{display:block}
+.auth input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;flex:1 1 150px}.arow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}.row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;margin:12px 0}
 .mx{border-collapse:collapse;width:100%}.mx th,.mx td{border:1px solid var(--line);padding:6px 8px;text-align:left;font-size:.9rem}.mx th{background:var(--hi)}
 details.card summary{cursor:pointer}details.card ul{margin-top:8px}
+.dg{margin-top:12px}.fl{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px}.ch{background:var(--accent);color:var(--accent-ink);padding:4px 10px;border-radius:14px;font-size:.9rem}.ar{color:var(--mute);font-size:.85rem}
 </style>
 </head>
 <body>
 <div class="wrap">
 <h1>Ôn Khoa học tự nhiên 6–9</h1>
 <p class="sub">Tổng quan chương trình, công thức cần nhớ, luyện tập và cấu trúc đề kiểm tra. Miễn phí, không cần đăng ký.</p>
+<div class="card auth" id="auth" style="display:none"></div>
 <div class="pills" id="pills" role="tablist" aria-label="Chọn lớp"></div>
 <div class="tabs" id="tabs"></div>
 <div id="main"></div>
 <p class="note">Nội dung bám khung chương trình GDPT 2018 và tên chủ đề của sách Kết nối tri thức với cuộc sống, mang tính tham khảo. Phân phối chương trình và đề thi thực tế tùy sách giáo khoa và nhà trường, hãy đối chiếu với đề cương của giáo viên.</p>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
 <script>
 const D={
 6:{
@@ -813,12 +818,27 @@ function mig(o){const v=(o&&o._v)||0;if(v>=4)return o;const r={_v:4};for(const k
 let CH=0,P={},DBR=null;
 try{P=JSON.parse(localStorage.getItem('khtn6')||'{}')}catch(e){}
 P=mig(P);
-function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}if(DBR)DBR.set({p:P}).catch(()=>{})}
+let SB=null,USER=null,svT=null;
+function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}
+if(SB&&USER){clearTimeout(svT);svT=setTimeout(()=>{SB.from('progress').upsert({user_id:USER.id,data:P,updated_at:new Date().toISOString()}).then(r=>{if(r.error)console.warn(r.error.message)})},600)}}
+function esc(x){return String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function renderAuth(){const a=document.getElementById('auth');if(!SB){a.style.display='none';return}a.style.display='block';
+a.innerHTML=USER?'Đã đăng nhập: <b>'+esc(USER.email)+'</b> <button onclick="logout()">Đăng xuất</button>':'<b>Đăng nhập để lưu tiến độ trên mọi thiết bị</b><div class="arow"><input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="current-password"><button onclick="login()">Đăng nhập</button><button onclick="signup()">Đăng ký</button></div><div class="ex" id="am"></div>'}
+async function login(){const r=await SB.auth.signInWithPassword({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng nhập được: '+r.error.message:''}
+async function signup(){const r=await SB.auth.signUp({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng ký được: '+r.error.message:'Đã đăng ký. Nếu được yêu cầu, hãy xác nhận qua email rồi đăng nhập.'}
+async function logout(){await SB.auth.signOut();LK=null;VP=null}
+async function setUser(u){USER=u||null;renderAuth();
+if(USER){const r=await SB.from('progress').select('data').eq('user_id',USER.id).maybeSingle();if(r.data&&r.data.data)P=Object.assign({},mig(r.data.data),P);sv()}
+if(t=='qz'&&BANKS[g])render()}
+function initAuth(){renderAuth();const u=window.SUPABASE_URL,k=window.SUPABASE_ANON_KEY;
+if(!window.supabase||!u||!k||/YOUR_/.test(u+k))return;
+SB=window.supabase.createClient(u,k);renderAuth();
+SB.auth.onAuthStateChange((e,se)=>{setUser(se&&se.user)})}
 function prog(){let a=0,b=0,c=0;BANKS[g].forEach((x,i)=>x.q.forEach((_,j)=>{b++;if(P[g+':'+i+'-'+j]==1){a++;if(i==CH)c++}}));return 'Đã đúng '+c+'/'+BANKS[g][CH].q.length+' câu của chương này, '+a+'/'+b+' câu toàn bộ.'}
 function setC(i){CH=i;render()}
 function resetC(){BANKS[g][CH].q.forEach((_,j)=>delete P[g+':'+CH+'-'+j]);sv();render()}
 function bank6(){const c=BANKS[g][CH];
-return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+tlbank()+`<p class="note">${DBR?'Tiến độ được lưu theo tài khoản của bạn và trên thiết bị này.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
+return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]}</p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+tlbank()+`<p class="note">${USER?'Tiến độ được lưu theo tài khoản của bạn.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
 function ansC(i,j){const q=BANKS[g][CH].q[i],b=document.getElementById('c'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q.a].classList.add('ok');if(j!=q.a)o[j].classList.add('bad');P[g+':'+CH+'-'+i]=j==q.a?1:0;sv();document.getElementById('ce'+i).textContent=(j==q.a?'Chính xác. ':'Chưa đúng. ')+q[2];document.getElementById('pg').textContent=prog()}
 const EX6={
 'Giữa kỳ 1':{sc:'Phạm vi: mở đầu (an toàn, đo lường), chất quanh ta, sự chuyển thể, oxygen và không khí.',
@@ -1874,6 +1894,47 @@ Biến dị::sự khác biệt giữa các cá thể, nguyên liệu của tiế
 Chọn lọc tự nhiên::giữ lại các cá thể có biến dị thích nghi với môi trường.
 Thích nghi::đặc điểm giúp sinh vật tồn tại và sinh sản trong môi trường.
 Phát sinh loài người::loài người và vượn người có chung tổ tiên, hình thành qua nhiều giai đoạn.`);
+const DG={6:{
+1:[{k:'f',t:'Chuyển thể khi làm nóng',n:['Rắn','Lỏng','Khí'],l:['nóng chảy','bay hơi / sôi']},{k:'f',t:'Chuyển thể khi làm lạnh',n:['Khí','Lỏng','Rắn'],l:['ngưng tụ','đông đặc']},{k:'t',t:'So sánh ba thể của chất',h:['Thể','Hình dạng','Thể tích','Khả năng nén'],r:[['Rắn','Cố định','Xác định','Rất khó nén'],['Lỏng','Theo bình chứa','Xác định','Khó nén'],['Khí','Theo bình chứa','Thay đổi','Dễ nén']]}],
+3:[{k:'t',t:'Chọn cách tách chất',h:['Hỗn hợp','Cách tách','Dựa vào'],r:[['Cát và nước','Lọc','Cát không tan trong nước'],['Muối và nước','Cô cạn','Nước bay hơi, muối còn lại'],['Dầu ăn và nước','Chiết','Hai chất lỏng không tan, tách thành hai lớp'],['Sắt và lưu huỳnh','Dùng nam châm','Sắt bị nam châm hút'],['Nước và cồn','Chưng cất','Nhiệt độ sôi khác nhau']]}],
+4:[{k:'t',t:'Tế bào thực vật và tế bào động vật',h:['Thành phần','Thực vật','Động vật'],r:[['Màng tế bào','Có','Có'],['Tế bào chất','Có','Có'],['Nhân','Có','Có'],['Thành tế bào','Có','Không'],['Lục lạp','Có','Không']]},{k:'f',t:'Sự phân chia tế bào',n:['1 tế bào','2 tế bào','4 tế bào','8 tế bào'],l:['lần 1','lần 2','lần 3']}],
+5:[{k:'f',t:'Các cấp độ tổ chức của cơ thể',n:['Tế bào','Mô','Cơ quan','Hệ cơ quan','Cơ thể']}],
+6:[{k:'f',t:'Thang phân loại (từ lớn đến nhỏ)',n:['Giới','Ngành','Lớp','Bộ','Họ','Chi','Loài']},{k:'n',t:'Mẹo nhớ',x:'Lấy chữ cái đầu: Giới, Ngành, Lớp, Bộ, Họ, Chi, Loài.'},{k:'t',t:'Các nhóm sinh vật',h:['Nhóm','Đặc điểm','Ví dụ'],r:[['Virus','Chưa có cấu tạo tế bào, kí sinh','Virus cúm'],['Vi khuẩn','Đơn bào, rất nhỏ','Vi khuẩn lactic'],['Nguyên sinh vật','Chủ yếu đơn bào, sống ở nước','Trùng roi, amip'],['Nấm','Đơn bào hoặc đa bào, dị dưỡng','Nấm men, nấm rơm'],['Thực vật','Đa bào, có lục lạp','Cây bàng, dương xỉ'],['Động vật','Đa bào, dị dưỡng','Cá, chim, thú']]}],
+7:[{k:'t',t:'Các loại lực ma sát',h:['Loại','Khi nào xuất hiện','Ví dụ'],r:[['Ma sát trượt','Vật trượt trên bề mặt','Kéo hộp trên sàn'],['Ma sát lăn','Vật lăn trên bề mặt','Bánh xe lăn'],['Ma sát nghỉ','Giữ vật đứng yên','Vật nằm yên trên mặt dốc']]},{k:'n',t:'Mẹo nhớ',x:'Khối lượng 1 kg có trọng lượng khoảng 10 N (P = 10 × m).'}],
+8:[{k:'f',t:'Ví dụ chuyển hóa năng lượng',n:['Hóa năng (xăng)','Nhiệt năng','Cơ năng (xe chạy)'],l:['đốt cháy','động cơ']}],
+9:[{k:'f',t:'Các pha của Mặt Trăng trong một chu kì',n:['Trăng non','Thượng huyền','Trăng tròn','Hạ huyền','Trăng non']}]}};
+function dgHtml(g,i){return ((DG[g]&&DG[g][i])||[]).map(d=>d.k=='f'?'<div class="dg"><b>'+d.t+'</b><div class="fl">'+d.n.map((n,j)=>'<span class="ch">'+n+'</span>'+(j<d.n.length-1?'<span class="ar">'+(d.l&&d.l[j]?d.l[j]+' ':'')+'→</span>':'')).join('')+'</div></div>':d.k=='t'?'<div class="dg"><b>'+d.t+'</b><div style="overflow-x:auto"><table class="mx"><tr>'+d.h.map(h=>'<th>'+h+'</th>').join('')+'</tr>'+d.r.map(r=>'<tr>'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</table></div></div>':'<div class="dg"><b>'+d.t+':</b> '+d.x+'</div>').join('')}
+addQ2(6,0,`Em cần làm gì nếu làm vỡ ống nghiệm trong phòng thực hành?|Báo ngay cho giáo viên, không nhặt mảnh vỡ bằng tay|Giấu đi|Nhặt bằng tay trần|Tiếp tục thí nghiệm|Báo giáo viên để xử lí an toàn.
+Dụng cụ nào dùng để đo thể tích chất lỏng?|Ống đong|Thước dây|Nhiệt kế|Cân|Ống đong có vạch chia thể tích.
+Khi đo chiều dài, mắt cần đặt như thế nào?|Vuông góc với vạch cần đọc|Nghiêng bên trái|Nghiêng bên phải|Nhắm một mắt|Tránh sai số khi đọc kết quả.`);
+addQ2(6,1,`Tính chất nào là tính chất vật lí của chất?|Nhiệt độ sôi|Khả năng cháy|Khả năng bị gỉ|Khả năng phân hủy|Nhiệt độ sôi là tính chất vật lí.
+Sự sôi khác sự bay hơi ở điểm nào?|Sôi xảy ra trong lòng chất lỏng ở nhiệt độ xác định|Sôi chỉ ở bề mặt|Sôi xảy ra ở mọi nhiệt độ|Sôi không tạo hơi|Bay hơi mới xảy ra ở bề mặt, mọi nhiệt độ.
+Oxygen cần cho hoạt động nào?|Hô hấp và sự cháy|Chỉ quang hợp|Tạo mưa|Tạo ánh sáng|Oxygen duy trì sự sống và sự cháy.
+Nguyên nhân gây ô nhiễm không khí là gì?|Khói bụi từ giao thông, nhà máy, đốt rác|Trồng cây|Dùng năng lượng gió|Tưới nước|Khí thải gây ô nhiễm.`);
+addQ2(6,2,`Vật liệu nào cách điện tốt, dùng bọc dây điện?|Nhựa|Đồng|Sắt|Nhôm|Nhựa không dẫn điện.
+Nhiên liệu nào khi đốt thô sơ gây nhiều khói bụi?|Củi, than tổ ong|Điện|Gió|Mặt Trời|Đốt thô sơ gây ô nhiễm.
+Nguyên liệu nào dùng để sản xuất xi măng?|Đá vôi|Nhựa|Gỗ|Vải|Đá vôi là nguyên liệu sản xuất xi măng.
+Cách bảo quản nào giúp thực phẩm lâu hỏng?|Để trong tủ lạnh|Để ngoài nắng|Để nơi ẩm|Mở nắp thường xuyên|Nhiệt độ thấp làm vi khuẩn phát triển chậm.`);
+addQ2(6,3,`Hỗn hợp nào là dung dịch?|Nước đường|Nước và dầu ăn|Nước và đất|Sữa tươi|Chất tan phân tán đều trong dung môi.
+Vì sao dùng nam châm tách được sắt ra khỏi hỗn hợp?|Sắt bị nam châm hút|Sắt tan trong nước|Sắt nhẹ|Sắt bay hơi|Dựa vào tính chất từ của sắt.`);
+addQ2(6,4,`Tế bào thực vật có thành phần nào mà tế bào động vật không có?|Lục lạp và thành tế bào|Nhân|Màng tế bào|Tế bào chất|Đây là điểm khác biệt chính.
+Tế bào được quan sát rõ nhất bằng dụng cụ nào?|Kính hiển vi|Kính lúp|Thước đo|Cân|Tế bào quá nhỏ để thấy bằng mắt thường.
+Chức năng của tế bào chất là gì?|Nơi diễn ra các hoạt động sống|Bao bọc tế bào|Chứa vật chất di truyền|Bảo vệ tế bào|Tế bào chất chứa các bào quan.
+Sau 4 lần phân chia liên tiếp, từ 1 tế bào có bao nhiêu tế bào?|16|8|4|12|2⁴ = 16.`);
+addQ2(6,5,`Tập hợp các tế bào cùng chức năng gọi là gì?|Mô|Cơ quan|Cơ thể|Hệ cơ quan|Tế bào tạo thành mô.
+Rễ, thân, lá là cơ quan sinh dưỡng hay sinh sản?|Sinh dưỡng|Sinh sản|Cả hai|Không phải cơ quan|Nuôi dưỡng cây.
+Hoa, quả, hạt là cơ quan nào của cây?|Sinh sản|Sinh dưỡng|Vận động|Tiêu hóa|Giúp duy trì nòi giống.
+Hệ tiêu hóa của người gồm những cơ quan nào?|Dạ dày, ruột|Tim, mạch máu|Phổi, khí quản|Não, tủy sống|Tiêu hóa thức ăn.`);
+addQ2(6,6,`Thực vật hạt kín có đặc điểm nào?|Có hoa và quả|Không có hoa|Sinh sản bằng bào tử|Không có hạt|Hạt nằm trong quả.
+Động vật nào thuộc lớp chim?|Chim bồ câu|Cá chép|Con ếch|Con rắn|Chim có lông vũ.
+Virus có đặc điểm nào?|Chưa có cấu tạo tế bào|Có thành tế bào|Có lục lạp|Tự sống độc lập|Virus sống kí sinh.`);
+addQ2(6,7,`Vì sao đế giày có khía rãnh?|Tăng ma sát để khỏi trượt|Giảm ma sát|Làm giày nhẹ hơn|Làm giày đẹp hơn|Ma sát trong trường hợp này có lợi.`);
+addQ2(6,8,`Dòng nước chảy mạnh có dạng năng lượng nào?|Động năng|Hóa năng|Quang năng|Điện năng|Vật chuyển động có động năng.
+Khi đốt cháy than, năng lượng chuyển hóa thế nào?|Hóa năng thành nhiệt năng|Điện năng thành quang năng|Cơ năng thành điện năng|Nhiệt năng thành hóa năng|Than chứa hóa năng.
+Nguồn năng lượng nào sẽ cạn kiệt?|Than đá|Gió|Mặt Trời|Sóng biển|Nhiên liệu hóa thạch có hạn.`);
+addQ2(6,9,`Vì sao ta thấy Mặt Trời mọc đằng đông, lặn đằng tây?|Trái Đất tự quay quanh trục|Mặt Trời quay quanh Trái Đất|Mặt Trăng kéo|Gió đẩy|Đó là chuyển động nhìn thấy.
+Hệ Mặt Trời có bao nhiêu hành tinh?|8|9|7|10|Có 8 hành tinh.
+Thiên thể nào tự phát sáng?|Mặt Trời|Mặt Trăng|Trái Đất|Sao Hỏa|Mặt Trời là một ngôi sao.`);
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){return ex6b()+vdc()}
@@ -1883,7 +1944,7 @@ function ansE(i,j){const q=EXALL[g][E6].mc[i],b=document.getElementById('x'+i);i
 function tog(i){const e=document.getElementById('a'+i),b=document.getElementById('b'+i),s=e.classList.toggle('show');b.textContent=s?'Ẩn đáp án':'Xem đáp án'}
 function card(h,b){return `<div class="card"><h3>${h}</h3><div>${b}</div></div>`}
 function render(){pills();const d=D[g];let h='';
-if(t=='ov')h=SUM[g]?SUM[g].map(c=>card(c.t,'<ul>'+c.p.map(x=>'<li>'+x+'</li>').join('')+'</ul>')).join(''):d.ov.map(([a,b])=>card(a,b)).join('');
+if(t=='ov')h=SUM[g]?SUM[g].map((c,i)=>card(c.t,'<ul>'+c.p.map(x=>'<li>'+x+'</li>').join('')+'</ul>'+dgHtml(g,i))).join(''):d.ov.map(([a,b])=>card(a,b)).join('');
 if(t=='kn')h=KN[g]?'<div class="ex">Bấm vào từng chương để xem các khái niệm.</div>'+KN[g].map(c=>'<details class="card"><summary><b>'+c.t+'</b> ('+c.c.length+' khái niệm)</summary><ul>'+c.c.map(([a,b])=>'<li><b>'+a+'</b>: '+b+'</li>').join('')+'</ul></details>').join(''):d.kn.map(([a,b])=>card(a,b)).join('');
 if(t=='fm')h='<div class="card">'+d.fm.map(([a,b])=>`<div class="f"><b>${a}</b><span>${b}</span></div>`).join('')+'</div>';
 if(t=='qz'&&BANKS[g])h=bank6();else if(t=='qz'){h=`<div class="score"><span id="sc">Điểm: ${score}/${d.qz.length}</span><button onclick="setG(g)">Làm lại</button></div>`+d.qz.map((q,i)=>`<div class="card q" id="q${i}"><p>Câu ${i+1}. ${q[0]}</p>`+q[1].map((o,j)=>`<button class="opt" onclick="ans(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="e${i}"></div></div>`).join('')}
@@ -1895,7 +1956,23 @@ const bs=box.querySelectorAll('.opt');bs[q[2]].classList.add('ok');
 if(j==q[2])score++;else bs[j].classList.add('bad');
 $('e'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];
 $('sc').textContent='Điểm: '+score+'/'+D[g].qz.length}
-(async()=>{try{if(!window.claude)return;const db=await claude.use('db'),u=await claude.use('user');if(!db||!u)return;const id=await u.id();if(!id)return;DBR=db.collection('data/users/'+id).doc('khtn6');const s=await DBR.get();if(s.exists)P=Object.assign({},mig(s.data().p||{}),P);DBR.set({p:P}).catch(()=>{});if(t=='qz'&&BANKS[g])render()}catch(e){}})();
+let LK=null,LCODE='';
+function kidsHtml(){return LK&&LK.length?'<div>Các con đã liên kết:</div>'+LK.map((k,i)=>'<div class="row"><div>'+esc(k.child_label||'Học sinh')+'</div><button onclick="viewKid('+i+')">Xem tiến độ</button></div>').join(''):''}
+function linkUI(){if(!SB||!USER)return '';if(LK===null){LK=[];loadKids()}
+let h='<div class="card"><h3>Liên kết phụ huynh</h3>';
+if(VP){return h+'Đang xem tiến độ của <b>'+esc(VPN)+'</b>. <button onclick="closeV()">Quay lại tiến độ của tôi</button></div>'}
+h+='<div class="ex">Học sinh bấm tạo mã, phụ huynh nhập mã trong tài khoản của mình để xem tiến độ. Mã có hiệu lực 24 giờ.</div>';
+h+='<div class="arow"><button onclick="mkCode()">Tạo mã liên kết (học sinh)</button><b>'+esc(LCODE)+'</b></div>';
+h+='<div class="arow"><input id="pc" placeholder="Nhập mã của con"><button onclick="useCode()">Liên kết (phụ huynh)</button></div><div class="ex" id="lm"></div>';
+return h+kidsHtml()+'</div>'}
+async function loadKids(){const r=await SB.from('parent_links').select('child_id,child_label').eq('parent_id',USER.id);LK=r.data||[];if(t=='tt')render()}
+async function mkCode(){const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let c='';for(let i=0;i<6;i++)c+=ch[Math.floor(Math.random()*ch.length)];
+const r=await SB.from('link_codes').insert({code:c,child_id:USER.id,expires_at:new Date(Date.now()+864e5).toISOString()});
+LCODE=r.error?'':c;render();if(r.error)lm.textContent='Không tạo được mã: '+r.error.message}
+async function useCode(){const r=await SB.rpc('claim_link',{p_code:pc.value.trim()});if(r.error){lm.textContent='Không liên kết được: '+r.error.message;return}await loadKids()}
+async function viewKid(i){const k=LK[i],r=await SB.from('progress').select('data').eq('user_id',k.child_id).maybeSingle();VP=r.data&&r.data.data?mig(r.data.data):{};VPN=k.child_label||'học sinh';render()}
+function closeV(){VP=null;render()}
+initAuth();
 render();
 </script>
 </body>
