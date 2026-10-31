@@ -37,7 +37,6 @@ button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .score button{padding:4px 10px;font-size:.85rem}
 .note{font-size:.85rem;color:var(--mute);margin-top:18px}
 .ans{display:none;margin-top:8px;padding:10px 12px;border-left:4px solid var(--accent);background:var(--hi);border-radius:6px;font-size:.95rem}.ans.show{display:block}
-.auth input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;flex:1 1 150px}.arow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}.row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;margin:12px 0}
 .mx{border-collapse:collapse;width:100%}.mx th,.mx td{border:1px solid var(--line);padding:6px 8px;text-align:left;font-size:.9rem}.mx th{background:var(--hi)}
 details.card summary{cursor:pointer}details.card ul{margin-top:8px}
@@ -49,14 +48,11 @@ details.card summary{cursor:pointer}details.card ul{margin-top:8px}
 <div class="wrap">
 <h1>Ôn Khoa học tự nhiên 6–9</h1>
 <p class="sub">Tổng quan chương trình, công thức cần nhớ, luyện tập và cấu trúc đề kiểm tra. Miễn phí, không cần đăng ký.</p>
-<div class="card auth" id="auth" style="display:none"></div>
 <div class="pills" id="pills" role="tablist" aria-label="Chọn lớp"></div>
 <div class="tabs" id="tabs"></div>
 <div id="main"></div>
 <p class="note">Nội dung bám khung chương trình GDPT 2018 và tên chủ đề của sách Kết nối tri thức với cuộc sống, mang tính tham khảo. Phân phối chương trình và đề thi thực tế tùy sách giáo khoa và nhà trường, hãy đối chiếu với đề cương của giáo viên.</p>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="config.js"></script>
 <script>
 const D={
 6:{
@@ -819,27 +815,12 @@ function mig(o){const v=(o&&o._v)||0;if(v>=4)return o;const r={_v:4};for(const k
 let CH=0,P={},DBR=null;
 try{P=JSON.parse(localStorage.getItem('khtn6')||'{}')}catch(e){}
 P=mig(P);
-let SB=null,USER=null,svT=null;
-function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}
-if(SB&&USER){clearTimeout(svT);svT=setTimeout(()=>{SB.from('progress').upsert({user_id:USER.id,data:P,updated_at:new Date().toISOString()}).then(r=>{if(r.error)console.warn(r.error.message)})},600)}}
-function esc(x){return String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function renderAuth(){const a=document.getElementById('auth');if(!SB){a.style.display='none';return}a.style.display='block';
-a.innerHTML=USER?'Đã đăng nhập: <b>'+esc(USER.email)+'</b> <button onclick="logout()">Đăng xuất</button>':'<b>Đăng nhập để lưu tiến độ trên mọi thiết bị</b><div class="arow"><input id="em" type="email" placeholder="Email" autocomplete="email"><input id="pw" type="password" placeholder="Mật khẩu (từ 6 ký tự)" autocomplete="current-password"><button onclick="login()">Đăng nhập</button><button onclick="signup()">Đăng ký</button></div><div class="ex" id="am"></div>'}
-async function login(){const r=await SB.auth.signInWithPassword({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng nhập được: '+r.error.message:''}
-async function signup(){const r=await SB.auth.signUp({email:em.value,password:pw.value});am.textContent=r.error?'Không đăng ký được: '+r.error.message:'Đã đăng ký. Nếu được yêu cầu, hãy xác nhận qua email rồi đăng nhập.'}
-async function logout(){await SB.auth.signOut();LK=null;VP=null}
-async function setUser(u){USER=u||null;renderAuth();
-if(USER){const r=await SB.from('progress').select('data').eq('user_id',USER.id).maybeSingle();if(r.data&&r.data.data)P=Object.assign({},mig(r.data.data),P);sv()}
-if(t=='qz'&&BANKS[g])render()}
-function initAuth(){renderAuth();const u=window.SUPABASE_URL,k=window.SUPABASE_ANON_KEY;
-if(!window.supabase||!u||!k||/YOUR_/.test(u+k))return;
-SB=window.supabase.createClient(u,k);renderAuth();
-SB.auth.onAuthStateChange((e,se)=>{setUser(se&&se.user)})}
+function sv(){try{localStorage.setItem('khtn6',JSON.stringify(P))}catch(e){}if(DBR)DBR.set({p:P}).catch(()=>{})}
 function prog(){let a=0,b=0,c=0;BANKS[g].forEach((x,i)=>x.q.forEach((_,j)=>{b++;if(P[g+':'+i+'-'+j]==1){a++;if(i==CH)c++}}));return 'Đã đúng '+c+'/'+BANKS[g][CH].q.length+' câu của chương này, '+a+'/'+b+' câu toàn bộ.'}
 function setC(i){CH=i;render()}
 function resetC(){BANKS[g][CH].q.forEach((_,j)=>delete P[g+':'+CH+'-'+j]);sv();render()}
 function bank6(){const c=BANKS[g][CH];
-return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]} <button class="flag ${isF(g,q[0])?'on':''}" onclick="flagQ(${i},this)" title="Đánh dấu câu nghi ngờ">⚑</button></p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+tlbank()+`<p class="note">${USER?'Tiến độ được lưu theo tài khoản của bạn.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
+return `<div class="tabs">${BANKS[g].map((x,i)=>`<button class="${i==CH?'on':''}" onclick="setC(${i})">${x.s}</button>`).join('')}</div><div class="score"><span id="pg">${prog()}</span><button onclick="resetC()">Làm lại chương</button></div><h3>${c.n}</h3>`+c.q.map((q,i)=>{const s=P[g+':'+CH+'-'+i];return `<div class="card q" id="c${i}"><p>${s==1?'✓ ':s===0?'✗ ':''}Câu ${i+1}. ${q[0]} <button class="flag ${isF(g,q[0])?'on':''}" onclick="flagQ(${i},this)" title="Đánh dấu câu nghi ngờ">⚑</button></p>`+q.o.map((o,j)=>`<button class="opt" onclick="ansC(${i},${j})">${String.fromCharCode(65+j)}. ${o}</button>`).join('')+`<div class="ex" id="ce${i}"></div></div>`}).join('')+tlbank()+`<p class="note">${DBR?'Tiến độ được lưu theo tài khoản của bạn và trên thiết bị này.':'Tiến độ được lưu trên thiết bị này.'} Thứ tự đáp án đổi mỗi lần tải lại trang.</p>`}
 function ansC(i,j){const q=BANKS[g][CH].q[i],b=document.getElementById('c'+i);if(b.dataset.d)return;b.dataset.d=1;const o=b.querySelectorAll('.opt');o[q.a].classList.add('ok');if(j!=q.a)o[j].classList.add('bad');P[g+':'+CH+'-'+i]=j==q.a?1:0;sv();document.getElementById('ce'+i).textContent=(j==q.a?'Chính xác. ':'Chưa đúng. ')+q[2];document.getElementById('pg').textContent=prog()}
 const EX6={
 'Giữa kỳ 1':{sc:'Phạm vi: mở đầu (an toàn, đo lường), chất quanh ta, sự chuyển thể, oxygen và không khí.',
@@ -2211,6 +2192,16 @@ function clearF(){saveF([]);render()}
 function flagsUI(){const a=loadF();return '<div class="card"><h3>Câu đã đánh dấu nghi ngờ ('+a.length+')</h3><div class="ex">Khi làm bài, thấy câu nào khác sách thì bấm biểu tượng cờ ⚑ cạnh câu đó. Danh sách lưu trên thiết bị này.</div>'+(a.length?'<textarea id="fl" readonly rows="6" style="width:100%;margin-top:8px;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)">'+flagTxt().replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</textarea><div class="arow"><button onclick="copyF()">Sao chép danh sách</button><button onclick="clearF()">Xóa danh sách</button></div><div class="ex" id="fm"></div>':'')+'</div>'}
 KN[9][7].c.forEach(r=>{if(r[0]=='Độ rượu'){r[0]='Độ cồn (độ rượu)';r[1]='số mL ethylic alcohol nguyên chất có trong 100 mL dung dịch ở 20 °C, kí hiệu X° hoặc X% vol.'}});
 BANKS[9][7].q.forEach(q=>{if(q[0].indexOf('Độ rượu 40°')==0){q[0]='Độ cồn 40° nghĩa là gì?';q[2]='Độ cồn là số mL ethylic alcohol nguyên chất trong 100 mL dung dịch ở 20 °C.'}});
+const rs=q=>{const x=[0,1,2,3].sort(()=>Math.random()-.5);q.o=x.map(i=>q[1][i]);q.a=x.indexOf(0)};
+BANKS[6][3].q.forEach(q=>{if(q[0].indexOf('Chưng cất dùng')==0){q[0]='Cô cạn dùng để thu chất nào từ dung dịch?';q[1]=['Chất rắn tan trong nước (như muối)','Chất không tan trong nước','Chất khí','Chất lỏng không tan trong nước'];q[2]='Cô cạn làm bay hơi dung môi, chất tan còn lại.';rs(q)}else if(q[1].indexOf('Chưng cất')>=0){q[1]=q[1].map(x=>x=='Chưng cất'?'Cô cạn':x);rs(q)}});
+SUM[6][3].p=SUM[6][3].p.map(p=>p.indexOf('chưng cất')>=0?'Tách chất dựa vào khác biệt tính chất: lọc, cô cạn, chiết; ngoài ra có thể dùng nam châm để tách vật có từ tính.':p);
+KN[6][3].c=KN[6][3].c.map(r=>r[0].indexOf('chưng cất')>=0?['Lọc, cô cạn, chiết','các cách tách chất dựa vào khác biệt tính chất: lọc (chất không tan), cô cạn (làm bay hơi dung môi), chiết (hai chất lỏng không tan vào nhau).']:r);
+DG[6][3].forEach(d=>{if(d.r)d.r=d.r.filter(r=>r[1]!='Chưng cất')});
+D[6].kn=D[6].kn.map(r=>[r[0],String(r[1]).replace(', chưng cất','')]);
+D[6].fm.splice(7,0,['Đổi sang thang Kelvin','T(K) = t(°C) + 273']);
+pushK(6,0,`Thang nhiệt độ Celsius::nước đá đang tan là 0 °C, nước đang sôi là 100 °C (áp suất thường).
+Nhiệt kế y tế::đo nhiệt độ cơ thể, thang chia khoảng từ 35 °C đến 42 °C.`);
+pushK(6,7,`Trọng lượng trên các hành tinh::cùng một vật có trọng lượng khác nhau ở các hành tinh khác nhau (vật 1 kg trên Hỏa tinh nặng khoảng 3,6 N).`);
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){return ex6b()+vdc()}
@@ -2232,23 +2223,7 @@ const bs=box.querySelectorAll('.opt');bs[q[2]].classList.add('ok');
 if(j==q[2])score++;else bs[j].classList.add('bad');
 $('e'+i).textContent=(j==q[2]?'Chính xác. ':'Chưa đúng. ')+q[3];
 $('sc').textContent='Điểm: '+score+'/'+D[g].qz.length}
-let LK=null,LCODE='';
-function kidsHtml(){return LK&&LK.length?'<div>Các con đã liên kết:</div>'+LK.map((k,i)=>'<div class="row"><div>'+esc(k.child_label||'Học sinh')+'</div><button onclick="viewKid('+i+')">Xem tiến độ</button></div>').join(''):''}
-function linkUI(){if(!SB||!USER)return '';if(LK===null){LK=[];loadKids()}
-let h='<div class="card"><h3>Liên kết phụ huynh</h3>';
-if(VP){return h+'Đang xem tiến độ của <b>'+esc(VPN)+'</b>. <button onclick="closeV()">Quay lại tiến độ của tôi</button></div>'}
-h+='<div class="ex">Học sinh bấm tạo mã, phụ huynh nhập mã trong tài khoản của mình để xem tiến độ. Mã có hiệu lực 24 giờ.</div>';
-h+='<div class="arow"><button onclick="mkCode()">Tạo mã liên kết (học sinh)</button><b>'+esc(LCODE)+'</b></div>';
-h+='<div class="arow"><input id="pc" placeholder="Nhập mã của con"><button onclick="useCode()">Liên kết (phụ huynh)</button></div><div class="ex" id="lm"></div>';
-return h+kidsHtml()+'</div>'}
-async function loadKids(){const r=await SB.from('parent_links').select('child_id,child_label').eq('parent_id',USER.id);LK=r.data||[];if(t=='tt')render()}
-async function mkCode(){const ch='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let c='';for(let i=0;i<6;i++)c+=ch[Math.floor(Math.random()*ch.length)];
-const r=await SB.from('link_codes').insert({code:c,child_id:USER.id,expires_at:new Date(Date.now()+864e5).toISOString()});
-LCODE=r.error?'':c;render();if(r.error)lm.textContent='Không tạo được mã: '+r.error.message}
-async function useCode(){const r=await SB.rpc('claim_link',{p_code:pc.value.trim()});if(r.error){lm.textContent='Không liên kết được: '+r.error.message;return}await loadKids()}
-async function viewKid(i){const k=LK[i],r=await SB.from('progress').select('data').eq('user_id',k.child_id).maybeSingle();VP=r.data&&r.data.data?mig(r.data.data):{};VPN=k.child_label||'học sinh';render()}
-function closeV(){VP=null;render()}
-initAuth();
+(async()=>{try{if(!window.claude)return;const db=await claude.use('db'),u=await claude.use('user');if(!db||!u)return;const id=await u.id();if(!id)return;DBR=db.collection('data/users/'+id).doc('khtn6');const s=await DBR.get();if(s.exists)P=Object.assign({},mig(s.data().p||{}),P);DBR.set({p:P}).catch(()=>{});if(t=='qz'&&BANKS[g])render()}catch(e){}})();
 render();
 </script>
 </body>
