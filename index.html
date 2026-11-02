@@ -2234,6 +2234,15 @@ Tế bào nhân sơ khác tế bào nhân thực ở điểm nào?|Chưa có nh�
 const fixCT=s=>s.replace(/tế bào chất/g,'chất tế bào').replace(/Tế bào chất/g,'Chất tế bào');
 const deep=o=>{if(Array.isArray(o)){for(let i=0;i<o.length;i++){if(typeof o[i]=='string')o[i]=fixCT(o[i]);else deep(o[i])}if(o.o)deep(o.o)}else if(o&&typeof o=='object'){for(const k in o){if(typeof o[k]=='string')o[k]=fixCT(o[k]);else deep(o[k])}}};
 deep(BANKS[6]);deep(TLB[6]);deep(EXALL[6]);deep(SUM[6]);deep(KN[6]);deep(DG[6]);deep(D[6]);
+pushK(6,6,`Năm giới sinh vật::giới Khởi sinh (vi khuẩn), giới Nguyên sinh, giới Nấm, giới Thực vật, giới Động vật.
+Giới Khởi sinh::gồm sinh vật đơn bào, nhân sơ, đại diện là vi khuẩn.
+Cách gọi tên sinh vật::tên phổ thông, tên địa phương và tên khoa học (danh pháp hai phần: tên chi và tên loài).
+Ý nghĩa của phân loại::giúp gọi đúng tên sinh vật, đưa sinh vật vào đúng nhóm và nhận ra sự đa dạng của sinh giới.`);
+pushS(6,6,'Sinh vật được chia thành 5 giới: Khởi sinh, Nguyên sinh, Nấm, Thực vật, Động vật. Phân loại giúp gọi đúng tên, xếp đúng nhóm và nhận ra sự đa dạng của sinh giới.');
+addQ2(6,6,`Sinh vật được chia thành mấy giới?|5 giới|3 giới|4 giới|7 giới|Khởi sinh, Nguyên sinh, Nấm, Thực vật, Động vật.
+Vi khuẩn thuộc giới nào?|Giới Khởi sinh|Giới Nguyên sinh|Giới Nấm|Giới Thực vật|Vi khuẩn là sinh vật đơn bào, nhân sơ.
+Tên khoa học của một loài gồm những phần nào?|Tên chi và tên loài|Chỉ tên họ|Tên bộ và tên lớp|Tên địa phương|Đây là danh pháp hai phần.`);
+pushS(6,8,'Mọi biến đổi trong tự nhiên đều cần năng lượng, ví dụ năng lượng từ bếp truyền cho ấm nước làm nhiệt độ nước tăng.');
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){return ex6b()+vdc()}
