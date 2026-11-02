@@ -2221,6 +2221,19 @@ D[6].fm.splice(7,0,['Đổi sang thang Kelvin','T(K) = t(°C) + 273']);
 pushK(6,0,`Thang nhiệt độ Celsius::nước đá đang tan là 0 °C, nước đang sôi là 100 °C (áp suất thường).
 Nhiệt kế y tế::đo nhiệt độ cơ thể, thang chia khoảng từ 35 °C đến 42 °C.`);
 pushK(6,7,`Trọng lượng trên các hành tinh::cùng một vật có trọng lượng khác nhau ở các hành tinh khác nhau (vật 1 kg trên Hỏa tinh nặng khoảng 3,6 N).`);
+TLB[6][9].forEach(t=>{if(t[0].indexOf('Mô tả các pha')==0)t[1]='Các hình dạng nhìn thấy gồm không trăng, trăng lưỡi liềm, trăng bán nguyệt, trăng khuyết, trăng tròn, rồi lặp lại. Nguyên nhân là phần sáng của Mặt Trăng nhìn thấy từ Trái Đất thay đổi khi Mặt Trăng chuyển động quanh Trái Đất.'});
+KN[6][9].c.forEach(r=>{if(r[0]=='Các pha của Mặt Trăng'){r[0]='Các hình dạng nhìn thấy của Mặt Trăng (pha Mặt Trăng)';r[1]='không trăng, trăng lưỡi liềm, trăng bán nguyệt, trăng khuyết, trăng tròn; thay đổi vì phần sáng nhìn thấy từ Trái Đất khác nhau.'}});
+pushK(6,9,`Tuần trăng::khoảng thời gian giữa hai lần nhìn thấy Mặt Trăng có cùng một hình dạng, khoảng 29,5 ngày.`);
+DG[6][9].forEach(d=>{if(d.k=='f'){d.t='Các hình dạng nhìn thấy của Mặt Trăng (từ không trăng đến trăng tròn)';d.n=['Không trăng','Trăng lưỡi liềm','Trăng bán nguyệt','Trăng khuyết','Trăng tròn']}});
+pushS(6,4,'Tế bào nhân sơ chưa có nhân hoàn chỉnh (có vùng nhân), kích thước nhỏ như vi khuẩn. Tế bào nhân thực có nhân hoàn chỉnh và các bào quan có màng bao bọc (thực vật, động vật, nấm).');
+pushK(6,4,`Tế bào nhân sơ::tế bào chưa có nhân hoàn chỉnh (có vùng nhân, chưa có màng nhân), kích thước nhỏ, ví dụ vi khuẩn.
+Tế bào nhân thực::tế bào có nhân hoàn chỉnh (có màng nhân) và các bào quan có màng bao bọc, ví dụ tế bào thực vật, động vật, nấm.`);
+addQ2(6,4,`Vi khuẩn có cấu tạo từ loại tế bào nào?|Tế bào nhân sơ|Tế bào nhân thực|Tế bào thực vật|Tế bào động vật|Tế bào vi khuẩn chưa có nhân hoàn chỉnh.
+Sinh vật nào cấu tạo từ tế bào nhân thực?|Cây cà chua|Vi khuẩn E. coli|Vi khuẩn lactic|Vi khuẩn lam|Thực vật có tế bào nhân thực.
+Tế bào nhân sơ khác tế bào nhân thực ở điểm nào?|Chưa có nhân hoàn chỉnh|Không có màng tế bào|Không có chất tế bào|Luôn có lục lạp|Tế bào nhân sơ có vùng nhân.`);
+const fixCT=s=>s.replace(/tế bào chất/g,'chất tế bào').replace(/Tế bào chất/g,'Chất tế bào');
+const deep=o=>{if(Array.isArray(o)){for(let i=0;i<o.length;i++){if(typeof o[i]=='string')o[i]=fixCT(o[i]);else deep(o[i])}if(o.o)deep(o.o)}else if(o&&typeof o=='object'){for(const k in o){if(typeof o[k]=='string')o[k]=fixCT(o[k]);else deep(o[k])}}};
+deep(BANKS[6]);deep(TLB[6]);deep(EXALL[6]);deep(SUM[6]);deep(KN[6]);deep(DG[6]);deep(D[6]);
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){return ex6b()+vdc()}
