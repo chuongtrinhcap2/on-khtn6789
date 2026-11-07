@@ -2305,6 +2305,13 @@ Khối lượng mol và khối lượng phân tử::bằng nhau về trị số 
 addQ2(8,0,`Khối lượng mol của một chất và khối lượng phân tử của chất đó khác nhau thế nào?|Bằng nhau về trị số, khác về đơn vị|Khác nhau cả về trị số|Bằng nhau cả về đơn vị|Không liên quan đến nhau|Đơn vị lần lượt là g/mol và amu.
 Ở 25 °C và 1 bar, 1,5 mol khí bất kì chiếm thể tích bao nhiêu?|37,185 L|33,6 L|22,4 L|24,79 L|V = 1,5 × 24,79.
 Khi đun nóng hóa chất trong ống nghiệm, nên kẹp ống ở vị trí nào?|Khoảng 1/3 chiều dài ống tính từ miệng ống|Sát đáy ống|Chính giữa ống|Không cần kẹp|Để giữ vững ống và tránh bỏng tay.`);
+KN[8][1].c.forEach(r=>{if(r[0].indexOf('Base')==0){r[0]='Base (kiềm)';r[1]='hợp chất trong phân tử có nguyên tử kim loại liên kết với nhóm hydroxide (–OH), khi tan trong nước tạo ion OH⁻; base tan tốt trong nước gọi là kiềm (NaOH, KOH, Ba(OH)₂). Làm quỳ tím hóa xanh, phenolphthalein hóa hồng.'}});
+SUM[8][1].p=SUM[8][1].p.map(p=>p.indexOf('Base (kiềm tan)')==0?'Base là hợp chất có nguyên tử kim loại liên kết với nhóm hydroxide (–OH); base tan trong nước gọi là kiềm (NaOH, KOH, Ba(OH)₂). Dung dịch base làm quỳ tím hóa xanh, phenolphthalein hóa hồng, tác dụng với acid (phản ứng trung hòa) và oxide acid. Ứng dụng: bôi vôi tôi lên vết ong, kiến đốt; rắc vôi khử chua đất.':p);
+DG[8][1].forEach(d=>{if(d.r)d.r.forEach(r=>{if(r[3]=='NaOH, Ca(OH)₂')r[3]='NaOH, KOH'})});
+addQ2(8,1,`Base nào sau đây là kiềm?|Ba(OH)₂|Cu(OH)₂|Mg(OH)₂|Fe(OH)₂|Kiềm là base tan tốt trong nước.
+Dung dịch phenolphthalein không màu chuyển thành màu gì trong dung dịch base?|Hồng|Đỏ|Xanh|Vàng|Phenolphthalein hóa hồng trong môi trường base.
+Vì sao bôi vôi tôi vào vết ong đốt giúp giảm đau?|Xảy ra phản ứng trung hòa giữa base và acid trong nọc ong|Vôi làm lạnh vết đốt|Vôi diệt ong|Vôi tạo lớp da mới|Nọc ong chứa acid.
+Rắc vôi bột vào ruộng chua nhằm mục đích gì?|Trung hòa acid dư thừa trong đất|Làm đất chua hơn|Làm đất cứng hơn|Diệt giun đất|Đây là phản ứng trung hòa acid và base.`);
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){return ex6b()+vdc()}
