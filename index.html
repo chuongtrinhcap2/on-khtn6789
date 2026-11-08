@@ -2312,6 +2312,19 @@ addQ2(8,1,`Base nào sau đây là kiềm?|Ba(OH)₂|Cu(OH)₂|Mg(OH)₂|Fe(OH)�
 Dung dịch phenolphthalein không màu chuyển thành màu gì trong dung dịch base?|Hồng|Đỏ|Xanh|Vàng|Phenolphthalein hóa hồng trong môi trường base.
 Vì sao bôi vôi tôi vào vết ong đốt giúp giảm đau?|Xảy ra phản ứng trung hòa giữa base và acid trong nọc ong|Vôi làm lạnh vết đốt|Vôi diệt ong|Vôi tạo lớp da mới|Nọc ong chứa acid.
 Rắc vôi bột vào ruộng chua nhằm mục đích gì?|Trung hòa acid dư thừa trong đất|Làm đất chua hơn|Làm đất cứng hơn|Diệt giun đất|Đây là phản ứng trung hòa acid và base.`);
+pushK(8,1,`Oxide lưỡng tính::oxide tác dụng được với cả dung dịch acid và dung dịch base tạo muối và nước (ZnO, Al₂O₃).
+Oxide trung tính::oxide không tác dụng với dung dịch acid và dung dịch base (ví dụ CO).
+Tính chất hóa học của muối::muối có thể tác dụng với kim loại, với acid, với base và với muối khác.
+Mối quan hệ giữa các hợp chất vô cơ::oxide, acid, base, muối có thể chuyển hóa lẫn nhau qua các phản ứng hóa học.
+Phân NPK::phân bón hỗn hợp chứa ba nguyên tố dinh dưỡng chính là N, P, K.`);
+KN[8][1].c.forEach(r=>{if(r[0]=='Muối')r[1]='hợp chất tạo ra khi thay thế ion H⁺ của acid bằng ion kim loại hoặc ion ammonium (NH₄⁺), ví dụ NaCl, CaCO₃.'});
+pushS(8,1,'Oxide gồm bốn loại: oxide acid (CO₂, SO₃, P₂O₅), oxide base (Na₂O, CaO, FeO), oxide lưỡng tính (ZnO, Al₂O₃) và oxide trung tính (CO). Muối tác dụng được với kim loại, acid, base và muối; oxide, acid, base, muối chuyển hóa lẫn nhau.');
+addQ2(8,1,`Oxide lưỡng tính tác dụng được với chất nào?|Cả dung dịch acid và dung dịch base|Chỉ dung dịch acid|Chỉ dung dịch base|Không tác dụng với chất nào|Ví dụ ZnO và Al₂O₃.
+Oxide nào là oxide trung tính?|CO|CO₂|Na₂O|SO₃|CO không tác dụng với acid và base.
+Oxide acid có đặc điểm nào?|Tác dụng với dung dịch base tạo muối và nước|Tác dụng với dung dịch acid tạo muối và nước|Không tác dụng với acid và base|Chỉ tác dụng với nước|Ví dụ CO₂, SO₂.
+Muối là hợp chất tạo ra khi thay ion nào của acid bằng ion kim loại hoặc NH₄⁺?|Ion H⁺|Ion OH⁻|Ion Cl⁻|Ion O²⁻|Muối được tạo ra khi thay H⁺ của acid.
+Công thức của đạm urea là gì?|(NH₂)₂CO|NH₄Cl|Ca(H₂PO₄)₂|KCl|Urea là phân đạm.
+Phân NPK chứa những nguyên tố dinh dưỡng nào?|N, P, K|Chỉ N|Chỉ P|Chỉ K|Phân NPK là phân bón hỗn hợp.`);
 let E6='Giữa kỳ 1',es=0;
 function setE(k){E6=k;es=0;render()}
 function ex6(){return ex6b()+vdc()}
